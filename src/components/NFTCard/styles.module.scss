@@ -4,6 +4,10 @@
   flex-direction: column;
   height: 100%;
   position: relative;
+  background-color: #fff;
+  border: 2px solid transparent;
+  border-image: linear-gradient(125deg, #ffe53b 0%, #ff2525 37%, #fd00ff 100%);
+  border-image-slice: 1;
 }
 
 .card {
@@ -11,12 +15,12 @@
   flex-grow: 1;
   cursor: pointer;
   transition: transform ease 0.1s;
-  border: 1px solid rgba(0, 0, 0, .1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  background-color: #FFF;
+  background-color: #fff;
 
-  &:nth-child(n+2) {
+  &:nth-child(n + 2) {
     position: absolute;
     height: 100%;
     left: 50%;
@@ -35,7 +39,7 @@
   }
 
   &:hover {
-    box-shadow: 0 0 6px rgba(0, 0, 0, .4);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
   }
 }
 
@@ -44,10 +48,10 @@
   align-items: center;
   justify-content: flex-end;
   padding: 6px 12px;
-  color: rgba(0, 0, 0, .6);
+  color: rgba(0, 0, 0, 0.6);
 
   &.liking {
-    color: #007BFF;
+    color: #f33408;
   }
 }
 
@@ -56,7 +60,7 @@
   margin-right: 6px;
 
   &:hover {
-    color: #007BFF;
+    color: #f33408;
   }
 }
 
@@ -78,7 +82,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: #1969FF;
+  background-color: #1969ff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,7 +95,7 @@
 .createLabel {
   font-size: 16px;
   font-weight: 700;
-  color: #1969FF;
+  color: #1969ff;
   margin-top: 21px;
 }
 
@@ -107,7 +111,7 @@
   font-size: 15px;
   line-height: 19px;
   margin-bottom: 4px;
-  color: #A2A2AD;
+  color: #a2a2ad;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -117,7 +121,7 @@
 
 .checkIcon {
   font-size: 18px !important;
-  color: #1969FF;
+  color: #1969ff;
   margin-left: 4px;
 }
 
@@ -141,7 +145,7 @@
   font-size: 12px;
   line-height: 16px;
   margin-bottom: 4px;
-  color: #A2A2AD;
+  color: #a2a2ad;
 }
 
 .price2 {
@@ -184,7 +188,7 @@
 .mediaBox {
   position: relative;
   padding-bottom: calc(100% - 16px);
-  border-bottom: 1px solid #EAEAF1;
+  border-bottom: 1px solid #eaeaf1;
 }
 
 .mediaPanel {
@@ -245,8 +249,8 @@
   height: 7px;
   border-radius: 50%;
   cursor: pointer;
-  border: 1px solid #B0B0B0;
-  background-color: #B0B0B0;
+  border: 1px solid #b0b0b0;
+  background-color: #b0b0b0;
   box-sizing: border-box;
 }
 
@@ -260,7 +264,7 @@
   .BrainhubCarousel__thumbnail--selected {
     :local {
       .dot {
-        background-color: #007BFF;
+        background-color: #007bff;
       }
     }
   }
