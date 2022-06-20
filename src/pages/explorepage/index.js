@@ -21,6 +21,11 @@ import usePrevious from 'hooks/usePrevious';
 import iconCollapse from 'assets/svgs/collapse.svg';
 
 import styles from './styles.module.scss';
+import PageHeader from '../../components/PageHeader';
+
+const PageHeaderText = {
+  heading: 'Explore',
+};
 
 const ExploreAllPage = () => {
   const { fetchCollections, fetchTokens, getItemsLiked } = useApi();
@@ -280,6 +285,7 @@ const ExploreAllPage = () => {
   return (
     <>
       <Header border />
+      <PageHeader text={PageHeaderText} />
       <div
         ref={conRef}
         className={styles.container}

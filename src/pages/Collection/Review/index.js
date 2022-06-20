@@ -22,6 +22,12 @@ import nftIcon from 'assets/svgs/nft_active.svg';
 
 import styles from './styles.module.scss';
 
+import PageHeader from '../../../components/PageHeader';
+
+const PageHeaderText = {
+  heading: 'Review Collection',
+};
+
 const CollectionCreate = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -114,6 +120,7 @@ const CollectionCreate = () => {
   return (
     <div className={styles.container}>
       <Header border />
+      <PageHeader text={PageHeaderText} />
       {loading ? (
         <div className={styles.loadingPanel}>
           <ClipLoader color="#3D3D3D" size={40} />
@@ -316,6 +323,12 @@ const CollectionCreate = () => {
           </div>
         </div>
       )}
+      <div className={styles.footerBottom}>
+        <p style={{ textAlign: 'center' }}>
+          All rights reserved &copy; Picasso || Design By:{' '}
+          <span>Matsushima Goro</span>
+        </p>
+      </div>
     </div>
   );
 };

@@ -16,6 +16,12 @@ import toast from 'utils/toast';
 
 import styles from './styles.module.scss';
 
+import PageHeader from '../../components/PageHeader';
+
+const PageHeaderText = {
+  heading: 'Notification Setting',
+};
+
 const selfSettings = [
   {
     value: 'sBundleBuy',
@@ -234,6 +240,7 @@ const NotificationSetting = () => {
   return (
     <div className={styles.container}>
       <Header border />
+      <PageHeader text={PageHeaderText} />
       <div className={styles.inner}>
         <div className={styles.title}>Notification Settings</div>
 
@@ -307,6 +314,12 @@ const NotificationSetting = () => {
             {saving ? <ClipLoader color="#FFF" size={16} /> : 'Save Settings'}
           </div>
         </div>
+      </div>
+      <div className={styles.footerBottom}>
+        <p style={{ textAlign: 'center' }}>
+          All rights reserved &copy; Picasso || Design By:{' '}
+          <span>Matsushima Goro</span>
+        </p>
       </div>
     </div>
   );

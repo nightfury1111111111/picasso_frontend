@@ -1,8 +1,6 @@
 .container {
   width: 100%;
   height: 100vh;
-  padding-top: 80px;
-  padding-bottom: 48px;
   box-sizing: border-box;
   overflow-y: auto;
   position: relative;
@@ -40,18 +38,28 @@
   margin-top: 7px;
   font-weight: 400;
   font-size: 14px;
-  color: #A2A2AD;
+  color: #a2a2ad;
 }
 
 .inputWrapper {
   margin-top: 16px;
 }
 
+.footerBottom {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px rgb(3 0 16 / 20%);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 20px;
+}
+
 .option {
   margin: 0;
   width: 100%;
   height: 56px;
-  background-color: #FAFAFB;
+  background-color: #fafafb;
   margin-bottom: 16px;
   border-left: 4px solid #121223;
   box-sizing: border-box;
@@ -62,7 +70,7 @@
   }
 
   &.active {
-    border-left-color: #1969FF;
+    border-left-color: #1969ff;
   }
 }
 
@@ -80,7 +88,7 @@
   margin-top: 6px;
   margin-right: 6px;
   text-align: right;
-  color: #A2A2AD;
+  color: #a2a2ad;
 
   & + .error {
     margin-top: -16px;
@@ -102,7 +110,7 @@
   width: 100%;
   height: 250px;
   box-sizing: border-box;
-  border: 1px dashed #EAEAF1;
+  border: 1px dashed #eaeaf1;
   border-radius: 10px;
   position: relative;
 
@@ -124,7 +132,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .1);
+  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   opacity: 0;
   transition: opacity ease 100ms;
@@ -161,7 +169,7 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 1.5px solid #EAEAF1;
+  border: 1.5px solid #eaeaf1;
   box-sizing: border-box;
   padding: 7px;
   position: relative;
@@ -171,7 +179,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background-color: #EDEDF3;
+  background-color: #ededf3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -189,7 +197,7 @@
   border-radius: 50%;
   right: -11px;
   bottom: 17px;
-  background-color: #1969FF;
+  background-color: #1969ff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -209,7 +217,7 @@
   color: #333;
   border-radius: 10px;
   outline: none;
-  border: 1px solid #EAEAF1;
+  border: 1px solid #eaeaf1;
 
   &:focus {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
@@ -238,7 +246,7 @@
   font-weight: 400;
   color: #121223;
   letter-spacing: -0.02em;
-  border: 1px solid #EAEAF1;
+  border: 1px solid #eaeaf1;
   box-sizing: border-box;
   border-radius: 8px;
   cursor: pointer;
@@ -282,7 +290,7 @@
   color: #121223;
   line-height: 20px;
   box-sizing: border-box;
-  border: 1px solid #EAEAF1;
+  border: 1px solid #eaeaf1;
   border-radius: 8px;
   cursor: pointer;
   user-select: none;
@@ -302,7 +310,7 @@
 .linksWrapper {
   width: 100%;
   overflow: hidden;
-  border: 1px solid #EAEAF1;
+  border: 1px solid #eaeaf1;
   box-sizing: border-box;
   border-radius: 10px;
 }
@@ -311,7 +319,7 @@
   display: flex;
   flex-direction: row;
   height: 56px;
-  border-bottom: 1px solid #EAEAF1;
+  border-bottom: 1px solid #eaeaf1;
   box-sizing: border-box;
   overflow: hidden;
 
@@ -322,7 +330,7 @@
 
 .linkIconWrapper {
   flex: 0 0 76px;
-  border-right: 1px solid #EAEAF1;
+  border-right: 1px solid #eaeaf1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -359,8 +367,8 @@
   width: 168px;
   height: 48px;
   border-radius: 8px;
-  background-color: #1969FF !important;
-  color: #FFF;
+  background-color: #1969ff !important;
+  color: #fff;
   font-weight: 700;
   font-size: 18px;
   cursor: pointer;
@@ -383,7 +391,7 @@
   margin-top: 16px;
   display: flex;
   align-items: center;
-  color: #3D3D3D;
+  color: #3d3d3d;
   opacity: 0.6;
 }
 

@@ -674,7 +674,7 @@ const AccountDetails = () => {
   return (
     <div className={styles.container}>
       <Header border />
-      <div className={styles.profile}>
+      <div className={styles.profile} style={{ paddingTop: '70px' }}>
         <div className={styles.banner}>
           {loading ? (
             <Skeleton width="100%" height={200} />
@@ -1172,6 +1172,12 @@ const AccountDetails = () => {
             : followings.current
         }
       />
+      <div className={styles.footerBottom}>
+        <p style={{ textAlign: 'center' }}>
+          All rights reserved &copy; Picasso || Design By:{' '}
+          <span>Matsushima Goro</span>
+        </p>
+      </div>
     </div>
   );
 };

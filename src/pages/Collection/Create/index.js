@@ -40,6 +40,16 @@ import closeIcon from 'assets/svgs/close.svg';
 import styles from './styles.module.scss';
 import { formatError, isAddress } from 'utils';
 
+import PageHeader from '../../../components/PageHeader';
+
+const PageHeaderText1 = {
+  heading: 'Create Collection',
+};
+
+const PageHeaderText2 = {
+  heading: 'Register Collection',
+};
+
 const CustomRadio = withStyles({
   root: {
     '&$checked': {
@@ -495,6 +505,7 @@ const CollectionCreate = ({ isRegister }) => {
   return (
     <div className={styles.container}>
       <Header border />
+      <PageHeader text={isRegister ? PageHeaderText2 : PageHeaderText1} />
       <div className={styles.inner}>
         <div className={styles.title}>
           {isRegister ? 'Register' : 'Create New'} Collection
@@ -922,6 +933,12 @@ const CollectionCreate = ({ isRegister }) => {
         )}
       </div>
       {renderMenu}
+      <div className={styles.footerBottom}>
+        <p style={{ textAlign: 'center' }}>
+          All rights reserved &copy; Picasso || Design By:{' '}
+          <span>Matsushima Goro</span>
+        </p>
+      </div>
     </div>
   );
 };

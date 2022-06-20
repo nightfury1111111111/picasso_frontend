@@ -11,8 +11,6 @@ import HeaderActions from 'actions/header.actions';
 import FilterActions from 'actions/filter.actions';
 import Header from 'components/header';
 
-import logo from 'assets/svgs/logo_white.svg';
-import fantomLogo from 'assets/svgs/fantom_logo_white.svg';
 import card1 from 'assets/svgs/card1.svg';
 import card2 from 'assets/svgs/card2.svg';
 import card3 from 'assets/svgs/card3.svg';
@@ -26,14 +24,14 @@ const cards = [
     icon: card1,
     title: 'Easy Connect',
     description:
-      'Using Metamask or CoinBase Wallet. Just click "Connect Wallet" on the top right to start.',
+      'Using Metamask Wallet. Just click "Connect Wallet" on the top right to start.',
     path: '/',
   },
   {
     icon: card2,
     title: 'Super Fast',
     description:
-      'Since Artion runs on the Fantom Opera Network, transactions are usually confirmed within 1-2 seconds.',
+      'Since Picasso runs on the Fantom Opera Network, transactions are usually confirmed within 1-2 seconds.',
     path: '/',
   },
   {
@@ -47,7 +45,7 @@ const cards = [
     icon: card4,
     title: 'Zero Platform Fees',
     description:
-      'Trade NFTs via auction or direct offer without any fees taken by Artion.',
+      'Trade NFTs via auction or direct offer without any fees taken by Picasso.',
     path: '/explore',
   },
 ];
@@ -99,61 +97,70 @@ const LandingPage = () => {
   return (
     <div className={styles.container}>
       <Header />
-      <div className={styles.body}>
-        <div className={styles.main}>
-          <div className={styles.mainLeft}>
-            <div
-              className={styles.title}
-              style={{ color: '#FFF' }}
-            >{`Trade without platform fees on Artion`}</div>
-            <div className={styles.subtitle}>
-              Artion is an NFT marketplace built on Fantom. Create and trade
-              NFTs instantly with low network costs.
-            </div>
-            <div className={styles.subtitle}>
+      <section
+        className={styles.bannerSection}
+        style={{ backgroundImage: "url('assets/images/banner/bg-1.jpg')" }}
+      >
+        <div className={styles.body}>
+          <div className={styles.main}>
+            <div className={styles.mainLeft}>
+              <div
+                className={styles.title}
+              >{`Create, Collect And Sell Digital Items`}</div>
+              <div className={styles.subtitle}>
+                Digital Marketplace For Crypto Collectibles And Non-Fungible
+                Tokens. Buy, Sell, And Discover Exclusive Digital Assets.
+              </div>
+              {/* <div className={styles.subtitle}>
               <strong>
                 Warning: This is a beta version. Use at your own caution.
               </strong>
-            </div>
+            </div> */}
 
-            <Link to="/explore" className={styles.exploreButton}>
-              Explore
-            </Link>
-          </div>
-          <div className={styles.card}>
-            <div className={styles.cardMedia}>
-              <ReactPlayer
-                className={styles.player}
-                url={`https://artion.mypinata.cloud/ipfs/QmNjxsiHzRVhbL1WYhxXhJsHCRgCA2bx6LtUJHVmAd3Kir`}
-                controls={true}
-              />
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <div className={styles.cardInfo}>
-                <div className={styles.cardCategory}>Shamanka: The Healer</div>
-                <div className={styles.cardName}>{'World of Umans'}</div>
-              </div>
-              <Link
-                to="/explore/0x972dd206a7c2d4ae46db1db700bc79de1bc59960/0"
-                className={styles.exploreButton}
-                style={{ margin: '0 24px' }}
-              >
-                Go to auction
+              <Link to="/explore" className={styles.exploreButton}>
+                Explore
               </Link>
+            </div>
+            <div className={styles.card}>
+              <div className={styles.cardMedia}>
+                <ReactPlayer
+                  className={styles.player}
+                  url={`rocket-psychedelic-animation-for-colorful-nft-2022-01-18-20-26-02-utc.webm`}
+                  // controls={true}
+                  loop={true}
+                  muted={true}
+                  playing={true}
+                />
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <div className={styles.cardInfo}>
+                  <div className={styles.cardCategory}>
+                    Matsushima: Blockchain developer
+                  </div>
+                  <div className={styles.cardName}>{'Enjoy Picasso'}</div>
+                </div>
+                <Link
+                  to="/explore"
+                  className={styles.exploreButton}
+                  style={{ margin: '0 24px' }}
+                >
+                  Go to explorer
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
       <div className={styles.about}>
         <div className={styles.aboutInner}>
-          <div className={styles.aboutTitle}>Why Artion</div>
+          <div className={styles.aboutTitle}>Why Picasso</div>
           <div className={styles.aboutCards}>
             {cards.map((card, key) =>
               renderAboutCard(
@@ -167,47 +174,18 @@ const LandingPage = () => {
           </div>
           <div className={styles.aboutTitle}>Browse by category</div>
           <div className={styles.categories}>
+            {renderCategoryCard('all', search, 'Explore All NFTs', true)}
             {Categories.map(cat =>
               renderCategoryCard(cat.id, cat.icon, cat.label)
             )}
-            {renderCategoryCard('all', search, 'Explore All NFTs', true)}
           </div>
         </div>
       </div>
-      <div className={styles.footer}>
-        <img src={logo} alt="logo" className={styles.logo} />
-        <a
-          style={{ textDecoration: 'none', color: '#FFFFFF' }}
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://app.termly.io/document/privacy-policy/7db4b9fc-aa5d-4f80-bfa1-27120ff982ba"
-        >
-          Privacy Policy
-        </a>
-        <a
-          style={{ textDecoration: 'none', color: '#FFFFFF' }}
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://app.termly.io/document/cookie-policy/c79f1a78-08a2-4da2-85f0-846a461cde81"
-        >
-          Cookie Policy
-        </a>
-        <a
-          style={{ textDecoration: 'none', color: '#FFFFFF' }}
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://app.termly.io/document/terms-of-use-for-online-marketplace/1f69b33f-65ba-40d9-bf63-b28e357f7c34"
-        >
-          Terms of Service
-        </a>
-        <a
-          href="https://fantom.foundation/"
-          target="_blank"
-          rel="noopener noreferrer
-            noreferrer"
-        >
-          <img src={fantomLogo} alt="fantom-logo" className={styles.logo} />
-        </a>
+      <div className={styles.footerBottom}>
+        <p style={{ textAlign: 'center' }}>
+          All rights reserved &copy; Picasso || Design By:{' '}
+          <span>Matsushima Goro</span>
+        </p>
       </div>
     </div>
   );

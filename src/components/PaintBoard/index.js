@@ -30,6 +30,12 @@ import { useSalesContract, getSigner } from 'contracts';
 
 import styles from './styles.module.scss';
 
+import PageHeader from '../../components/PageHeader';
+
+const PageHeaderText = {
+  heading: 'Create NFT',
+};
+
 const accept = ['image/*'];
 
 const mintSteps = [
@@ -371,6 +377,7 @@ const PaintBoard = () => {
   return (
     <div className={styles.container}>
       <Header border />
+      <PageHeader text={PageHeaderText} />
       <div className={styles.body}>
         <div className={styles.board}>
           <div {...getRootProps({ className: styles.uploadCont })}>
@@ -636,6 +643,12 @@ const PaintBoard = () => {
             )}
           </div>
         </div>
+      </div>
+      <div className={styles.footerBottom}>
+        <p style={{ textAlign: 'center' }}>
+          All rights reserved &copy; Picasso || Design By:{' '}
+          <span>Matsushima Goro</span>
+        </p>
       </div>
     </div>
   );

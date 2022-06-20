@@ -24,7 +24,6 @@ import BoostCollectionModal from 'components/BoostCollectionModal';
 import ConnectWalletModal from 'components/ConnectWalletModal';
 import Identicon from 'components/Identicon';
 
-import logoSmallBlue from 'assets/svgs/logo_small_blue.svg';
 import iconUser from 'assets/svgs/user.svg';
 import iconNotification from 'assets/svgs/notification.svg';
 import iconAdd from 'assets/svgs/add.svg';
@@ -34,7 +33,7 @@ import iconSwap from 'assets/svgs/swap.svg';
 import styles from './styles.module.scss';
 import FilterActions from '../../actions/filter.actions';
 
-const Header = ({ border }) => {
+const Header = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -54,6 +53,7 @@ const Header = ({ border }) => {
     state => state.Modal
   );
 
+  const [stikyHeaderStatus, setStikyHeaderStatus] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [searchBarActive, setSearchBarActive] = useState(false);
@@ -105,6 +105,11 @@ const Header = ({ border }) => {
   const init = () => {
     login();
   };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (account) {
@@ -291,6 +296,14 @@ const Header = ({ border }) => {
   const boostCollection = () => {
     setBoostCollectionModalVisible(true);
     handleMenuClose();
+  };
+
+  const handleScroll = () => {
+    if (window.scrollY > 300) {
+      setStikyHeaderStatus(true);
+    } else {
+      setStikyHeaderStatus(false);
+    }
   };
 
   const renderMenu = (
@@ -525,10 +538,14 @@ const Header = ({ border }) => {
   );
 
   return (
-    <div className={cx(styles.header, border && styles.hasBorder)}>
+    <div
+      className={
+        !stikyHeaderStatus ? styles.header_first : styles.header_second
+      }
+    >
       <div className={styles.left}>
         <Link to="/" className={styles.logo}>
-          <img src={logoSmallBlue} alt="logo" />
+          <img src="/assets/images/logo/logo-2.png" alt="logo" />
         </Link>
         {isSearchbarShown && renderSearchBox()}
         <div className={styles.secondmenu}>
@@ -554,7 +571,7 @@ const Header = ({ border }) => {
           to="/explore"
           className={cx(styles.menuLink, styles.link)}
           activeClassName={styles.active}
-          style={{ color: '#fff' }}
+          style={{ color: 'black' }}
         >
           Explore
         </NavLink>
@@ -562,7 +579,7 @@ const Header = ({ border }) => {
           to="/create"
           className={cx(styles.menuLink, styles.link)}
           activeClassName={styles.active}
-          style={{ color: '#fff' }}
+          style={{ color: 'black' }}
         >
           Create
         </NavLink>
@@ -651,6 +668,7 @@ const Header = ({ border }) => {
         onClose={() => dispatch(ModalActions.hideConnectWalletModal())}
       />
     </div>
+    // </header>
   );
 };
 
