@@ -8,7 +8,9 @@ export const useApi = () => {
     ? 'https://ftmscan.com'
     : 'https://testnet.ftmscan.com';
 
-  const apiUrl = isMainnet ? 'https://api.artion.io' : 'http://localhost:5001';
+  const apiUrl = isMainnet
+    ? 'https://api.artion.io'
+    : 'https://picassomarketplaceserver.herokuapp.com';
   // : 'https://api.testnet.artion.io';
 
   // eslint-disable-next-line no-undef
