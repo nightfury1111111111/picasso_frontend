@@ -153,7 +153,12 @@ const PaintBoard = () => {
   const getCollections = async () => {
     try {
       const { data } = await fetchMintableCollections(authToken);
-      setCollections(data);
+      const availableCollections = data.map(option => ({
+        ...option,
+        label: option.collectionName,
+        value: option.erc721Address,
+      }));
+      setCollections(availableCollections);
       if (data.length) {
         setSelected([data[0]]);
       }
@@ -415,18 +420,6 @@ const PaintBoard = () => {
             <div className={styles.panelLeft}>
               <div className={styles.formGroup}>
                 <p className={styles.formLabel}>Collection</p>
-                {/* <Select
-                  options={[
-                    { label: 'Albania', value: 355 },
-                    { label: 'Argentina', value: 54 },
-                    { label: 'Austria', value: 43 },
-                    { label: 'Cocos Islands', value: 61 },
-                    { label: 'Kuwait', value: 965 },
-                    { label: 'Sweden', value: 46 },
-                    { label: 'Venezuela', value: 58 },
-                  ]}
-                  onChange={value => console.log(value)}
-                /> */}
                 <Select
                   options={collections}
                   disabled={isMinting}

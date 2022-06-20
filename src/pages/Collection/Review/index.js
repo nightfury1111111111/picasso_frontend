@@ -323,12 +323,6 @@ const CollectionCreate = () => {
           </div>
         </div>
       )}
-      <div className={styles.footerBottom}>
-        <p style={{ textAlign: 'center' }}>
-          All rights reserved &copy; Picasso || Design By:{' '}
-          <span>Matsushima Goro</span>
-        </p>
-      </div>
     </div>
   );
 };
