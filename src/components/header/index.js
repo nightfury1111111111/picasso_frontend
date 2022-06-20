@@ -318,6 +318,7 @@ const Header = () => {
         paper: styles.profilemenu,
         list: styles.menuList,
       }}
+      style={{ marginTop: '10px' }}
     >
       {account && (
         <div
