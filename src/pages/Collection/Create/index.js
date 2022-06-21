@@ -102,7 +102,8 @@ const CollectionCreate = ({ isRegister }) => {
   const [mediumHandle, setMediumHandle] = useState('');
   const [telegram, setTelegram] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
-  const [isSingle, setIsSingle] = useState(true);
+  // const [isSingle, setIsSingle] = useState(true);
+  const isSingle = true;
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -380,7 +381,6 @@ const CollectionCreate = ({ isRegister }) => {
       );
       const res = await tx.wait();
       res.events.map(evt => {
-        console.log('sfdsafewfew', evt);
         if (
           evt.topics[0] ===
           '0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b'
@@ -708,7 +708,7 @@ const CollectionCreate = ({ isRegister }) => {
           </div>
         )}
 
-        {!isRegister && (
+        {/* {!isRegister && (
           <div className={styles.inputGroup}>
             <RadioGroup
               className={styles.inputWrapper}
@@ -735,7 +735,7 @@ const CollectionCreate = ({ isRegister }) => {
               />
             </RadioGroup>
           </div>
-        )}
+        )} */}
 
         <div className={styles.inputGroup}>
           <div className={styles.inputTitle}>Category</div>
