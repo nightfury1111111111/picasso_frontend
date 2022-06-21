@@ -36,9 +36,21 @@ const OfferModal = ({
   const [tokenPriceInterval, setTokenPriceInterval] = useState();
   const [inputError, setInputError] = useState(null);
 
+  // useEffect(() => {
+  //   if (tokens?.length > 1) {
+  //     setOptions(tokens);
+  //   }
+  // }, [tokens]);
+
   useEffect(() => {
-    if (tokens?.length > 1) {
-      setOptions(tokens);
+    if (tokens?.length) {
+      console.log(tokens);
+      const availableTokens = tokens.map(option => ({
+        ...option,
+        label: option.symbol,
+        value: option.address,
+      }));
+      setOptions(availableTokens);
     }
   }, [tokens]);
 

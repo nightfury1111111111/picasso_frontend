@@ -152,9 +152,21 @@ const NewBundleModal = ({ visible, onClose, onCreateSuccess = () => {} }) => {
     }
   }, [visible]);
 
+  // useEffect(() => {
+  //   if (payTokens?.length) {
+  //     setOptions(payTokens);
+  //   }
+  // }, [payTokens]);
+
   useEffect(() => {
     if (payTokens?.length) {
-      setOptions(payTokens);
+      console.log(payTokens);
+      const availableTokens = payTokens.map(option => ({
+        ...option,
+        label: option.symbol,
+        value: option.address,
+      }));
+      setOptions(availableTokens);
     }
   }, [payTokens]);
 

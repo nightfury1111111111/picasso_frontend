@@ -318,6 +318,7 @@ const NFTItem = () => {
         _prices[addr] = parseFloat(ethers.utils.formatUnits(price, 18));
       });
       setPrices(_prices);
+      console.log(prices);
     } catch (err) {
       console.log(err);
     }
@@ -1677,7 +1678,7 @@ const NFTItem = () => {
       let addr;
       try {
         const signer = await getSigner();
-        const msg = `Approve Signature on Picasso with nonce ${nonce}`;
+        const msg = `Approve Signature on Artion.io with nonce ${nonce}`;
         signature = await signer.signMessage(msg);
         addr = ethers.utils.verifyMessage(msg, signature);
       } catch {
@@ -2612,7 +2613,7 @@ const NFTItem = () => {
             <div className={styles.currentPrice}>
               {formatNumber(bestListing.price)}
             </div>
-            <div className={styles.currentPriceUSD}>
+            {/* <div className={styles.currentPriceUSD}>
               (
               {prices[bestListing.token?.address] ? (
                 `$${formatNumber(
@@ -2624,7 +2625,7 @@ const NFTItem = () => {
                 <Skeleton width={80} height={24} />
               )}
               )
-            </div>
+            </div> */}
           </div>
           {bestListing.owner.toLocaleLowerCase() !==
             account?.toLocaleLowerCase() && (
@@ -3369,7 +3370,8 @@ const NFTItem = () => {
                               src={listing.token?.icon}
                               className={styles.tokenIcon}
                             />
-                            {formatNumber(listing.price)}&nbsp;(
+                            {formatNumber(listing.price)}
+                            {/* &nbsp;(
                             {prices[listing.token?.address] !== undefined ? (
                               `$${(
                                 listing.price * prices[listing.token?.address]
@@ -3377,7 +3379,7 @@ const NFTItem = () => {
                             ) : (
                               <Skeleton width={60} height={24} />
                             )}
-                            )
+                            ) */}
                           </div>
                           {tokenInfo?.totalSupply > 1 && (
                             <div className={styles.quantity}>
@@ -3453,7 +3455,7 @@ const NFTItem = () => {
                                 className={styles.tokenIcon}
                               />
                               {formatNumber(offer.pricePerItem || offer.price)}
-                              &nbsp;(
+                              {/* &nbsp;(
                               {prices[offer.token.address] !== undefined ? (
                                 `$${(
                                   (offer.pricePerItem || offer.price) *
@@ -3462,7 +3464,7 @@ const NFTItem = () => {
                               ) : (
                                 <Skeleton width={60} height={24} />
                               )}
-                              )
+                              ) */}
                             </div>
                             {tokenInfo?.totalSupply > 1 && (
                               <div className={styles.quantity}>

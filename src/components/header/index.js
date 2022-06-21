@@ -546,7 +546,8 @@ const Header = () => {
     >
       <div className={styles.left}>
         <Link to="/" className={styles.logo}>
-          <img src="/assets/images/logo/logo-2.png" alt="logo" />
+          {/* <img src="/assets/images/logo/logo-2.png" alt="logo" /> */}
+          Picasso <span style={{ color: 'red' }}>NFT</span>
         </Link>
         {isSearchbarShown && renderSearchBox()}
         <div className={styles.secondmenu}>

@@ -53,12 +53,17 @@
 }
 
 .logo {
-  height: 35px;
+  height: 45px;
   cursor: pointer;
 
   img {
     height: 100%;
   }
+
+  font-weight: 700;
+  color: mediumblue;
+  font-size: 45px;
+  text-decoration: none;
 }
 
 .logoSmall {

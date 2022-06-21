@@ -38,9 +38,21 @@ const BidModal = ({
     setCurrentBid(parseFloat(minBidAmount));
   }, [visible]);
 
+  // useEffect(() => {
+  //   if (tokens?.length) {
+  //     setOptions(tokens);
+  //   }
+  // }, [tokens]);
+
   useEffect(() => {
     if (tokens?.length) {
-      setOptions(tokens);
+      console.log(tokens);
+      const availableTokens = tokens.map(option => ({
+        ...option,
+        label: option.symbol,
+        value: option.address,
+      }));
+      setOptions(availableTokens);
     }
   }, [tokens]);
 
