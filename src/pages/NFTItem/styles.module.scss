@@ -71,7 +71,7 @@
 .itemMedia {
   margin: 40px 0;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 10px;
   border: 1px solid #bbb;
 
   .media {
@@ -83,14 +83,7 @@
     align-items: center;
     justify-content: center;
     background-color: #fff;
-    border: 2px solid transparent;
-    border-image: linear-gradient(
-      125deg,
-      #ffe53b 0%,
-      #ff2525 37%,
-      #fd00ff 100%
-    );
-    border-image-slice: 1;
+    border-radius: 10px;
 
     .loader {
       position: absolute;

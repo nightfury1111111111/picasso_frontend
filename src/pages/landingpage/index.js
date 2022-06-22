@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+// import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ReactPlayer from 'react-player';
 
 import { Categories } from 'constants/filter.constants';
@@ -87,9 +87,9 @@ const LandingPage = () => {
       </div>
       <div className={cx(styles.cardLabelWrapper, extra && styles.extraCard)}>
         <div className={styles.cardLabel}>{label}</div>
-        <div className={styles.browseBtn}>
+        {/* <div className={styles.browseBtn}>
           <ChevronRightIcon className={styles.browseBtnIcon} />
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -112,9 +112,15 @@ const LandingPage = () => {
                 Tokens. Buy, Sell, And Discover Exclusive Digital Assets.
               </div>
 
-              <Link to="/explore" className={styles.exploreButton}>
-                Explore
-              </Link>
+              <div style={{ display: 'flex' }}>
+                <Link to="/explore" className={styles.exploreButton}>
+                  Explore
+                </Link>
+                <div style={{ width: '15px' }}></div>
+                <Link to="/create" className={styles.createButton}>
+                  Create
+                </Link>
+              </div>
             </div>
             <div className={styles.card}>
               <div className={styles.cardMedia}>
@@ -139,12 +145,12 @@ const LandingPage = () => {
                   <div className={styles.cardCategory}>
                     Matsushima: Blockchain developer
                   </div>
-                  <div className={styles.cardName}>{'Enjoy Picasso'}</div>
+                  <div className={styles.cardName}>Enjoy Picasso</div>
                 </div>
                 <Link
                   to="/explore"
                   className={styles.exploreButton}
-                  style={{ margin: '0 24px' }}
+                  style={{ margin: '0 24px', width: '190px' }}
                 >
                   Go to explore
                 </Link>
@@ -153,9 +159,28 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-      <div className={styles.about}>
-        <div className={styles.aboutInner}>
-          <div className={styles.aboutTitle}>Why Picasso</div>
+      <div style={{ paddingTop: '120px', paddingBottom: '60px' }}>
+        <div className={styles.sectionHeaderContainer}>
+          <div className={styles.sectionHeader}>
+            <div className={styles.headerDiv1}></div>
+            <div
+              style={{
+                borderBottom: '2px solid #555',
+                position: 'absolute',
+                width: '100%',
+              }}
+            />
+            <div className={styles.headerShape}></div>
+            <div
+              style={{
+                zIndex: 1000,
+                background: 'rgb(244 246 249)',
+                padding: '10px',
+              }}
+            >
+              Why picasso
+            </div>
+          </div>
           <div className={styles.aboutCards}>
             {cards.map((card, key) =>
               renderAboutCard(
@@ -167,9 +192,32 @@ const LandingPage = () => {
               )
             )}
           </div>
-          <div className={styles.aboutTitle}>Browse by category</div>
+        </div>
+      </div>
+      <div style={{ paddingBottom: '60px' }}>
+        <div className={styles.sectionHeaderContainer}>
+          <div className={styles.sectionHeader}>
+            <div className={styles.headerDiv1}></div>
+            <div
+              style={{
+                borderBottom: '2px solid #555',
+                position: 'absolute',
+                width: '100%',
+              }}
+            />
+            <div className={styles.headerShape}></div>
+            <div
+              style={{
+                zIndex: 1000,
+                background: 'rgb(244 246 249)',
+                padding: '10px',
+              }}
+            >
+              Browse by Category
+            </div>
+          </div>
           <div className={styles.categories}>
-            {renderCategoryCard('all', search, 'Explore All NFTs', true)}
+            {renderCategoryCard('all', search, 'All NFTs')}
             {Categories.map(cat =>
               renderCategoryCard(cat.id, cat.icon, cat.label)
             )}

@@ -24,7 +24,7 @@ import styles from './styles.module.scss';
 import PageHeader from '../../components/PageHeader';
 
 const PageHeaderText = {
-  heading: 'Explore',
+  heading: "Explore All NFT's",
 };
 
 const ExploreAllPage = () => {

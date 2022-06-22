@@ -13,7 +13,7 @@ const PageHeader = ({ text }) => {
       <div className={styles.pageHeaderContent}>
         <div className="page-header-inner">
           <div className="page-title">
-            <h2>{`${text.heading}`} </h2>
+            <h2 style={{ margin: 0, fontWeight: 300 }}>{`${text.heading}`} </h2>
           </div>
         </div>
       </div>
