@@ -224,6 +224,16 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  const goToCreateNft = () => {
+    history.push(`/explore`);
+    handleMenuClose();
+  };
+
+  const goToExplore = () => {
+    history.push(`/create`);
+    handleMenuClose();
+  };
+
   const goToMyProfile = () => {
     history.push(`/account/${account}`);
     handleMenuClose();
@@ -332,6 +342,16 @@ const Header = () => {
       <div className={styles.menuItem} onClick={goToNotificationSettings}>
         <img src={iconNotification} className={styles.menuIcon} />
         Notification Settings
+      </div>
+      <div className={styles.mobileMenu}>
+        <div className={styles.menuItem} onClick={goToExplore}>
+          <img src={iconAdd} className={styles.menuIcon} />
+          Explore
+        </div>
+        <div className={styles.menuItem} onClick={goToCreateNft}>
+          <img src={iconAdd} className={styles.menuIcon} />
+          Create NFT
+        </div>
       </div>
       <div className={styles.menuItem} onClick={handleCreateCollection}>
         <img src={iconAdd} className={styles.menuIcon} />
@@ -553,14 +573,14 @@ const Header = () => {
         <div className={styles.secondmenu}>
           <NavLink
             to="/explore"
-            className={cx(styles.menuLink, styles.link)}
+            className={cx(styles.menuLink, styles.link, styles.mobileView)}
             activeClassName={styles.active}
           >
             Explore
           </NavLink>
           <NavLink
             to="/create"
-            className={cx(styles.menuLink, styles.link)}
+            className={cx(styles.menuLink, styles.link, styles.mobileView)}
             activeClassName={styles.active}
           >
             Create
@@ -591,7 +611,8 @@ const Header = () => {
             onClick={handleProfileMenuOpen}
           >
             {loading ? (
-              <Skeleton className={styles.avatar} />
+              // <Skeleton className={styles.avatar} />
+              <i className={cx('icofont-user', styles.userIcon)} />
             ) : user?.imageHash ? (
               <img
                 src={`https://cloudflare-ipfs.com/ipfs/${user?.imageHash}`}
@@ -630,8 +651,12 @@ const Header = () => {
           >
             <i
               className="icofont-wallet"
-              style={{ fontSize: '32px', color: 'mediumblue' }}
-            />{' '}
+              style={{
+                fontSize: '32px',
+                color: 'mediumblue',
+                marginRight: '10px',
+              }}
+            />
             Connect
           </div>
         )}

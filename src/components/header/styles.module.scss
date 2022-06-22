@@ -62,7 +62,7 @@
 
   font-weight: 700;
   color: mediumblue;
-  font-size: 45px;
+  font-size: 35px;
   text-decoration: none;
 }
 
@@ -361,6 +361,20 @@
   border-bottom: 1px solid #d9e1ee;
 }
 
+.mobileMenu {
+  display: none;
+}
+
+.mobileView {
+  display: block;
+}
+
+.userIcon {
+  font-size: 28px;
+  color: mediumblue;
+  margin-right: 12px;
+}
+
 @media only screen and (max-width: 900px) {
   .logoBig {
     display: none;
@@ -380,10 +394,30 @@
     flex-direction: column;
   }
 
+  .userIcon {
+    margin-right: 0;
+  }
+
+  .mobileMenu {
+    display: block;
+  }
+
+  .avatar {
+    margin-right: 0;
+  }
+
+  .mobileView {
+    display: none;
+  }
+
+  .header_first {
+    padding: 0px 0px 0px 16px;
+  }
+
   .left {
     width: 100%;
     margin-right: 0;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
 
     .searchcont {
       display: none;
@@ -400,8 +434,8 @@
 
     .searchcont {
       display: block;
-      margin-left: 0;
-      margin-right: 20px;
+      margin-left: 10px;
+      // margin-right: 20px;
     }
   }
 

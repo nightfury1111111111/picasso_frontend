@@ -111,11 +111,6 @@ const LandingPage = () => {
                 Digital Marketplace For Crypto Collectibles And Non-Fungible
                 Tokens. Buy, Sell, And Discover Exclusive Digital Assets.
               </div>
-              {/* <div className={styles.subtitle}>
-              <strong>
-                Warning: This is a beta version. Use at your own caution.
-              </strong>
-            </div> */}
 
               <Link to="/explore" className={styles.exploreButton}>
                 Explore
@@ -151,7 +146,7 @@ const LandingPage = () => {
                   className={styles.exploreButton}
                   style={{ margin: '0 24px' }}
                 >
-                  Go to explorer
+                  Go to explore
                 </Link>
               </div>
             </div>
