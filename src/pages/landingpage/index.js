@@ -55,7 +55,7 @@ const LandingPage = () => {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(HeaderActions.toggleSearchbar(false));
+    dispatch(HeaderActions.toggleSearchbar(true));
     dispatch(FilterActions.updateCategoryFilter(null));
   }, []);
 

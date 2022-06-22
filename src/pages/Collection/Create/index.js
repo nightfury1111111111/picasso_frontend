@@ -928,7 +928,7 @@ const CollectionCreate = ({ isRegister }) => {
         {!isRegister && (
           <div className={styles.fee}>
             <InfoIcon />
-            &nbsp;100 FTMs are charged to create a new collection.
+            &nbsp;0 FTMs are charged to create a new collection.
           </div>
         )}
       </div>

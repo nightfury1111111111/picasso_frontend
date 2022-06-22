@@ -11,6 +11,7 @@ body {
   margin: 0 !important;
   overflow: auto;
 }
+
 .slick-slide {
   outline: none;
   width: unset !important;
@@ -18,7 +19,7 @@ body {
 }
 
 body * {
-  font-family: 'proxima-nova' !important;
+  font-family: "Roboto", sans-serif;
 }
 
 /* width */

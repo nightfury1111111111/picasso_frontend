@@ -409,7 +409,6 @@ const Header = () => {
     <div className={cx(styles.searchcont, searchBarActive && styles.active)}>
       <div className={styles.searchcontinner}>
         <div className={styles.searchbar}>
-          <SearchIcon className={styles.searchicon} />
           <input
             placeholder="Search items, collections and accounts"
             className={styles.searchinput}
@@ -417,6 +416,7 @@ const Header = () => {
             onFocus={() => setSearchBarActive(true)}
             onBlur={() => setTimeout(() => setSearchBarActive(false), 200)}
           />
+          <SearchIcon className={styles.searchicon} />
         </div>
         {searchBarActive && (
           <div className={styles.resultcont}>
@@ -547,7 +547,7 @@ const Header = () => {
       <div className={styles.left}>
         <Link to="/" className={styles.logo}>
           {/* <img src="/assets/images/logo/logo-2.png" alt="logo" /> */}
-          Picasso <span style={{ color: 'red' }}>NFT</span>
+          Pi<span style={{ color: 'red' }}>ca</span>sso
         </Link>
         {isSearchbarShown && renderSearchBox()}
         <div className={styles.secondmenu}>
@@ -628,7 +628,11 @@ const Header = () => {
             className={cx(styles.connect, styles.menuLink)}
             onClick={handleConnectWallet}
           >
-            Connect Wallet
+            <i
+              className="icofont-wallet"
+              style={{ fontSize: '32px', color: 'mediumblue' }}
+            />{' '}
+            Connect
           </div>
         )}
       </div>
