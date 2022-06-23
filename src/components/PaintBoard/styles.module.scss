@@ -12,6 +12,7 @@
   padding: 40px;
   box-sizing: border-box;
   display: flex;
+  justify-content: center;
   position: relative;
 }
 
@@ -290,9 +291,9 @@
 }
 
 @media only screen and (max-width: 768px) {
-  .container {
-    padding-top: 133px;
-  }
+  // .container {
+  //   padding-top: 133px;
+  // }
 
   .body {
     padding: 40px 20px;

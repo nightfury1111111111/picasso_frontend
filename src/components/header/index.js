@@ -225,12 +225,12 @@ const Header = () => {
   };
 
   const goToCreateNft = () => {
-    history.push(`/explore`);
+    history.push(`/create`);
     handleMenuClose();
   };
 
   const goToExplore = () => {
-    history.push(`/create`);
+    history.push(`/explore`);
     handleMenuClose();
   };
 
@@ -567,7 +567,7 @@ const Header = () => {
       <div className={styles.left}>
         <Link to="/" className={styles.logo}>
           {/* <img src="/assets/images/logo/logo-2.png" alt="logo" /> */}
-          Pi<span style={{ color: 'red' }}>ca</span>sso
+          Pi<span style={{ color: 'black' }}>ca</span>sso
         </Link>
         {isSearchbarShown && renderSearchBox()}
         <div className={styles.secondmenu}>

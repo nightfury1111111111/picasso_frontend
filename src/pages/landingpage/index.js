@@ -4,49 +4,49 @@ import { NavLink, useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 // import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ReactPlayer from 'react-player';
+// import ReactPlayer from 'react-player';
 
 import { Categories } from 'constants/filter.constants';
 import HeaderActions from 'actions/header.actions';
 import FilterActions from 'actions/filter.actions';
 import Header from 'components/header';
 
-import card1 from 'assets/svgs/card1.svg';
-import card2 from 'assets/svgs/card2.svg';
-import card3 from 'assets/svgs/card3.svg';
-import card4 from 'assets/svgs/card4.svg';
+// import card1 from 'assets/svgs/card1.svg';
+// import card2 from 'assets/svgs/card2.svg';
+// import card3 from 'assets/svgs/card3.svg';
+// import card4 from 'assets/svgs/card4.svg';
 import search from 'assets/svgs/magnifier.svg';
 
 import styles from './styles.module.scss';
 
 const cards = [
   {
-    icon: card1,
-    title: 'Easy Connect',
+    icon: '/assets/images/nft-item/style-3/01.png',
+    title: 'Set Up Your Wallet',
     description:
-      'Using Metamask Wallet. Just click "Connect Wallet" on the top right to start.',
+      'Click Create & set up your colecton Add social links and a description profile banner images and set',
     path: '/',
   },
   {
-    icon: card2,
-    title: 'Super Fast',
+    icon: '/assets/images/nft-item/style-3/02.png',
+    title: 'Creat Your Collection',
     description:
-      'Since Picasso runs on the Fantom Opera Network, transactions are usually confirmed within 1-2 seconds.',
+      'Click Create & set up your colecton Add social links and a description profile banner images and set',
     path: '/',
   },
   {
-    icon: card3,
-    title: 'Low Transaction Fees',
+    icon: '/assets/images/nft-item/style-3/03.png',
+    title: 'Add Your NFTs',
     description:
-      'Transactions are usually just a few cents, allowing users to create and trade many NFTs without prohibitively high network fees.',
+      'Click Create & set up your colecton Add social links and a description profile banner images and set',
     path: '/',
   },
   {
-    icon: card4,
-    title: 'Zero Platform Fees',
+    icon: '/assets/images/nft-item/style-3/04.png',
+    title: 'List Them For Sale',
     description:
-      'Trade NFTs via auction or direct offer without any fees taken by Picasso.',
-    path: '/explore',
+      'Click Create & set up your colecton Add social links and a description profile banner images and set',
+    path: '/',
   },
 ];
 
@@ -57,6 +57,7 @@ const LandingPage = () => {
   useEffect(() => {
     dispatch(HeaderActions.toggleSearchbar(true));
     dispatch(FilterActions.updateCategoryFilter(null));
+    console.log(Categories);
   }, []);
 
   const handleViewCategory = id => {
@@ -99,14 +100,16 @@ const LandingPage = () => {
       <Header />
       <section
         className={styles.bannerSection}
-        style={{ backgroundImage: "url('assets/images/banner/bg-1.jpg')" }}
+        style={{ backgroundImage: "url('/assets/images/banner/bg-6.jpg')" }}
       >
         <div className={styles.body}>
           <div className={styles.main}>
             <div className={styles.mainLeft}>
-              <div
-                className={styles.title}
-              >{`Create, Collect And Sell Digital Items`}</div>
+              <div className={styles.title}>
+                <span style={{ color: 'mediumblue' }}>Discover</span> Collect
+                <br />
+                And Sell <span style={{ color: 'mediumblue' }}>NFT</span> Assets
+              </div>
               <div className={styles.subtitle}>
                 Digital Marketplace For Crypto Collectibles And Non-Fungible
                 Tokens. Buy, Sell, And Discover Exclusive Digital Assets.
@@ -122,7 +125,7 @@ const LandingPage = () => {
                 </Link>
               </div>
             </div>
-            <div className={styles.card}>
+            {/* <div className={styles.card}>
               <div className={styles.cardMedia}>
                 <ReactPlayer
                   className={styles.player}
@@ -155,30 +158,30 @@ const LandingPage = () => {
                   Go to explore
                 </Link>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
       <div style={{ paddingTop: '120px', paddingBottom: '60px' }}>
         <div className={styles.sectionHeaderContainer}>
           <div className={styles.sectionHeader}>
-            <div className={styles.headerDiv1}></div>
+            {/* <div className={styles.headerDiv1}></div>
             <div
               style={{
                 borderBottom: '2px solid #555',
                 position: 'absolute',
                 width: '100%',
               }}
-            />
+            /> */}
             <div className={styles.headerShape}></div>
             <div
               style={{
                 zIndex: 1000,
-                background: 'rgb(244 246 249)',
                 padding: '10px',
+                color: 'mediumblue',
               }}
             >
-              Why picasso
+              EASY TO GET START
             </div>
           </div>
           <div className={styles.aboutCards}>
@@ -197,20 +200,20 @@ const LandingPage = () => {
       <div style={{ paddingBottom: '60px' }}>
         <div className={styles.sectionHeaderContainer}>
           <div className={styles.sectionHeader}>
-            <div className={styles.headerDiv1}></div>
+            {/* <div className={styles.headerDiv1}></div>
             <div
               style={{
                 borderBottom: '2px solid #555',
                 position: 'absolute',
                 width: '100%',
               }}
-            />
+            /> */}
             <div className={styles.headerShape}></div>
             <div
               style={{
                 zIndex: 1000,
-                background: 'rgb(244 246 249)',
-                padding: '10px',
+                paddingTop: '30px',
+                color: 'mediumblue',
               }}
             >
               Browse by Category

@@ -443,9 +443,9 @@
 }
 
 @media only screen and (max-width: 768px) {
-  .container {
-    padding-top: 133px;
-  }
+  // .container {
+  //   padding-top: 133px;
+  // }
 
   .content {
     max-height: calc(100vh - 133px);
