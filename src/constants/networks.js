@@ -33,21 +33,12 @@ export const Contracts = {
     privateArtFactory: '0x736Eae40AdFf88570b92378c97a0D11b44E1C953', //FantomArtFactoryPrivate
   },
   [ChainId.FANTOM_TESTNET]: {
-    auction: '0x0e2e5c87aA9629e0E3DE3E12FaE17A641C02c067',
-    sales: '0xeb012b6ee25A6C8307776b1aaABd48b06315a495',
-    bundleSales: '0x732B2b7961D7A2faDfD5D8244B573a2a2Adc9Ff2',
-    factory: '0xdF32D0563C02a668baba719f461017F229cab135', //FantomNFTFactory
-    privateFactory: '0xc40a0Cfd3A7D2cD33B6b80F0B4f5B2839C18f972', //FantomNFTFactoryPrivate
-    artFactory: '0x35B8088636118D4920491115Bf70bB0Ad8465c63', //FantomArtFactory
-    privateArtFactory: '0x84A76f55ef08d327e1Da995cd51eE12326D19813', //FantomArtFactoryPrivate
-  },
-  [ChainId.RINKEBY]: {
-    auction: '0xF284015dE2e5bC5BB5bb566aBcf7B5043A6a8349',
-    sales: '0xE2DD770d3051F65d8a7fF333C4b5e43eF0257093',
-    bundleSales: '0x8Bfdde621AC8816c19b4c261737f10863E089A06',
-    factory: '0x34D4935D69511C233eA481679FabeD579685afa9', //FantomNFTFactory
-    privateFactory: '0xcce6E084590f6695aF7681d00e1958B405fE0f0c', //FantomNFTFactoryPrivate
-    artFactory: '0x9F36067198BE7F48e2Cff58D2E40FCba6f9d4da9', //FantomArtFactory
-    privateArtFactory: '0xAD6503dd1545bDD84c5006D6CF8E09715c5bd9B9', //FantomArtFactoryPrivate
+    auction: '0x236fA806da9513AFf4f93Dd620651C848b656205',
+    sales: '0xa4C9a5c3F5AeF6c3d6C8438ab4729898A7239B0b',
+    bundleSales: '0x6fc52a1A76010334B56050283Ea281D9457Ab164',
+    factory: '0xfa20Ed48d82D76f66631E93ec4f72C7bA21E81aB', //FantomNFTFactory
+    privateFactory: '0xB7eC773954597f4fb9Ff5AAB16a5c8C05bbba477', //FantomNFTFactoryPrivate
+    artFactory: '0xeC2f1d8Eb6C3F99a4b03ba138b1127a6E080dD15', //FantomArtFactory
+    privateArtFactory: '0xaC225C2093De359DC425d192F65280Ae292E57AE', //FantomArtFactoryPrivate
   },
 };

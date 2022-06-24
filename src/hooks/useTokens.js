@@ -56,15 +56,14 @@ const Tokens = {
     //   icon: iconFTM,
     // },
     {
-      // address: '0xf1277d1ed8ad466beddf92ef448a132661956621',
-      address: '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15',
+      address: '0xf1277d1ed8ad466beddf92ef448a132661956621',
       name: 'Wrapped Fantom',
       symbol: 'WFTM',
       decimals: 18,
       icon: iconWFTM,
     },
     {
-      address: '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15',
+      address: '0xf1277d1ed8ad466beddf92ef448a132661956621',
       name: 'PUMPKIN Fantom',
       symbol: 'PUMPKIN',
       decimals: 18,
@@ -74,8 +73,7 @@ const Tokens = {
 };
 
 export default function useTokens() {
-  const chain = isMainnet ? ChainId.FANTOM : ChainId.RINKEBY;
-  // const chain = isMainnet ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
+  const chain = isMainnet ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
 
   const tokens = Tokens[chain];
 

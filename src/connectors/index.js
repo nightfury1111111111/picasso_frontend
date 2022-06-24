@@ -14,8 +14,7 @@ const RPC = isMainnet
       [ChainId.FANTOM]: 'https://rpc.ftm.tools',
     }
   : {
-      [ChainId.RINKEBY]: 'https://rinkeby.infura.io/v3/',
-      // [ChainId.FANTOM_TESTNET]: 'https://rpc.testnet.fantom.network',
+      [ChainId.FANTOM_TESTNET]: 'https://rpc.testnet.fantom.network',
     };
 
 export const network = new NetworkConnector({
@@ -29,8 +28,7 @@ export const injected = new InjectedConnector({
         250, // fantom
       ]
     : [
-        // 4002, // fantom testnet
-        4, // fantom testnet
+        4002, // fantom testnet
       ],
 });
 
