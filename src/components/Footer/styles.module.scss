@@ -1,0 +1,130 @@
+.footerBottom {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px rgb(3 0 16 / 20%);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 20px;
+}
+
+.container {
+  //   position: absolute;
+  width: 100%;
+  //   height: 100vh;
+  top: 0;
+  box-sizing: border-box;
+}
+
+.footerSection {
+  background: #ededed;
+}
+
+.firstFooter {
+  height: 110px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 72px 180px 72px 180px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.mailInput {
+  width: 45%;
+}
+
+.communityIcon {
+  list-style: none;
+  height: 42px;
+  display: flex;
+  width: 42px;
+  background-color: mediumblue;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  font-size: 20px;
+
+  &:hover {
+    border-radius: 99px;
+  }
+}
+
+.ftHeader {
+  padding-bottom: 20px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.footerMail {
+  width: calc(100% - 180px);
+  border: none;
+  padding-left: 15px;
+  padding-right: 160px;
+  height: 40px;
+  font-size: 14px;
+}
+
+.mailButton {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 160px;
+  height: 100%;
+  background-color: mediumblue;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+}
+
+.communityLink {
+  width: 40%;
+}
+
+.secondFooter {
+  height: 350px;
+  padding: 70px 180px 70px 180px;
+  display: flex;
+  flex-direction: row;
+}
+
+.ftContent {
+  width: 20%;
+  height: 100%;
+  padding: 20px;
+}
+
+.ftList {
+  margin-top: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+  .mailInput {
+    width: 100%;
+  }
+
+  .ftContent {
+    width: calc(100% - 40px);
+  }
+
+  .secondFooter {
+    height: fit-content;
+    padding: 70px 15px 70px 15px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .communityLink {
+    margin-top: 40px;
+    width: 100%;
+  }
+
+  .firstFooter {
+    height: fit-content;
+    padding: 50px 15px 72px 15px;
+    display: flex;
+    flex-direction: column;
+  }
+}

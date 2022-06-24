@@ -15,11 +15,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
 import { Stepper, Step, StepLabel, Switch } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+// import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import Footer from 'components/Footer';
 
 import HeaderActions from 'actions/header.actions';
 import Header from 'components/header';
-import BootstrapTooltip from 'components/BootstrapTooltip';
+// import BootstrapTooltip from 'components/BootstrapTooltip';
 import PriceInput from 'components/PriceInput';
 import { calculateGasMargin, formatError, getHigherGWEI } from 'utils';
 import showToast from 'utils/toast';
@@ -230,7 +231,11 @@ const PaintBoard = () => {
       showToast('info', 'Connect your wallet first');
       return;
     }
-    if (chainId !== ChainId.FANTOM && chainId !== ChainId.FANTOM_TESTNET) {
+    if (
+      chainId !== ChainId.FANTOM &&
+      chainId !== ChainId.FANTOM_TESTNET &&
+      chainId !== ChainId.RINKEBY
+    ) {
       showToast('info', 'You are not connected to Fantom Opera Network');
       return;
     }
@@ -383,266 +388,272 @@ const PaintBoard = () => {
     <div className={styles.container}>
       <Header border />
       <PageHeader text={PageHeaderText} />
-      <div className={styles.body}>
-        <div className={styles.board}>
-          <div {...getRootProps({ className: styles.uploadCont })}>
-            <input {...getInputProps()} ref={imageRef} />
-            {image ? (
-              <>
-                <img
-                  className={styles.image}
-                  src={URL.createObjectURL(image)}
-                />
-                <div className={styles.overlay}>
-                  <CloseIcon className={styles.remove} onClick={removeImage} />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className={styles.uploadtitle}>
-                  Drop files here or&nbsp;
-                  <span
-                    className={styles.browse}
+      <div className={styles.bodyContainer}>
+        <div className={styles.body}>
+          <div className={styles.board}>
+            <div {...getRootProps({ className: styles.uploadCont })}>
+              <input {...getInputProps()} ref={imageRef} />
+              {image ? (
+                <>
+                  <img
+                    className={styles.image}
+                    src={URL.createObjectURL(image)}
+                  />
+                  <div className={styles.overlay}>
+                    <CloseIcon
+                      className={styles.remove}
+                      onClick={removeImage}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    className={styles.uploadButton}
                     onClick={() => imageRef.current?.click()}
                   >
-                    browse
-                  </span>
-                </div>
-                <div className={styles.uploadsubtitle}>
-                  JPG, PNG, BMP, GIF Max 15mb.
-                </div>
-              </>
-            )}
+                    <i
+                      className="icofont-upload-alt"
+                      style={{ marginRight: '10px' }}
+                    />
+                    Upload file
+                  </div>
+                  <div className={styles.uploadsubtitle}>
+                    PNG,JPG,JPEG,SVG,WEBP,Mp3 & Mp4 (Max-150mb)
+                  </div>
+                </>
+              )}
+            </div>
           </div>
-        </div>
-        <div className={styles.panel}>
-          <div className={styles.panelInputs}>
-            <div className={styles.panelLeft}>
-              <div className={styles.formGroup}>
-                <p className={styles.formLabel}>Collection</p>
-                <Select
-                  options={collections}
-                  disabled={isMinting}
-                  values={selected}
-                  onChange={([col]) => {
-                    console.log(collections);
-                    setSelected([col]);
-                    setNft(col.erc721Address);
-                    setType(col.type);
-                  }}
-                  className={styles.select}
-                  placeholder="Choose Collection"
-                  itemRenderer={({ item, methods }) => (
-                    <div
-                      key={item.erc721Address}
-                      className={styles.collection}
-                      onClick={() => {
-                        methods.clearAll();
-                        methods.addItem(item);
-                      }}
-                    >
-                      <img
-                        src={`https://cloudflare-ipfs.com/ipfs/${item.logoImageHash}`}
-                        className={styles.collectionLogo}
-                      />
-                      <div className={styles.collectionName}>
-                        {item.collectionName}
-                      </div>
-                    </div>
-                  )}
-                  contentRenderer={({ props: { values } }) =>
-                    values.length > 0 ? (
-                      <div className={styles.collection}>
+          <div className={styles.panel}>
+            <div className={styles.panelInputs}>
+              <div className={styles.panelLeft}>
+                <div className={styles.formGroup}>
+                  <p className={styles.formLabel}>Collection</p>
+                  <Select
+                    options={collections}
+                    disabled={isMinting}
+                    values={selected}
+                    onChange={([col]) => {
+                      console.log(collections);
+                      setSelected([col]);
+                      setNft(col.erc721Address);
+                      setType(col.type);
+                    }}
+                    className={styles.select}
+                    placeholder="Choose Collection"
+                    itemRenderer={({ item, methods }) => (
+                      <div
+                        key={item.erc721Address}
+                        className={styles.collection}
+                        onClick={() => {
+                          methods.clearAll();
+                          methods.addItem(item);
+                        }}
+                      >
                         <img
-                          src={`https://cloudflare-ipfs.com/ipfs/${values[0].logoImageHash}`}
+                          src={`https://cloudflare-ipfs.com/ipfs/${item.logoImageHash}`}
                           className={styles.collectionLogo}
                         />
                         <div className={styles.collectionName}>
-                          {values[0].collectionName}
+                          {item.collectionName}
                         </div>
                       </div>
-                    ) : (
-                      <div className={styles.collection} />
-                    )
-                  }
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <p className={styles.formLabel}>Name</p>
-                <input
-                  className={styles.formInput}
-                  maxLength={40}
-                  placeholder="Name"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                  disabled={isMinting}
-                />
-                <div className={styles.lengthIndicator}>{name.length}/40</div>
-              </div>
-              <div className={styles.formGroup}>
-                <p className={styles.formLabel}>Symbol</p>
-                <input
-                  className={styles.formInput}
-                  maxLength={20}
-                  placeholder="Symbol"
-                  value={symbol}
-                  onChange={e => setSymbol(e.target.value)}
-                  disabled={isMinting}
-                />
-                <div className={styles.lengthIndicator}>{symbol.length}/20</div>
-              </div>
-              <div className={styles.formGroup}>
-                <p className={styles.formLabel}>Description</p>
-                <textarea
-                  className={cx(styles.formInput, styles.longInput)}
-                  maxLength={120}
-                  placeholder="Description"
-                  value={description}
-                  onChange={e => setDescription(e.target.value)}
-                  disabled={isMinting}
-                />
-                <div className={styles.lengthIndicator}>
-                  {description.length}/120
+                    )}
+                    contentRenderer={({ props: { values } }) =>
+                      values.length > 0 ? (
+                        <div className={styles.collection}>
+                          <img
+                            src={`https://cloudflare-ipfs.com/ipfs/${values[0].logoImageHash}`}
+                            className={styles.collectionLogo}
+                          />
+                          <div className={styles.collectionName}>
+                            {values[0].collectionName}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className={styles.collection} />
+                      )
+                    }
+                  />
                 </div>
-              </div>
-            </div>
-            <div className={styles.panelRight}>
-              {type === 1155 && (
                 <div className={styles.formGroup}>
-                  <p className={styles.formLabel}>Supply</p>
+                  <p className={styles.formLabel}>Name</p>
+                  <input
+                    className={styles.formInput}
+                    maxLength={40}
+                    placeholder="Name"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    disabled={isMinting}
+                  />
+                  {/* <div className={styles.lengthIndicator}>{name.length}/40</div> */}
+                </div>
+                <div className={styles.formGroup}>
+                  <p className={styles.formLabel}>Symbol</p>
+                  <input
+                    className={styles.formInput}
+                    maxLength={20}
+                    placeholder="Symbol"
+                    value={symbol}
+                    onChange={e => setSymbol(e.target.value)}
+                    disabled={isMinting}
+                  />
+                  {/* <div className={styles.lengthIndicator}>
+                    {symbol.length}/20
+                  </div> */}
+                </div>
+                <div className={styles.formGroup}>
+                  <p className={styles.formLabel}>
+                    Royalty (%)&nbsp;
+                    {/* <BootstrapTooltip
+                      title="If you set a royalty here, you will get X percent of sales price each time an NFT is sold on our platform."
+                      placement="top"
+                    >
+                      <HelpOutlineIcon />
+                    </BootstrapTooltip> */}
+                  </p>
                   <PriceInput
                     className={styles.formInput}
-                    placeholder="Supply"
-                    decimals={0}
-                    value={'' + supply}
-                    onChange={setSupply}
+                    placeholder="Royalty"
+                    decimals={2}
+                    value={'' + royalty}
+                    onChange={val =>
+                      val[val.length - 1] === '.'
+                        ? setRoyalty(val)
+                        : setRoyalty(Math.min(100, +val))
+                    }
                     disabled={isMinting}
                   />
                 </div>
-              )}
-              <div className={styles.formGroup}>
-                <p className={styles.formLabel}>
-                  Royalty (%)&nbsp;
-                  <BootstrapTooltip
-                    title="If you set a royalty here, you will get X percent of sales price each time an NFT is sold on our platform."
-                    placement="top"
-                  >
-                    <HelpOutlineIcon />
-                  </BootstrapTooltip>
-                </p>
-                <PriceInput
-                  className={styles.formInput}
-                  placeholder="Royalty"
-                  decimals={2}
-                  value={'' + royalty}
-                  onChange={val =>
-                    val[val.length - 1] === '.'
-                      ? setRoyalty(val)
-                      : setRoyalty(Math.min(100, +val))
-                  }
-                  disabled={isMinting}
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <p className={styles.formLabel}>
-                  Link to IP Rights Document (Optional)&nbsp;
-                  <BootstrapTooltip
-                    title="Link to the document which proves your ownership of this image."
-                    placement="top"
-                  >
-                    <HelpOutlineIcon />
-                  </BootstrapTooltip>
-                </p>
-                <input
-                  className={styles.formInput}
-                  placeholder="Enter Link"
-                  value={xtra}
-                  onChange={e => setXtra(e.target.value)}
-                  disabled={isMinting}
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <p className={styles.formLabel}>
-                  Unlockable Content&nbsp;
-                  <PurpleSwitch
-                    checked={hasUnlockableContent}
-                    onChange={e => {
-                      setHasUnlockableContent(e.target.checked);
-                      setUnlockableContent('');
-                    }}
-                    name="unlockableContent"
-                  />
-                </p>
-                {hasUnlockableContent && (
-                  <textarea
-                    className={cx(styles.formInput, styles.longInput)}
-                    maxLength={500}
-                    placeholder="Unlockable Content"
-                    value={unlockableContent}
-                    onChange={e => setUnlockableContent(e.target.value)}
+                <div className={styles.formGroup}>
+                  <p className={styles.formLabel}>
+                    Additional Link (Optional)&nbsp;
+                    {/* <BootstrapTooltip
+                      title="Link to the document which proves your ownership of this image."
+                      placement="top"
+                    >
+                      <HelpOutlineIcon />
+                    </BootstrapTooltip> */}
+                  </p>
+                  <input
+                    className={styles.formInput}
+                    placeholder="Enter Link"
+                    value={xtra}
+                    onChange={e => setXtra(e.target.value)}
                     disabled={isMinting}
                   />
+                </div>
+              </div>
+              <div className={styles.panelRight}>
+                {type === 1155 && (
+                  <div className={styles.formGroup}>
+                    <p className={styles.formLabel}>Supply</p>
+                    <PriceInput
+                      className={styles.formInput}
+                      placeholder="Supply"
+                      decimals={0}
+                      value={'' + supply}
+                      onChange={setSupply}
+                      disabled={isMinting}
+                    />
+                  </div>
                 )}
+
+                <div className={styles.formGroup}>
+                  <p className={styles.formLabel}>Description</p>
+                  <textarea
+                    className={cx(styles.formInput, styles.longInput)}
+                    maxLength={120}
+                    placeholder="Description"
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                    disabled={isMinting}
+                  />
+                  {/* <div className={styles.lengthIndicator}>
+                    {description.length}/120
+                  </div> */}
+                </div>
+
+                <div className={styles.formGroup}>
+                  <p className={styles.formLabel}>
+                    Unlockable Content&nbsp;
+                    <PurpleSwitch
+                      checked={hasUnlockableContent}
+                      onChange={e => {
+                        setHasUnlockableContent(e.target.checked);
+                        setUnlockableContent('');
+                      }}
+                      name="unlockableContent"
+                    />
+                  </p>
+                  {hasUnlockableContent && (
+                    <textarea
+                      className={cx(styles.formInput, styles.longInput)}
+                      maxLength={500}
+                      placeholder="Unlockable Content"
+                      value={unlockableContent}
+                      onChange={e => setUnlockableContent(e.target.value)}
+                      disabled={isMinting}
+                    />
+                  )}
+                </div>
               </div>
             </div>
-          </div>
 
-          {isMinting && (
-            <div>
-              <Stepper activeStep={currentMintingStep} alternativeLabel>
-                {mintSteps.map(label => (
-                  <Step key={label}>
-                    <StepLabel>{label}</StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
+            {isMinting && (
+              <div>
+                <Stepper activeStep={currentMintingStep} alternativeLabel>
+                  {mintSteps.map(label => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </div>
+            )}
+            <div
+              className={cx(
+                styles.button,
+                (isMinting || !account || !validateMetadata()) &&
+                  styles.disabled
+              )}
+              onClick={
+                isMinting || !account || !validateMetadata() ? null : mintNFT
+              }
+            >
+              {isMinting ? (
+                <ClipLoader size="16" color="white"></ClipLoader>
+              ) : (
+                'Create Item'
+              )}
             </div>
-          )}
-          <div
-            className={cx(
-              styles.button,
-              (isMinting || !account || !validateMetadata()) && styles.disabled
-            )}
-            onClick={
-              isMinting || !account || !validateMetadata() ? null : mintNFT
-            }
-          >
-            {isMinting ? (
-              <ClipLoader size="16" color="white"></ClipLoader>
-            ) : (
-              'Mint'
-            )}
-          </div>
-          <div className={styles.fee}>
-            {fee !== null ? (
-              <>
-                <InfoIcon />
-                &nbsp;{fee} FTM are charged to create a new NFT.
-              </>
-            ) : (
-              <Skeleton width={330} height={22} />
-            )}
-          </div>
-          <div className={styles.mintStatusContainer}>
-            {lastMintedTnxId !== '' && (
-              <a
-                className={styles.tnxAnchor}
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`${explorerUrl}/tx/${lastMintedTnxId}`}
-              >
-                You can track the last transaction here ...
-              </a>
-            )}
+            <div className={styles.fee}>
+              {fee !== null ? (
+                <>
+                  <InfoIcon />
+                  &nbsp;{fee} FTM are charged to create a new NFT.
+                </>
+              ) : (
+                <Skeleton width={330} height={22} />
+              )}
+            </div>
+            <div className={styles.mintStatusContainer}>
+              {lastMintedTnxId !== '' && (
+                <a
+                  className={styles.tnxAnchor}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`${explorerUrl}/tx/${lastMintedTnxId}`}
+                >
+                  You can track the last transaction here ...
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      <div className={styles.footerBottom}>
-        <p style={{ textAlign: 'center' }}>
-          All rights reserved &copy; Picasso || Design By:{' '}
-          <span>Matsushima Goro</span>
-        </p>
-      </div>
+      <Footer />
     </div>
   );
 };

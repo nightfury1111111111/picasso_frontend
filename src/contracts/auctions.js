@@ -8,7 +8,8 @@ import { AUCTION_CONTRACT_ABI } from './abi';
 
 // eslint-disable-next-line no-undef
 const isMainnet = process.env.REACT_APP_ENV === 'MAINNET';
-const CHAIN = isMainnet ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
+// const CHAIN = isMainnet ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
+const CHAIN = isMainnet ? ChainId.FANTOM : ChainId.RINKEBY;
 
 export const useAuctionContract = () => {
   const { getContract } = useContract();

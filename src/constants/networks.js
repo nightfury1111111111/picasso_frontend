@@ -41,4 +41,13 @@ export const Contracts = {
     artFactory: '0x35B8088636118D4920491115Bf70bB0Ad8465c63', //FantomArtFactory
     privateArtFactory: '0x84A76f55ef08d327e1Da995cd51eE12326D19813', //FantomArtFactoryPrivate
   },
+  [ChainId.RINKEBY]: {
+    auction: '0xF284015dE2e5bC5BB5bb566aBcf7B5043A6a8349',
+    sales: '0xE2DD770d3051F65d8a7fF333C4b5e43eF0257093',
+    bundleSales: '0x8Bfdde621AC8816c19b4c261737f10863E089A06',
+    factory: '0x34D4935D69511C233eA481679FabeD579685afa9', //FantomNFTFactory
+    privateFactory: '0xcce6E084590f6695aF7681d00e1958B405fE0f0c', //FantomNFTFactoryPrivate
+    artFactory: '0x9F36067198BE7F48e2Cff58D2E40FCba6f9d4da9', //FantomArtFactory
+    privateArtFactory: '0xAD6503dd1545bDD84c5006D6CF8E09715c5bd9B9', //FantomArtFactoryPrivate
+  },
 };

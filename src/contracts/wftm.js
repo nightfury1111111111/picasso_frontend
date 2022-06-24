@@ -7,12 +7,14 @@ import { ethers } from 'ethers';
 
 const WFTM_ADDRESS = {
   [ChainId.FANTOM]: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
+  [ChainId.RINKEBY]: '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15',
   [ChainId.FANTOM_TESTNET]: '0xf1277d1Ed8AD466beddF92ef448A132661956621',
 };
 
 // eslint-disable-next-line no-undef
 const isMainnet = process.env.REACT_APP_ENV === 'MAINNET';
-const CHAIN = isMainnet ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
+const CHAIN = isMainnet ? ChainId.FANTOM : ChainId.RINKEBY;
+// const CHAIN = isMainnet ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
 export const useWFTMContract = () => {
   const { getContract } = useContract();
 

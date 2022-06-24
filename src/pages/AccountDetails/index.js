@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link, Redirect } from 'react-router-dom';
 import { useResizeDetector } from 'react-resize-detector';
 import cx from 'classnames';
-import { Edit as EditIcon } from '@material-ui/icons';
+// import { Edit as EditIcon } from '@material-ui/icons';
 import { Tooltip, Menu, MenuItem } from '@material-ui/core';
 import { useWeb3React } from '@web3-react/core';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -27,8 +27,9 @@ import usePrevious from 'hooks/usePrevious';
 import HeaderActions from 'actions/header.actions';
 import ModalActions from 'actions/modal.actions';
 import CollectionsActions from 'actions/collections.actions';
+import Footer from 'components/Footer';
 
-import iconCopy from 'assets/svgs/copy.svg';
+// import iconCopy from 'assets/svgs/copy.svg';
 import iconSettings from 'assets/svgs/settings.svg';
 import iconShare from 'assets/svgs/share.svg';
 import iconArtion from 'assets/svgs/logo_small_blue.svg';
@@ -40,6 +41,12 @@ import IconHeart from 'assets/icons/iconHeart';
 import IconClock from 'assets/icons/iconClock';
 
 import styles from './styles.module.scss';
+
+import PageHeader from '../../components/PageHeader';
+
+const PageHeaderText = {
+  heading: 'Profile',
+};
 
 const ONE_MIN = 60;
 const ONE_HOUR = ONE_MIN * 60;
@@ -114,6 +121,7 @@ const AccountDetails = () => {
   const [fetchInterval, setFetchInterval] = useState(null);
   const [likeCancelSource, setLikeCancelSource] = useState(null);
   const [prevNumPerRow, setPrevNumPerRow] = useState(null);
+  // const [isEditShow, setIsEditShow] = useState(false);
   const prevAuthToken = usePrevious(authToken);
 
   const numPerRow = Math.floor(width / 240);
@@ -674,223 +682,437 @@ const AccountDetails = () => {
   return (
     <div className={styles.container}>
       <Header border />
-      <div className={styles.profile} style={{ paddingTop: '70px' }}>
-        <div className={styles.banner}>
-          {loading ? (
-            <Skeleton width="100%" height={200} />
-          ) : bannerHash || user.bannerHash ? (
-            <img
-              src={`https://cloudflare-ipfs.com/ipfs/${bannerHash ||
-                user.bannerHash}`}
-              className={styles.bannerImg}
-            />
-          ) : (
-            <div className={styles.bannerPlaceholder} />
-          )}
-          {isMe && (
-            <div className={styles.editBanner} onClick={selectBanner}>
-              <input
-                ref={fileInput}
-                hidden
-                type="file"
-                onChange={handleSelectFile}
-                accept="image/*"
-              />
-              <EditIcon className={styles.editIcon} />
-            </div>
-          )}
-        </div>
-        <div className={styles.buttonsWrapper}>
-          {isMe && (
-            <div className={styles.settings} onClick={openAccountSettings}>
-              <img src={iconSettings} className={styles.settingsIcon} />
-            </div>
-          )}
-          <div
-            className={styles.settings}
-            onClick={e => setAnchorEl(e.currentTarget)}
-          >
-            <img src={iconShare} className={styles.settingsIcon} />
-          </div>
-        </div>
-        <div className={styles.wrapper}>
-          <div className={styles.avatarWrapper}>
+      <PageHeader text={PageHeaderText} />
+      <div className={styles.contentWrapper}>
+        <div className={styles.profile} style={{ paddingTop: '70px' }}>
+          <div className={styles.banner}>
             {loading ? (
-              <Skeleton width={160} height={160} className={styles.avatar} />
-            ) : user.imageHash ? (
+              <Skeleton width="100%" height={200} />
+            ) : bannerHash || user.bannerHash ? (
               <img
-                src={`https://cloudflare-ipfs.com/ipfs/${user.imageHash}`}
-                className={styles.avatar}
+                src={`https://cloudflare-ipfs.com/ipfs/${bannerHash ||
+                  user.bannerHash}`}
+                className={styles.bannerImg}
               />
             ) : (
-              <Identicon className={styles.avatar} account={uid} size={160} />
+              <img
+                src={`/assets/images/profile/cover.jpg`}
+                className={styles.bannerImg}
+                // onMouseOver={() => {
+                //   setIsEditShow(true);
+                // }}
+                // onMouseLeave={() => {
+                //   setIsEditShow(false);
+                // }}
+              />
             )}
-          </div>
-          <div className={styles.usernameWrapper}>
-            {loading ? (
-              <Skeleton width={120} height={24} />
-            ) : (
-              <div className={styles.username}>{user.alias || 'Unnamed'}</div>
-            )}
-            {isMe ? null : loading ? (
-              <Skeleton width={80} height={26} style={{ marginLeft: 16 }} />
-            ) : (
+            {isMe && (
               <div
-                className={cx(
-                  styles.followBtn,
-                  followingInProgress && styles.disabled
-                )}
-                onClick={followUser}
+                className={styles.editBanner}
+                onClick={selectBanner}
+                // style={{ visibility: isEditShow ? 'visible' : 'hidden' }}
               >
-                {followingInProgress ? (
-                  <ClipLoader color="#FFF" size={14} />
-                ) : following ? (
-                  'Unfollow'
-                ) : (
-                  'Follow'
-                )}
+                <input
+                  ref={fileInput}
+                  hidden
+                  type="file"
+                  onChange={handleSelectFile}
+                  accept="image/*"
+                />
+                {/* <EditIcon className={styles.editIcon} /> */}
+                <div className={styles.editBannerImg}>
+                  <i
+                    className="icofont-camera"
+                    style={{ marginRight: '6px' }}
+                  />{' '}
+                  Edit
+                </div>
               </div>
             )}
           </div>
-          <div className={styles.bio}>{user.bio || ''}</div>
-          <div className={styles.bottomWrapper}>
-            <div className={styles.addressWrapper}>
-              {loading ? (
-                <Skeleton width={120} height={20} />
-              ) : (
-                <Tooltip
-                  title={copied ? 'Copied!' : 'Copy'}
-                  open={tooltipOpen}
-                  arrow
-                  classes={{ tooltip: styles.tooltip }}
-                >
-                  <div className={styles.address}>{shortenAddress(uid)}</div>
-                </Tooltip>
-              )}
-              <CopyToClipboard text={uid} onCopy={handleCopyAddress}>
-                <div className={styles.copyIcon}>
-                  <img
-                    src={iconCopy}
-                    onMouseOver={handleMouseOver}
-                    onMouseLeave={handleMouseLeave}
-                  />
-                </div>
-              </CopyToClipboard>
-            </div>
-            <div className={styles.followers} onClick={showFollowers}>
-              {loading ? (
-                <Skeleton width={100} height={24} />
-              ) : (
-                <>
-                  <b>{formatFollowers(user.followers || 0)}</b> Followers
-                </>
-              )}
-            </div>
-            <div className={styles.followers} onClick={showFollowings}>
-              {loading ? (
-                <Skeleton width={100} height={24} />
-              ) : (
-                <>
-                  <b>{formatFollowers(user.followings || 0)}</b> Following
-                </>
-              )}
+          <div className={styles.buttonsWrapper}>
+            {isMe && (
+              <div className={styles.settings} onClick={openAccountSettings}>
+                <img src={iconSettings} className={styles.settingsIcon} />
+              </div>
+            )}
+            <div
+              className={styles.settings}
+              onClick={e => setAnchorEl(e.currentTarget)}
+            >
+              <img src={iconShare} className={styles.settingsIcon} />
             </div>
           </div>
+          <div className={styles.wrapper}>
+            <div className={styles.avatarWrapper}>
+              {loading ? (
+                <Skeleton width={160} height={160} className={styles.avatar} />
+              ) : user.imageHash ? (
+                <img
+                  src={`https://cloudflare-ipfs.com/ipfs/${user.imageHash}`}
+                  className={styles.avatar}
+                />
+              ) : (
+                <Identicon className={styles.avatar} account={uid} size={160} />
+              )}
+              <div>sfdds</div>
+            </div>
+            <div className={styles.usernameWrapper}>
+              {loading ? (
+                <Skeleton width={120} height={24} />
+              ) : (
+                <div className={styles.username}>{user.alias || 'Unnamed'}</div>
+              )}
+              {isMe ? null : loading ? (
+                <Skeleton width={80} height={26} style={{ marginLeft: 16 }} />
+              ) : (
+                <div
+                  className={cx(
+                    styles.followBtn,
+                    followingInProgress && styles.disabled
+                  )}
+                  onClick={followUser}
+                >
+                  {followingInProgress ? (
+                    <ClipLoader color="#FFF" size={14} />
+                  ) : following ? (
+                    'Unfollow'
+                  ) : (
+                    'Follow'
+                  )}
+                </div>
+              )}
+            </div>
+            <div className={styles.bottomWrapper}>
+              <div className={styles.addressWrapper}>
+                {loading ? (
+                  <Skeleton width={120} height={20} />
+                ) : (
+                  <Tooltip
+                    title={copied ? 'Copied!' : 'Copy'}
+                    open={tooltipOpen}
+                    arrow
+                    classes={{ tooltip: styles.tooltip }}
+                  >
+                    <div className={styles.address}>{shortenAddress(uid)}</div>
+                  </Tooltip>
+                )}
+                <CopyToClipboard text={uid} onCopy={handleCopyAddress}>
+                  <div className={styles.copyIcon}>
+                    {/* <img
+                      src={iconCopy}
+                      onMouseOver={handleMouseOver}
+                      onMouseLeave={handleMouseLeave}
+                    /> */}
+                    <i
+                      className="icofont-ui-copy"
+                      onMouseOver={handleMouseOver}
+                      onMouseLeave={handleMouseLeave}
+                    />
+                  </div>
+                </CopyToClipboard>
+              </div>
+              <div className={styles.followers} onClick={showFollowers}>
+                {loading ? (
+                  <Skeleton width={100} height={24} />
+                ) : (
+                  <>
+                    <b>{formatFollowers(user.followers || 0)}</b> Followers
+                  </>
+                )}
+              </div>
+              <div className={styles.followers} onClick={showFollowings}>
+                {loading ? (
+                  <Skeleton width={100} height={24} />
+                ) : (
+                  <>
+                    <b>{formatFollowers(user.followings || 0)}</b> Following
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className={styles.bio}>{user.bio || ''}</div>
         </div>
-      </div>
-      <div className={styles.content}>
-        <div className={styles.contentSidebar}>
-          <div className={styles.tabsGroup}>
-            <div className={styles.groupTitle}>My Items</div>
-            {renderTab(
-              'Single Items',
-              IconList,
-              0,
-              count,
-              fetching || fguresFetching
-            )}
-            {/* {renderTab(
+        <div className={styles.content}>
+          <div className={styles.contentSidebar}>
+            <div className={styles.tabsGroup}>
+              <div className={styles.groupTitle}>My Items</div>
+              {renderTab(
+                'Single Items',
+                IconList,
+                0,
+                count,
+                fetching || fguresFetching
+              )}
+              {/* {renderTab(
               'Bundles',
               IconBundle,
               1,
               bundleCount,
               bundleFetching || fguresFetching
             )} */}
-            {renderTab(
-              'Favorited',
-              IconHeart,
-              2,
-              favCount,
-              favFetching || fguresFetching
-            )}
+              {renderTab(
+                'Favorited',
+                IconHeart,
+                2,
+                favCount,
+                favFetching || fguresFetching
+              )}
+            </div>
+            <div className={styles.tabsGroup}>
+              <div className={styles.groupTitle}>Account</div>
+              {renderTab('Activity', IconClock, 3)}
+              {renderTab('Offers', IconList, 4)}
+              {renderTab('My Offers', IconList, 5)}
+            </div>
           </div>
-          <div className={styles.tabsGroup}>
-            <div className={styles.groupTitle}>Account</div>
-            {renderTab('Activity', IconClock, 3)}
-            {renderTab('Offers', IconList, 4)}
-            {renderTab('My Offers', IconList, 5)}
-          </div>
-        </div>
-        <div ref={ref} className={styles.contentBody} onScroll={handleScroll}>
-          {tab === 0 ? (
-            <NFTsGrid
-              items={tokens.current}
-              numPerRow={numPerRow}
-              loading={fetching}
-            />
-          ) : // tab === 1 ? (
-          //   <NFTsGrid
-          //     items={bundles.current}
-          //     numPerRow={numPerRow}
-          //     loading={fetching}
-          //     showCreate={isMe}
-          //     onCreate={handleCreateBundle}
-          //   />
-          // ) :
-          tab === 2 ? (
-            <NFTsGrid
-              items={likes.current}
-              numPerRow={numPerRow}
-              loading={fetching}
-              onLike={() => {
-                likes.current = [];
-                fetchLikes(0);
-              }}
-            />
-          ) : tab === 3 ? (
-            <div className={styles.tableWapper}>
-              <div className={styles.activityHeader}>
-                <div className={styles.event}>Event</div>
-                <div className={styles.name}>Item</div>
-                <div className={styles.price}>Price</div>
-                <div className={styles.quantity}>Quantity</div>
-                <div className={styles.owner}>Owner</div>
-                <div className={styles.date}>Date</div>
-              </div>
-              <div className={styles.activityList}>
-                {(activityLoading ? new Array(5).fill(null) : activities).map(
-                  (activity, idx) => (
-                    <div key={idx} className={styles.activity}>
-                      <div className={styles.event}>
+          <div ref={ref} className={styles.contentBody} onScroll={handleScroll}>
+            {tab === 0 ? (
+              <NFTsGrid
+                items={tokens.current}
+                numPerRow={numPerRow}
+                loading={fetching}
+              />
+            ) : // tab === 1 ? (
+            //   <NFTsGrid
+            //     items={bundles.current}
+            //     numPerRow={numPerRow}
+            //     loading={fetching}
+            //     showCreate={isMe}
+            //     onCreate={handleCreateBundle}
+            //   />
+            // ) :
+            tab === 2 ? (
+              <NFTsGrid
+                items={likes.current}
+                numPerRow={numPerRow}
+                loading={fetching}
+                onLike={() => {
+                  likes.current = [];
+                  fetchLikes(0);
+                }}
+              />
+            ) : tab === 3 ? (
+              <div className={styles.tableWapper}>
+                <div className={styles.activityHeader}>
+                  <div className={styles.event}>Event</div>
+                  <div className={styles.name}>Item</div>
+                  <div className={styles.price}>Price</div>
+                  <div className={styles.quantity}>Quantity</div>
+                  <div className={styles.owner}>Owner</div>
+                  <div className={styles.date}>Date</div>
+                </div>
+                <div className={styles.activityList}>
+                  {(activityLoading ? new Array(5).fill(null) : activities).map(
+                    (activity, idx) => (
+                      <div key={idx} className={styles.activity}>
+                        <div className={styles.event}>
+                          {activity ? (
+                            activity.event
+                          ) : (
+                            <Skeleton width={100} height={20} />
+                          )}
+                        </div>
                         {activity ? (
-                          activity.event
+                          <Link
+                            to={`/explore/${activity.contractAddress}/${activity.tokenID}`}
+                            className={styles.name}
+                          >
+                            <div className={styles.media}>
+                              {renderMedia(
+                                activity.thumbnailPath.length > 10
+                                  ? `${storageUrl}/image/${activity.thumbnailPath}`
+                                  : activity.imageURL
+                              )}
+                            </div>
+                            {activity.name}
+                          </Link>
                         ) : (
-                          <Skeleton width={100} height={20} />
+                          <div className={styles.name}>
+                            <Skeleton width={120} height={20} />
+                          </div>
                         )}
+                        <div className={styles.price}>
+                          {activity ? (
+                            <>
+                              <div className={styles.tokenLogo}>
+                                <img src={activity.token?.icon} />
+                              </div>
+                              {activity.price}
+                            </>
+                          ) : (
+                            <Skeleton width={100} height={20} />
+                          )}
+                        </div>
+                        <div className={styles.quantity}>
+                          {activity ? (
+                            activity.quantity
+                          ) : (
+                            <Skeleton width={80} height={20} />
+                          )}
+                        </div>
+                        {activity ? (
+                          activity.to ? (
+                            <Link
+                              to={`/account/${activity.to}`}
+                              className={styles.owner}
+                            >
+                              <div className={styles.ownerAvatarWrapper}>
+                                {activity.image ? (
+                                  <img
+                                    src={`https://cloudflare-ipfs.com/ipfs/${activity.image}`}
+                                    className={styles.ownerAvatar}
+                                  />
+                                ) : (
+                                  <Identicon
+                                    account={activity.to}
+                                    size={24}
+                                    className={styles.ownerAvatar}
+                                  />
+                                )}
+                              </div>
+                              {activity.alias || shortenAddress(activity.to)}
+                            </Link>
+                          ) : (
+                            <div className={styles.owner} />
+                          )
+                        ) : (
+                          <div className={styles.owner}>
+                            <Skeleton width={130} height={20} />
+                          </div>
+                        )}
+                        <div className={styles.date}>
+                          {activity ? (
+                            formatDate(activity.createdAt)
+                          ) : (
+                            <Skeleton width={120} height={20} />
+                          )}
+                        </div>
                       </div>
-                      {activity ? (
+                    )
+                  )}
+                </div>
+              </div>
+            ) : tab === 4 ? (
+              <>
+                <div className={styles.activityHeader}>
+                  <div className={styles.name}>Item</div>
+                  <div className={styles.owner}>From</div>
+                  <div className={styles.price}>Price</div>
+                  <div className={styles.quantity}>Quantity</div>
+                  <div className={styles.date}>Date</div>
+                </div>
+                <div className={styles.activityList}>
+                  {(offersLoading
+                    ? new Array(5).fill(null)
+                    : offers.filter(
+                        offer => offer.deadline * 1000 > now.getTime()
+                      )
+                  ).map((offer, idx) => (
+                    <div key={idx} className={styles.activity}>
+                      {offer ? (
                         <Link
-                          to={`/explore/${activity.contractAddress}/${activity.tokenID}`}
+                          to={`/explore/${offer.contractAddress}/${offer.tokenID}`}
                           className={styles.name}
                         >
                           <div className={styles.media}>
                             {renderMedia(
-                              activity.thumbnailPath.length > 10
-                                ? `${storageUrl}/image/${activity.thumbnailPath}`
-                                : activity.imageURL
+                              offer.thumbnailPath.length > 10
+                                ? `${storageUrl}/image/${offer.thumbnailPath}`
+                                : offer.imageURL
                             )}
                           </div>
-                          {activity.name}
+                          {offer.name}
+                        </Link>
+                      ) : (
+                        <div className={styles.name}>
+                          <Skeleton width={120} height={20} />
+                        </div>
+                      )}
+                      {offer ? (
+                        <Link
+                          to={`/account/${offer.creator}`}
+                          className={styles.owner}
+                        >
+                          <div className={styles.ownerAvatarWrapper}>
+                            {offer.image ? (
+                              <img
+                                src={`https://cloudflare-ipfs.com/ipfs/${offer.image}`}
+                                className={styles.ownerAvatar}
+                              />
+                            ) : (
+                              <Identicon
+                                account={offer.creator}
+                                size={24}
+                                className={styles.ownerAvatar}
+                              />
+                            )}
+                          </div>
+                          {offer.alias || shortenAddress(offer.creator)}
+                        </Link>
+                      ) : (
+                        <div className={styles.owner}>
+                          <Skeleton width={130} height={20} />
+                        </div>
+                      )}
+                      <div className={styles.price}>
+                        {offer ? (
+                          <>
+                            <div className={styles.tokenLogo}>
+                              <img src={offer.token?.icon} />
+                            </div>
+                            {offer.pricePerItem}
+                          </>
+                        ) : (
+                          <Skeleton width={100} height={20} />
+                        )}
+                      </div>
+                      <div className={styles.quantity}>
+                        {offer ? (
+                          offer.quantity
+                        ) : (
+                          <Skeleton width={80} height={20} />
+                        )}
+                      </div>
+                      <div className={styles.date}>
+                        {offer ? (
+                          formatDate(offer.createdAt)
+                        ) : (
+                          <Skeleton width={120} height={20} />
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className={styles.activityHeader}>
+                  <div className={styles.name}>Item</div>
+                  <div className={styles.price}>Price</div>
+                  <div className={styles.quantity}>Quantity</div>
+                  <div className={styles.date}>Date</div>
+                </div>
+                <div className={styles.activityList}>
+                  {(bidsLoading
+                    ? new Array(5).fill(null)
+                    : bids.filter(bid => bid.deadline * 1000 > now.getTime())
+                  ).map((bid, idx) => (
+                    <div key={idx} className={styles.activity}>
+                      {bid ? (
+                        <Link
+                          to={`/explore/${bid.contractAddress}/${bid.tokenID}`}
+                          className={styles.name}
+                        >
+                          <div className={styles.media}>
+                            {renderMedia(
+                              bid.thumbnailPath.length > 10
+                                ? `${storageUrl}/image/${bid.thumbnailPath}`
+                                : bid.imageURL
+                            )}
+                          </div>
+                          {bid.name}
                         </Link>
                       ) : (
                         <div className={styles.name}>
@@ -898,218 +1120,37 @@ const AccountDetails = () => {
                         </div>
                       )}
                       <div className={styles.price}>
-                        {activity ? (
+                        {bid ? (
                           <>
                             <div className={styles.tokenLogo}>
-                              <img src={activity.token?.icon} />
+                              <img src={bid.token?.icon} />
                             </div>
-                            {activity.price}
+                            {bid.pricePerItem}
                           </>
                         ) : (
                           <Skeleton width={100} height={20} />
                         )}
                       </div>
                       <div className={styles.quantity}>
-                        {activity ? (
-                          activity.quantity
+                        {bid ? (
+                          bid.quantity
                         ) : (
                           <Skeleton width={80} height={20} />
                         )}
                       </div>
-                      {activity ? (
-                        activity.to ? (
-                          <Link
-                            to={`/account/${activity.to}`}
-                            className={styles.owner}
-                          >
-                            <div className={styles.ownerAvatarWrapper}>
-                              {activity.image ? (
-                                <img
-                                  src={`https://cloudflare-ipfs.com/ipfs/${activity.image}`}
-                                  className={styles.ownerAvatar}
-                                />
-                              ) : (
-                                <Identicon
-                                  account={activity.to}
-                                  size={24}
-                                  className={styles.ownerAvatar}
-                                />
-                              )}
-                            </div>
-                            {activity.alias || shortenAddress(activity.to)}
-                          </Link>
-                        ) : (
-                          <div className={styles.owner} />
-                        )
-                      ) : (
-                        <div className={styles.owner}>
-                          <Skeleton width={130} height={20} />
-                        </div>
-                      )}
                       <div className={styles.date}>
-                        {activity ? (
-                          formatDate(activity.createdAt)
+                        {bid ? (
+                          formatDate(bid.createdAt)
                         ) : (
                           <Skeleton width={120} height={20} />
                         )}
                       </div>
                     </div>
-                  )
-                )}
-              </div>
-            </div>
-          ) : tab === 4 ? (
-            <>
-              <div className={styles.activityHeader}>
-                <div className={styles.name}>Item</div>
-                <div className={styles.owner}>From</div>
-                <div className={styles.price}>Price</div>
-                <div className={styles.quantity}>Quantity</div>
-                <div className={styles.date}>Date</div>
-              </div>
-              <div className={styles.activityList}>
-                {(offersLoading
-                  ? new Array(5).fill(null)
-                  : offers.filter(
-                      offer => offer.deadline * 1000 > now.getTime()
-                    )
-                ).map((offer, idx) => (
-                  <div key={idx} className={styles.activity}>
-                    {offer ? (
-                      <Link
-                        to={`/explore/${offer.contractAddress}/${offer.tokenID}`}
-                        className={styles.name}
-                      >
-                        <div className={styles.media}>
-                          {renderMedia(
-                            offer.thumbnailPath.length > 10
-                              ? `${storageUrl}/image/${offer.thumbnailPath}`
-                              : offer.imageURL
-                          )}
-                        </div>
-                        {offer.name}
-                      </Link>
-                    ) : (
-                      <div className={styles.name}>
-                        <Skeleton width={120} height={20} />
-                      </div>
-                    )}
-                    {offer ? (
-                      <Link
-                        to={`/account/${offer.creator}`}
-                        className={styles.owner}
-                      >
-                        <div className={styles.ownerAvatarWrapper}>
-                          {offer.image ? (
-                            <img
-                              src={`https://cloudflare-ipfs.com/ipfs/${offer.image}`}
-                              className={styles.ownerAvatar}
-                            />
-                          ) : (
-                            <Identicon
-                              account={offer.creator}
-                              size={24}
-                              className={styles.ownerAvatar}
-                            />
-                          )}
-                        </div>
-                        {offer.alias || shortenAddress(offer.creator)}
-                      </Link>
-                    ) : (
-                      <div className={styles.owner}>
-                        <Skeleton width={130} height={20} />
-                      </div>
-                    )}
-                    <div className={styles.price}>
-                      {offer ? (
-                        <>
-                          <div className={styles.tokenLogo}>
-                            <img src={offer.token?.icon} />
-                          </div>
-                          {offer.pricePerItem}
-                        </>
-                      ) : (
-                        <Skeleton width={100} height={20} />
-                      )}
-                    </div>
-                    <div className={styles.quantity}>
-                      {offer ? (
-                        offer.quantity
-                      ) : (
-                        <Skeleton width={80} height={20} />
-                      )}
-                    </div>
-                    <div className={styles.date}>
-                      {offer ? (
-                        formatDate(offer.createdAt)
-                      ) : (
-                        <Skeleton width={120} height={20} />
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          ) : (
-            <>
-              <div className={styles.activityHeader}>
-                <div className={styles.name}>Item</div>
-                <div className={styles.price}>Price</div>
-                <div className={styles.quantity}>Quantity</div>
-                <div className={styles.date}>Date</div>
-              </div>
-              <div className={styles.activityList}>
-                {(bidsLoading
-                  ? new Array(5).fill(null)
-                  : bids.filter(bid => bid.deadline * 1000 > now.getTime())
-                ).map((bid, idx) => (
-                  <div key={idx} className={styles.activity}>
-                    {bid ? (
-                      <Link
-                        to={`/explore/${bid.contractAddress}/${bid.tokenID}`}
-                        className={styles.name}
-                      >
-                        <div className={styles.media}>
-                          {renderMedia(
-                            bid.thumbnailPath.length > 10
-                              ? `${storageUrl}/image/${bid.thumbnailPath}`
-                              : bid.imageURL
-                          )}
-                        </div>
-                        {bid.name}
-                      </Link>
-                    ) : (
-                      <div className={styles.name}>
-                        <Skeleton width={120} height={20} />
-                      </div>
-                    )}
-                    <div className={styles.price}>
-                      {bid ? (
-                        <>
-                          <div className={styles.tokenLogo}>
-                            <img src={bid.token?.icon} />
-                          </div>
-                          {bid.pricePerItem}
-                        </>
-                      ) : (
-                        <Skeleton width={100} height={20} />
-                      )}
-                    </div>
-                    <div className={styles.quantity}>
-                      {bid ? bid.quantity : <Skeleton width={80} height={20} />}
-                    </div>
-                    <div className={styles.date}>
-                      {bid ? (
-                        formatDate(bid.createdAt)
-                      ) : (
-                        <Skeleton width={120} height={20} />
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
       <Menu
@@ -1172,12 +1213,7 @@ const AccountDetails = () => {
             : followings.current
         }
       />
-      <div className={styles.footerBottom}>
-        <p style={{ textAlign: 'center' }}>
-          All rights reserved &copy; Picasso || Design By:{' '}
-          <span>Matsushima Goro</span>
-        </p>
-      </div>
+      <Footer />
     </div>
   );
 };

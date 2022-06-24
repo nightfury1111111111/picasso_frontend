@@ -10,6 +10,7 @@ import { Categories } from 'constants/filter.constants';
 import HeaderActions from 'actions/header.actions';
 import FilterActions from 'actions/filter.actions';
 import Header from 'components/header';
+import Footer from 'components/Footer';
 
 // import card1 from 'assets/svgs/card1.svg';
 // import card2 from 'assets/svgs/card2.svg';
@@ -227,12 +228,7 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-      <div className={styles.footerBottom}>
-        <p style={{ textAlign: 'center' }}>
-          All rights reserved &copy; Picasso || Design By:{' '}
-          <span>Matsushima Goro</span>
-        </p>
-      </div>
+      <Footer />
     </div>
   );
 };

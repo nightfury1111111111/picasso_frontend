@@ -107,7 +107,8 @@ const filters = ['Trade History', 'Transfer History'];
 
 // eslint-disable-next-line no-undef
 const ENV = process.env.REACT_APP_ENV;
-const CHAIN = ENV === 'MAINNET' ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
+const CHAIN = ENV === 'MAINNET' ? ChainId.FANTOM : ChainId.RINKEBY;
+// const CHAIN = ENV === 'MAINNET' ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
 
 const NFTItem = () => {
   const dispatch = useDispatch();
@@ -291,10 +292,11 @@ const NFTItem = () => {
 
   const isLoggedIn = () => {
     return (
-      account &&
+      (account &&
       (ENV === 'MAINNET'
         ? chainId === ChainId.FANTOM
-        : chainId === ChainId.FANTOM_TESTNET)
+        : chainId ===
+          ChainId.RINKEBY) /*: chainId === ChainId.FANTOM_TESTNET)*/)
     );
   };
 

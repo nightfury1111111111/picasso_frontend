@@ -20,13 +20,23 @@
   width: 100%;
   height: 250px;
   position: relative;
-  margin-bottom: -86px;
+  margin-bottom: -120px;
+  border-radius: 10px;
 }
 
 .bannerImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 10px;
+}
+
+.editBannerImg {
+  width: 150px;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .bannerPlaceholder {
@@ -49,10 +59,12 @@
   position: absolute;
   top: 32px;
   right: 32px;
-  width: 48px;
-  height: 48px;
+  width: 70px;
+  height: 36px;
   border-radius: 10px;
-  background-color: #fff;
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,13 +112,15 @@
 }
 
 .wrapper {
-  margin-left: 80px;
+  margin-left: 30px;
+  display: flex;
+  z-index: 100;
 }
 
 .avatarWrapper {
   width: 160px;
   height: 160px;
-  border-radius: 50%;
+  border-radius: 10px;
   border: 6px solid #fff;
   z-index: 1;
   overflow: hidden;
@@ -114,23 +128,25 @@
 }
 
 .avatar {
-  position: absolute;
-  top: 0;
-  left: 0;
+  // position: absolute;
+  // top: 0;
+  // left: 0;
   width: 160px;
   height: 160px;
+  border-radius: 7px;
 }
 
 .usernameWrapper {
-  margin-top: 26px;
+  // margin-top: 26px;
   display: flex;
   align-items: center;
+  margin: 0 25px;
 }
 
 .username {
   font-size: 32px;
-  font-weight: 700;
-  color: #121223;
+  font-weight: 300;
+  color: #fff;
 }
 
 .followBtn {
@@ -150,38 +166,40 @@
 }
 
 .bottomWrapper {
-  margin-top: 6px;
+  // margin-top: 6px;
   display: flex;
   align-items: center;
 }
 
 .addressWrapper {
   width: fit-content;
-  height: 40px;
+  height: 30px;
   padding-left: 16px;
-  padding-right: 4px;
-  background-color: #fafafb;
+  // padding-right: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
   display: flex;
   align-items: center;
-  border-radius: 30px;
+  border-radius: 5px;
 }
 
 .address {
   font-size: 14px;
   font-weight: 700;
-  color: #1969ff;
+  color: white;
 }
 
 .copyIcon {
-  width: 32px;
-  height: 32px;
-  border-radius: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
   background-color: #1969ff;
   margin-left: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: white;
+  font-size: 18px;
 
   img {
     width: 16px;
@@ -442,6 +460,13 @@
   }
 }
 
+.contentWrapper {
+  width: calc(100% - 360px);
+  padding: 0 180px 40px 180px;
+  display: flex;
+  flex-direction: column;
+}
+
 @media only screen and (max-width: 768px) {
   // .container {
   //   padding-top: 133px;
@@ -454,6 +479,13 @@
   .contentSidebar {
     width: 240px;
     flex: 0 0 240px;
+  }
+
+  .contentWrapper {
+    width: calc(100% - 20px);
+    padding: 0 10px 40px 10px;
+    display: flex;
+    flex-direction: column;
   }
 }
 
