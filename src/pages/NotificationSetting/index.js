@@ -23,26 +23,26 @@ const PageHeaderText = {
 };
 
 const selfSettings = [
-  {
-    value: 'sBundleBuy',
-    title: 'Bundle Purchased',
-    description: 'You have purchased a bundle.',
-  },
-  {
-    value: 'sBundleSell',
-    title: 'Bundle Sold',
-    description: 'Your bundle is sold.',
-  },
-  {
-    value: 'sBundleOffer',
-    title: 'Get a new offer for your bundle',
-    description: 'You get an offer for your bundle.',
-  },
-  {
-    value: 'sBundleOfferCancel',
-    title: 'An offer to you bundle called off',
-    description: 'An offer to your bundle is canceled.',
-  },
+  // {
+  //   value: 'sBundleBuy',
+  //   title: 'Bundle Purchased',
+  //   description: 'You have purchased a bundle.',
+  // },
+  // {
+  //   value: 'sBundleSell',
+  //   title: 'Bundle Sold',
+  //   description: 'Your bundle is sold.',
+  // },
+  // {
+  //   value: 'sBundleOffer',
+  //   title: 'Get a new offer for your bundle',
+  //   description: 'You get an offer for your bundle.',
+  // },
+  // {
+  //   value: 'sBundleOfferCancel',
+  //   title: 'An offer to you bundle called off',
+  //   description: 'An offer to your bundle is canceled.',
+  // },
   {
     value: 'sNftAuctionPrice',
     title: "Your bid's Auction Price update",
@@ -91,21 +91,21 @@ const selfSettings = [
 ];
 
 const followerSettings = [
-  {
-    value: 'fBundleCreation',
-    title: 'New bundle creation by follower',
-    description: 'Created a new bundle.',
-  },
-  {
-    value: 'fBundleList',
-    title: 'Bundle Listing by follower',
-    description: 'Listed a bundle for sale.',
-  },
-  {
-    value: 'fBundlePrice',
-    title: 'Bundle Price Update by follower',
-    description: 'Updated the bundle sale price.',
-  },
+  // {
+  //   value: 'fBundleCreation',
+  //   title: 'New bundle creation by follower',
+  //   description: 'Created a new bundle.',
+  // },
+  // {
+  //   value: 'fBundleList',
+  //   title: 'Bundle Listing by follower',
+  //   description: 'Listed a bundle for sale.',
+  // },
+  // {
+  //   value: 'fBundlePrice',
+  //   title: 'Bundle Price Update by follower',
+  //   description: 'Updated the bundle sale price.',
+  // },
   {
     value: 'fNftAuctionPrice',
     title: 'NFT Auction Price update by follower',

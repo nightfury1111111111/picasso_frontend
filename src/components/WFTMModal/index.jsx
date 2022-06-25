@@ -161,7 +161,7 @@ const WFTMModal = ({ visible, onClose }) => {
   return (
     <Modal
       visible={visible}
-      title="FTM / WFTM Station"
+      title="FTM / WFTM Exchange"
       onClose={onClose}
       submitDisabled={
         confirming ||

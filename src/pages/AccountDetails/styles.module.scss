@@ -594,6 +594,29 @@
   //   padding-top: 133px;
   // }
 
+  .activityHeader,
+  .activity {
+    min-width: 400px;
+  }
+
+  .tabName {
+    margin-left: 0;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .tabVar {
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    height: 190px;
+    padding-bottom: 20px;
+    margin-top: -110px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
   .content {
     max-height: calc(100vh - 133px);
   }

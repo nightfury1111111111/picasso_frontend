@@ -11,6 +11,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CloseIcon from '@material-ui/icons/Close';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import Footer from 'components/Footer';
 // import InfoIcon from '@material-ui/icons/Info';
 import { ClipLoader } from 'react-spinners';
 import { useWeb3React } from '@web3-react/core';
@@ -485,6 +486,7 @@ const CollectionCreate = ({ isRegister }) => {
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      onClick={handleMenuClose}
       classes={{
         paper: styles.menu,
       }}
@@ -495,7 +497,7 @@ const CollectionCreate = ({ isRegister }) => {
           className={styles.category}
           onClick={() => selectCategory(cat.id)}
         >
-          <img src={cat.icon} />
+          <img src={cat.icon} style={{ width: '30px' }} />
           <span className={styles.categoryLabel}>{cat.label}</span>
         </MenuItem>
       ))}
@@ -506,209 +508,198 @@ const CollectionCreate = ({ isRegister }) => {
     <div className={styles.container}>
       <Header border />
       <PageHeader text={isRegister ? PageHeaderText2 : PageHeaderText1} />
-      <div className={styles.inner}>
-        <div className={styles.title}>
-          {isRegister ? 'Register' : 'Create New'} Collection
-        </div>
-        <br />
-        <div style={{ fontSize: '13px' }}>
-          Please submit using the owner address of the collection. If you cannot
-          use the owner address, please email us on contact@fantom.foundation
-          with the information below (and proof of collection ownership, such as
-          from the collection's official email address).
-        </div>
-
-        {!isRegister && (
-          <div className={styles.inputGroup}>
-            <RadioGroup
-              className={styles.inputWrapper}
-              value={JSON.stringify(isPrivate)}
-              onChange={e => setIsPrivate(e.currentTarget.value === 'true')}
-            >
-              <FormControlLabel
-                classes={{
-                  root: cx(styles.option, !isPrivate && styles.active),
-                  label: styles.optionLabel,
-                }}
-                value="false"
-                control={<CustomRadio color="primary" />}
-                label="Allow others mint NFTs under my collection"
-              />
-              <FormControlLabel
-                classes={{
-                  root: cx(styles.option, isPrivate && styles.active),
-                  label: styles.optionLabel,
-                }}
-                value="true"
-                control={<CustomRadio color="primary" />}
-                label="Only I can mint NFTs under my collection"
-              />
-            </RadioGroup>
+      <div className={styles.collectionCont}>
+        <div className={styles.inner}>
+          <div className={styles.title}>
+            {isRegister ? 'Register' : 'Create New'} Collection
           </div>
-        )}
+          <br />
+          {/* <div style={{ fontSize: '13px' }}>
+            Please submit using the owner address of the collection. If you
+            cannot use the owner address, please email us on
+            contact@fantom.foundation with the information below (and proof of
+            collection ownership, such as from the collection's official email
+            address).
+          </div> */}
 
-        <div className={styles.inputGroup}>
-          <div className={styles.inputTitle}>Logo Image *</div>
-          <div className={styles.inputSubTitle}>
-            This image will also be used for navigation. 300x300 recommended.
-          </div>
-          <div className={styles.inputWrapper}>
-            <div className={styles.logoUploadBox}>
-              {logo ? (
-                <>
-                  <img src={logo} />
-                  <div className={styles.removeOverlay}>
-                    <div className={styles.removeIcon} onClick={removeImage}>
-                      <img src={closeIcon} />
+          <div className={styles.collectionContent}>
+            <div className={styles.inputGroup}>
+              <div className={styles.inputTitle}>Image *</div>
+              <div className={styles.inputSubTitle}></div>
+              <div className={styles.inputWrapper}>
+                <div className={styles.logoUploadBox}>
+                  {logo ? (
+                    <>
+                      <img src={logo} />
+                      <div className={styles.removeOverlay}>
+                        <div
+                          className={styles.removeIcon}
+                          onClick={removeImage}
+                        >
+                          <img src={closeIcon} />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                      className={styles.uploadOverlay}
+                      onClick={() => inputRef.current?.click()}
+                    >
+                      <input
+                        ref={inputRef}
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onChange={handleFileSelect}
+                      />
+                      <div className={styles.upload}>
+                        <div className={styles.uploadInner}>
+                          <img src={uploadIcon} />
+                        </div>
+                        <div className={styles.plusIcon}>
+                          <img src={plusIcon} />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </>
-              ) : (
-                <div
-                  className={styles.uploadOverlay}
-                  onClick={() => inputRef.current?.click()}
-                >
-                  <input
-                    ref={inputRef}
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    onChange={handleFileSelect}
-                  />
-                  <div className={styles.upload}>
-                    <div className={styles.uploadInner}>
-                      <img src={uploadIcon} />
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className={styles.collectionInfo}>
+              <div className={styles.collectionInfoFirst}>
+                <div className={styles.inputGroup}>
+                  <div className={styles.inputTitle}>Name *</div>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      className={cx(styles.input, nameError && styles.hasError)}
+                      maxLength={20}
+                      placeholder="Collection Name"
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                      onBlur={validateName}
+                    />
+                    <div className={styles.lengthIndicator}>
+                      {name.length}/20
                     </div>
-                    <div className={styles.plusIcon}>
-                      <img src={plusIcon} />
-                    </div>
+                    {nameError && (
+                      <div className={styles.error}>{nameError}</div>
+                    )}
                   </div>
                 </div>
-              )}
-            </div>
-          </div>
-        </div>
 
-        <div className={styles.inputGroup}>
-          <div className={styles.inputTitle}>Name *</div>
-          <div className={styles.inputWrapper}>
-            <input
-              className={cx(styles.input, nameError && styles.hasError)}
-              maxLength={20}
-              placeholder="Collection Name"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              onBlur={validateName}
-            />
-            <div className={styles.lengthIndicator}>{name.length}/20</div>
-            {nameError && <div className={styles.error}>{nameError}</div>}
-          </div>
-        </div>
+                {!isRegister && (
+                  <div className={styles.inputGroup}>
+                    <div className={styles.inputTitle}>
+                      Symbol *&nbsp;
+                      <BootstrapTooltip
+                        title="A symbol is used when we deploy your NFT contract. If you are not sure about symbol, be aware that name and symbol share the same value."
+                        placement="top"
+                      >
+                        <HelpOutlineIcon />
+                      </BootstrapTooltip>
+                    </div>
+                    <div className={styles.inputWrapper}>
+                      <input
+                        className={cx(
+                          styles.input,
+                          symbolError && styles.hasError
+                        )}
+                        maxLength={20}
+                        placeholder="Collection Symbol"
+                        value={symbol}
+                        onChange={e => setSymbol(e.target.value)}
+                        onBlur={validateSymbol}
+                      />
+                      <div className={styles.lengthIndicator}>
+                        {symbol.length}/20
+                      </div>
+                      {symbolError && (
+                        <div className={styles.error}>{symbolError}</div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
-        {!isRegister && (
-          <div className={styles.inputGroup}>
-            <div className={styles.inputTitle}>
-              Symbol *&nbsp;
-              <BootstrapTooltip
-                title="A symbol is used when we deploy your NFT contract. If you are not sure about symbol, be aware that name and symbol share the same value."
-                placement="top"
-              >
-                <HelpOutlineIcon />
-              </BootstrapTooltip>
-            </div>
-            <div className={styles.inputWrapper}>
-              <input
-                className={cx(styles.input, symbolError && styles.hasError)}
-                maxLength={20}
-                placeholder="Collection Symbol"
-                value={symbol}
-                onChange={e => setSymbol(e.target.value)}
-                onBlur={validateSymbol}
-              />
-              <div className={styles.lengthIndicator}>{symbol.length}/20</div>
-              {symbolError && <div className={styles.error}>{symbolError}</div>}
-            </div>
-          </div>
-        )}
+                <div className={styles.inputGroup}>
+                  <div className={styles.inputTitle}>Description *</div>
+                  <div className={styles.inputWrapper}>
+                    <textarea
+                      className={cx(
+                        styles.input,
+                        styles.longInput,
+                        descriptionError && styles.hasError
+                      )}
+                      maxLength={200}
+                      placeholder="Provide your description for your collection"
+                      value={description}
+                      onChange={e => setDescription(e.target.value)}
+                      onBlur={validateDescription}
+                    />
+                    <div className={styles.lengthIndicator}>
+                      {description.length}/200
+                    </div>
+                    {descriptionError && (
+                      <div className={styles.error}>{descriptionError}</div>
+                    )}
+                  </div>
+                </div>
 
-        <div className={styles.inputGroup}>
-          <div className={styles.inputTitle}>Description *</div>
-          <div className={styles.inputWrapper}>
-            <textarea
-              className={cx(
-                styles.input,
-                styles.longInput,
-                descriptionError && styles.hasError
-              )}
-              maxLength={200}
-              placeholder="Provide your description for your collection"
-              value={description}
-              onChange={e => setDescription(e.target.value)}
-              onBlur={validateDescription}
-            />
-            <div className={styles.lengthIndicator}>
-              {description.length}/200
-            </div>
-            {descriptionError && (
-              <div className={styles.error}>{descriptionError}</div>
-            )}
-          </div>
-        </div>
+                {isRegister && (
+                  <div className={styles.inputGroup}>
+                    <div className={styles.inputTitle}>
+                      Royalty *&nbsp;
+                      {/* <BootstrapTooltip
+                        title="Each NFT under this collection exchanged through Artion will have a percentage of sale given to nominated wallet address."
+                        placement="top"
+                      >
+                        <HelpOutlineIcon />
+                      </BootstrapTooltip> */}
+                    </div>
+                    <div className={styles.inputWrapper}>
+                      <PriceInput
+                        className={styles.input}
+                        placeholder="Collection Royalty"
+                        decimals={2}
+                        value={'' + royalty}
+                        onChange={val =>
+                          val[val.length - 1] === '.'
+                            ? setRoyalty(val)
+                            : setRoyalty(Math.min(100, +val))
+                        }
+                      />
+                    </div>
+                  </div>
+                )}
+                {isRegister && (
+                  <div className={styles.inputGroup}>
+                    <div className={styles.inputTitle}>
+                      Fee Recipient *&nbsp;
+                      {/* <BootstrapTooltip
+                        title="The nominated Fantom Opera Network wallet address to receive royalties from each sale in this collection."
+                        placement="top"
+                      >
+                        <HelpOutlineIcon />
+                      </BootstrapTooltip> */}
+                    </div>
+                    <div className={styles.inputWrapper}>
+                      <input
+                        className={cx(
+                          styles.input,
+                          recipientError && styles.hasError
+                        )}
+                        placeholder="Fee Recipient"
+                        value={feeRecipient}
+                        onChange={e => setFeeRecipient(e.target.value)}
+                        onBlur={validateFeeRecipient}
+                      />
+                      {recipientError && (
+                        <div className={styles.error}>{recipientError}</div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
-        {isRegister && (
-          <div className={styles.inputGroup}>
-            <div className={styles.inputTitle}>
-              Royalty *&nbsp;
-              <BootstrapTooltip
-                title="Each NFT under this collection exchanged through Artion will have a percentage of sale given to nominated wallet address."
-                placement="top"
-              >
-                <HelpOutlineIcon />
-              </BootstrapTooltip>
-            </div>
-            <div className={styles.inputWrapper}>
-              <PriceInput
-                className={styles.input}
-                placeholder="Collection Royalty"
-                decimals={2}
-                value={'' + royalty}
-                onChange={val =>
-                  val[val.length - 1] === '.'
-                    ? setRoyalty(val)
-                    : setRoyalty(Math.min(100, +val))
-                }
-              />
-            </div>
-          </div>
-        )}
-
-        {isRegister && (
-          <div className={styles.inputGroup}>
-            <div className={styles.inputTitle}>
-              Fee Recipient *&nbsp;
-              <BootstrapTooltip
-                title="The nominated Fantom Opera Network wallet address to receive royalties from each sale in this collection."
-                placement="top"
-              >
-                <HelpOutlineIcon />
-              </BootstrapTooltip>
-            </div>
-            <div className={styles.inputWrapper}>
-              <input
-                className={cx(styles.input, recipientError && styles.hasError)}
-                placeholder="Fee Recipient"
-                value={feeRecipient}
-                onChange={e => setFeeRecipient(e.target.value)}
-                onBlur={validateFeeRecipient}
-              />
-              {recipientError && (
-                <div className={styles.error}>{recipientError}</div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* {!isRegister && (
+                {/* {!isRegister && (
           <div className={styles.inputGroup}>
             <RadioGroup
               className={styles.inputWrapper}
@@ -737,208 +728,258 @@ const CollectionCreate = ({ isRegister }) => {
           </div>
         )} */}
 
-        <div className={styles.inputGroup}>
-          <div className={styles.inputTitle}>Category</div>
-          <div className={styles.inputSubTitle}>
-            Adding a category will help make your item discoverable on Fantom.
-          </div>
-          <div className={styles.inputSubTitle}>
-            For more information, read{' '}
-            <a
-              href="https://docs.fantom.foundation/tutorials/collection-and-bundle-guide-on-artion"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              this
-            </a>
-          </div>
-          <div className={cx(styles.inputWrapper, styles.categoryList)}>
-            <div
-              className={cx(
-                styles.categoryButton,
-                selected.length === 3 && styles.disabled
-              )}
-              onClick={handleMenuOpen}
-            >
-              Add Category
-            </div>
-            {selectedCategories.map((cat, idx) => (
-              <div
-                className={styles.selectedCategory}
-                key={idx}
-                onClick={() => deselectCategory(cat.id)}
-              >
-                <img src={cat.icon} className={styles.categoryIcon} />
-                <span className={styles.categoryLabel}>{cat.label}</span>
-                <CloseIcon className={styles.closeIcon} />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className={styles.inputGroup}>
-          <div className={styles.inputTitle}>Links *</div>
-          <div className={styles.inputWrapper}>
-            <div className={styles.linksWrapper}>
-              {isRegister && (
-                <>
-                  <div
-                    className={cx(
-                      styles.linkItem,
-                      addressError && styles.hasError
-                    )}
-                  >
-                    <div className={styles.linkIconWrapper}>
-                      <img src={nftIcon} className={styles.linkIcon} />
-                    </div>
-                    <input
-                      className={styles.linkInput}
-                      placeholder="Enter your collection's address"
-                      value={address}
-                      onChange={e => setAddress(e.target.value)}
-                      onBlur={validateAddress}
-                    />
+                <div className={styles.inputGroup}>
+                  {/*   <div className={styles.inputTitle}>Category</div>
+                  <div className={styles.inputSubTitle}>
+                    Adding a category will help make your item discoverable on
+                    Fantom.
                   </div>
-                  {addressError && (
-                    <div className={styles.error}>{addressError}</div>
+                  <div className={styles.inputSubTitle}>
+                    For more information, read{' '}
+                    <a
+                      href="https://docs.fantom.foundation/tutorials/collection-and-bundle-guide-on-artion"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      this
+                    </a>
+                  </div> */}
+                  <div className={cx(styles.inputWrapper, styles.categoryList)}>
+                    <div
+                      className={cx(
+                        styles.categoryButton,
+                        selected.length === 3 && styles.disabled
+                      )}
+                      onClick={handleMenuOpen}
+                    >
+                      Category
+                    </div>
+                    {selectedCategories.map((cat, idx) => (
+                      <div
+                        className={styles.selectedCategory}
+                        key={idx}
+                        onClick={() => deselectCategory(cat.id)}
+                      >
+                        <img src={cat.icon} className={styles.categoryIcon} />
+                        <span className={styles.categoryLabel}>
+                          {cat.label}
+                        </span>
+                        <CloseIcon className={styles.closeIcon} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className={styles.inputGroup}>
+                  <div className={styles.inputTitle}>
+                    Email *&nbsp;
+                    {/* <BootstrapTooltip
+                      title="We will use this email to notify you about your collection application. This will not be shared with others."
+                      placement="top"
+                    >
+                      <HelpOutlineIcon />
+                    </BootstrapTooltip> */}
+                  </div>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      className={cx(
+                        styles.input,
+                        emailError && styles.hasError
+                      )}
+                      placeholder="Email Address"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                      onBlur={validateEmail}
+                    />
+                    {emailError && (
+                      <div className={styles.error}>{emailError}</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.collectionInfoSecond}>
+                <div className={styles.inputGroup}>
+                  <div className={styles.inputTitle}>Links *</div>
+                  <div className={styles.inputWrapper}>
+                    <div className={styles.linksWrapper}>
+                      {isRegister && (
+                        <>
+                          <div
+                            className={cx(
+                              styles.linkItem,
+                              addressError && styles.hasError
+                            )}
+                          >
+                            <div className={styles.linkIconWrapper}>
+                              <img src={nftIcon} className={styles.linkIcon} />
+                            </div>
+                            <input
+                              className={styles.linkInput}
+                              placeholder="Enter your collection's address"
+                              value={address}
+                              onChange={e => setAddress(e.target.value)}
+                              onBlur={validateAddress}
+                            />
+                          </div>
+                          {addressError && (
+                            <div className={styles.error}>{addressError}</div>
+                          )}
+                        </>
+                      )}
+                      <div className={styles.linkItem}>
+                        <div className={styles.linkIconWrapper}>
+                          <img src={webIcon} className={styles.linkIcon} />
+                        </div>
+                        <input
+                          className={styles.linkInput}
+                          placeholder="Enter your website url"
+                          value={siteUrl}
+                          onChange={e => setSiteUrl(e.target.value)}
+                        />
+                      </div>
+                      <div className={styles.linkItem}>
+                        <div className={styles.linkIconWrapper}>
+                          <img src={discordIcon} className={styles.linkIcon} />
+                        </div>
+                        <input
+                          className={styles.linkInput}
+                          placeholder="Enter your Discord url"
+                          value={discord}
+                          onChange={e => setDiscord(e.target.value)}
+                        />
+                      </div>
+                      <div className={styles.linkItem}>
+                        <div className={styles.linkIconWrapper}>
+                          <img src={twitterIcon} className={styles.linkIcon} />
+                        </div>
+                        <input
+                          className={styles.linkInput}
+                          placeholder="Enter your Twitter profile link"
+                          value={twitterHandle}
+                          onChange={e => setTwitterHandle(e.target.value)}
+                        />
+                      </div>
+                      <div className={styles.linkItem}>
+                        <div className={styles.linkIconWrapper}>
+                          <img
+                            src={instagramIcon}
+                            className={styles.linkIcon}
+                          />
+                        </div>
+                        <input
+                          className={styles.linkInput}
+                          placeholder="Enter your Instagram profile link"
+                          value={instagramHandle}
+                          onChange={e => setInstagramHandle(e.target.value)}
+                        />
+                      </div>
+                      <div className={styles.linkItem}>
+                        <div className={styles.linkIconWrapper}>
+                          <img src={mediumIcon} className={styles.linkIcon} />
+                        </div>
+                        <input
+                          className={styles.linkInput}
+                          placeholder="Enter your Medium profile link"
+                          value={mediumHandle}
+                          onChange={e => setMediumHandle(e.target.value)}
+                        />
+                      </div>
+                      <div className={styles.linkItem}>
+                        <div className={styles.linkIconWrapper}>
+                          <img src={telegramIcon} className={styles.linkIcon} />
+                        </div>
+                        <input
+                          className={styles.linkInput}
+                          placeholder="Enter your Telegram profile link"
+                          value={telegram}
+                          onChange={e => setTelegram(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {!isRegister && (
+                  <div
+                    className={styles.inputGroup}
+                    style={{ paddingLeft: '35px' }}
+                  >
+                    <RadioGroup
+                      className={styles.inputWrapper}
+                      value={JSON.stringify(isPrivate)}
+                      onChange={e =>
+                        setIsPrivate(e.currentTarget.value === 'true')
+                      }
+                    >
+                      <FormControlLabel
+                        classes={{
+                          root: cx(styles.option, !isPrivate && styles.active),
+                          label: styles.optionLabel,
+                        }}
+                        value="false"
+                        control={<CustomRadio color="primary" />}
+                        label="Allow others mint NFTs under my collection"
+                      />
+                      <FormControlLabel
+                        classes={{
+                          root: cx(styles.option, isPrivate && styles.active),
+                          label: styles.optionLabel,
+                        }}
+                        value="true"
+                        control={<CustomRadio color="primary" />}
+                        label="Only I can mint NFTs under my collection"
+                      />
+                    </RadioGroup>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className={styles.buttonsWrapper}>
+              {isRegister ? (
+                <div
+                  className={cx(
+                    styles.createButton,
+                    (creating || !isValid) && styles.disabled
                   )}
-                </>
-              )}
-              <div className={styles.linkItem}>
-                <div className={styles.linkIconWrapper}>
-                  <img src={webIcon} className={styles.linkIcon} />
+                  onClick={isValid ? handleRegister : null}
+                >
+                  {creating ? (
+                    <ClipLoader color="#FFF" size={16} />
+                  ) : (
+                    'Register'
+                  )}
                 </div>
-                <input
-                  className={styles.linkInput}
-                  placeholder="Enter your website url"
-                  value={siteUrl}
-                  onChange={e => setSiteUrl(e.target.value)}
-                />
-              </div>
-              <div className={styles.linkItem}>
-                <div className={styles.linkIconWrapper}>
-                  <img src={discordIcon} className={styles.linkIcon} />
-                </div>
-                <input
-                  className={styles.linkInput}
-                  placeholder="Enter your Discord url"
-                  value={discord}
-                  onChange={e => setDiscord(e.target.value)}
-                />
-              </div>
-              <div className={styles.linkItem}>
-                <div className={styles.linkIconWrapper}>
-                  <img src={twitterIcon} className={styles.linkIcon} />
-                </div>
-                <input
-                  className={styles.linkInput}
-                  placeholder="Enter your Twitter profile link"
-                  value={twitterHandle}
-                  onChange={e => setTwitterHandle(e.target.value)}
-                />
-              </div>
-              <div className={styles.linkItem}>
-                <div className={styles.linkIconWrapper}>
-                  <img src={instagramIcon} className={styles.linkIcon} />
-                </div>
-                <input
-                  className={styles.linkInput}
-                  placeholder="Enter your Instagram profile link"
-                  value={instagramHandle}
-                  onChange={e => setInstagramHandle(e.target.value)}
-                />
-              </div>
-              <div className={styles.linkItem}>
-                <div className={styles.linkIconWrapper}>
-                  <img src={mediumIcon} className={styles.linkIcon} />
-                </div>
-                <input
-                  className={styles.linkInput}
-                  placeholder="Enter your Medium profile link"
-                  value={mediumHandle}
-                  onChange={e => setMediumHandle(e.target.value)}
-                />
-              </div>
-              <div className={styles.linkItem}>
-                <div className={styles.linkIconWrapper}>
-                  <img src={telegramIcon} className={styles.linkIcon} />
-                </div>
-                <input
-                  className={styles.linkInput}
-                  placeholder="Enter your Telegram profile link"
-                  value={telegram}
-                  onChange={e => setTelegram(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.inputGroup}>
-          <div className={styles.inputTitle}>
-            Contact Email *&nbsp;
-            <BootstrapTooltip
-              title="We will use this email to notify you about your collection application. This will not be shared with others."
-              placement="top"
-            >
-              <HelpOutlineIcon />
-            </BootstrapTooltip>
-          </div>
-          <div className={styles.inputWrapper}>
-            <input
-              className={cx(styles.input, emailError && styles.hasError)}
-              placeholder="Email Address"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              onBlur={validateEmail}
-            />
-            {emailError && <div className={styles.error}>{emailError}</div>}
-          </div>
-        </div>
-
-        <div className={styles.buttonsWrapper}>
-          {isRegister ? (
-            <div
-              className={cx(
-                styles.createButton,
-                (creating || !isValid) && styles.disabled
-              )}
-              onClick={isValid ? handleRegister : null}
-            >
-              {creating ? <ClipLoader color="#FFF" size={16} /> : 'Submit'}
-            </div>
-          ) : (
-            <div
-              className={cx(
-                styles.createButton,
-                (creating || deploying || !isValid) && styles.disabled
-              )}
-              onClick={isValid && !creating && !deploying ? handleCreate : null}
-            >
-              {creating ? (
-                <ClipLoader color="#FFF" size={16} />
-              ) : deploying ? (
-                'Deploying'
               ) : (
-                'Create'
+                <div
+                  className={cx(
+                    styles.createButton,
+                    (creating || deploying || !isValid) && styles.disabled
+                  )}
+                  onClick={
+                    isValid && !creating && !deploying ? handleCreate : null
+                  }
+                >
+                  {creating ? (
+                    <ClipLoader color="#FFF" size={16} />
+                  ) : deploying ? (
+                    'Deploying'
+                  ) : (
+                    'Create'
+                  )}
+                </div>
               )}
             </div>
-          )}
-        </div>
-        {/* {!isRegister && (
+            {/* {!isRegister && (
           <div className={styles.fee}>
             <InfoIcon />
             &nbsp;0 FTMs are charged to create a new collection.
           </div>
         )} */}
+          </div>
+        </div>
+        {renderMenu}
       </div>
-      {renderMenu}
-      <div className={styles.footerBottom}>
-        <p style={{ textAlign: 'center' }}>
-          All rights reserved &copy; Picasso || Design By:{' '}
-          <span>Matsushima Goro</span>
-        </p>
-      </div>
+      <Footer />
     </div>
   );
 };

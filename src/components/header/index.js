@@ -335,35 +335,36 @@ const Header = () => {
           className={cx(styles.menuItem, styles.topItem)}
           onClick={goToMyProfile}
         >
-          <img src={iconUser} className={styles.menuIcon} />
+          {/* <img src={iconUser} className={styles.menuIcon} /> */}
           My Profile
         </div>
       )}
-      <div className={styles.menuItem} onClick={goToNotificationSettings}>
+      {/* <div className={styles.menuItem} onClick={goToNotificationSettings}>
         <img src={iconNotification} className={styles.menuIcon} />
         Notification Settings
-      </div>
+      </div> */}
       <div className={styles.mobileMenu}>
         <div className={styles.menuItem} onClick={goToExplore}>
-          <img src={iconAdd} className={styles.menuIcon} />
+          {/* <img src={iconAdd} className={styles.menuIcon} /> */}
           Explore
         </div>
         <div className={styles.menuItem} onClick={goToCreateNft}>
-          <img src={iconAdd} className={styles.menuIcon} />
+          {/* <img src={iconAdd} className={styles.menuIcon} /> */}
           Create NFT
         </div>
       </div>
       <div className={styles.menuItem} onClick={handleCreateCollection}>
-        <img src={iconAdd} className={styles.menuIcon} />
-        Create New Collection
+        {/* <img src={iconAdd} className={styles.menuIcon} /> */}
+        Create Collection
       </div>
       <div className={styles.menuItem} onClick={handleRegisterCollection}>
-        <img src={iconEdit} className={styles.menuIcon} />
-        Register Existing Collection
+        {/* <img src={iconEdit} className={styles.menuIcon} /> */}
+        Register Collection
       </div>
+      <div className={styles.menuSeparator} />
       <div className={styles.menuItem} onClick={openWrapStation}>
-        <img src={iconSwap} className={styles.menuIcon} />
-        FTM / WFTM Station
+        {/* <img src={iconSwap} className={styles.menuIcon} /> */}
+        Buy WFTM
       </div>
 
       <div className={styles.menuSeparator} />
@@ -419,9 +420,12 @@ const Header = () => {
             <div key={4} className={styles.menuSeparator} />,
           ]
         : null}
-      <div className={styles.signOut} onClick={handleSignOut}>
+      <div className={styles.menuItem} onClick={handleSignOut}>
         Sign Out
       </div>
+      {/* <div className={styles.signOut} onClick={handleSignOut}>
+        Sign Out
+      </div> */}
     </Menu>
   );
 
@@ -430,7 +434,8 @@ const Header = () => {
       <div className={styles.searchcontinner}>
         <div className={styles.searchbar}>
           <input
-            placeholder="Search items, collections and accounts"
+            placeholder="Search items and accounts"
+            // placeholder="Search items, collections and accounts"
             className={styles.searchinput}
             onChange={e => handleSearch(e.target.value)}
             onFocus={() => setSearchBarActive(true)}
@@ -440,7 +445,7 @@ const Header = () => {
         </div>
         {searchBarActive && (
           <div className={styles.resultcont}>
-            {collections.length > 0 && (
+            {/* {collections.length > 0 && (
               <div className={styles.resultsection}>
                 <div className={styles.resultsectiontitle}>Collections</div>
                 <div className={styles.separator} />
@@ -466,7 +471,7 @@ const Header = () => {
                   ))}
                 </div>
               </div>
-            )}
+            )} */}
             {accounts.length > 0 && (
               <div className={styles.resultsection}>
                 <div className={styles.resultsectiontitle}>Accounts</div>
@@ -635,9 +640,9 @@ const Header = () => {
                   user?.alias || shortenAddress(account)
                 )}
               </div>
-              <div className={styles.network}>
+              {/* <div className={styles.network}>
                 {loading ? <Skeleton width={80} /> : NETWORK_LABEL[chainId]}
-              </div>
+              </div> */}
             </div>
 
             <ExpandMore

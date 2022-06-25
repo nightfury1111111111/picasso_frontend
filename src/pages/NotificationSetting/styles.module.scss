@@ -8,21 +8,28 @@
 
 .inner {
   width: 100%;
-  padding: 54px 80px;
+  padding: 54px 180px;
   box-sizing: border-box;
 }
 
 .title {
-  font-weight: 700;
-  font-size: 32px;
+  font-size: 28px;
   line-height: 39px;
   letter-spacing: -0.02em;
+  border-radius: 10px;
   color: #121223;
+  background: #ededed;
+  padding: 20px;
+  // margin-bottom: 40px;
 }
 
 .body {
   margin-top: 50px;
+  background: #ededed;
+  border-radius: 10px;
+  padding: 20px;
   display: flex;
+  justify-content: space-between;
 }
 
 .footerBottom {
