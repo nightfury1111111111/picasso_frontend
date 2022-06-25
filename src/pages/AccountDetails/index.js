@@ -580,8 +580,9 @@ const AccountDetails = () => {
   const showFollowers = () => {
     if (loading || !user.followers || user.followers === 0) return;
 
-    setFollowersModalVisible(true);
+    // setFollowersModalVisible(true);
     fetchFollowers();
+    goToTab(7);
   };
 
   const showFollowings = () => {
@@ -589,7 +590,7 @@ const AccountDetails = () => {
 
     // setFollowingsModalVisible(true);
     fetchFollowings();
-    goToTab(7);
+    goToTab(8);
   };
 
   const followUser = async () => {
@@ -740,12 +741,12 @@ const AccountDetails = () => {
                 <img src={iconSettings} className={styles.settingsIcon} />
               </div>
             )}
-            <div
+            {/* <div
               className={styles.settings}
               onClick={e => setAnchorEl(e.currentTarget)}
             >
               <img src={iconShare} className={styles.settingsIcon} />
-            </div>
+            </div> */}
           </div>
           <div className={styles.wrapper}>
             <div className={styles.avatarWrapper}>
@@ -816,7 +817,7 @@ const AccountDetails = () => {
                   </div>
                 </CopyToClipboard>
               </div>
-              <div className={styles.followers} onClick={showFollowers}>
+              {/* <div className={styles.followers} onClick={showFollowers}>
                 {loading ? (
                   <Skeleton width={100} height={24} />
                 ) : (
@@ -833,22 +834,47 @@ const AccountDetails = () => {
                     <b>{formatFollowers(user.followings || 0)}</b> Following
                   </>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
           <div className={styles.tabVar}>
-            <div className={styles.tabName} onClick={() => goToTab(0)}>
+            <div
+              className={cx(styles.tabName, tab == 0 && styles.activeTab)}
+              onClick={() => goToTab(0)}
+            >
               My NFTs
             </div>
-            <div className={styles.tabName} onClick={() => goToTab(2)}>
+            <div
+              className={cx(styles.tabName, tab == 2 && styles.activeTab)}
+              onClick={() => goToTab(2)}
+            >
               About
             </div>
-            <div className={styles.tabName} onClick={() => goToTab(3)}>
+            <div
+              className={cx(styles.tabName, tab == 3 && styles.activeTab)}
+              onClick={() => goToTab(3)}
+            >
               Activity
             </div>
-            <div className={styles.tabName}>Follower</div>
-            <div className={styles.tabName}>Following</div>
-            <div className={styles.tabName}>Setting</div>
+            <div
+              className={cx(styles.tabName, tab == 7 && styles.activeTab)}
+              onClick={() => {
+                showFollowers();
+              }}
+            >
+              Follower
+            </div>
+            <div
+              className={cx(styles.tabName, tab == 8 && styles.activeTab)}
+              onClick={() => {
+                showFollowings();
+              }}
+            >
+              Following
+            </div>
+            {/* <div className={cx(styles.tabName, tab == 9 && styles.activeTab)}>
+              Setting
+            </div> */}
           </div>
         </div>
         <div className={styles.content}>
@@ -1122,6 +1148,126 @@ const AccountDetails = () => {
                       </div>
                     </div>
                   ))}
+                </div>
+              </>
+            ) : tab == 7 ? (
+              <>
+                <div className={styles.bioHeader}>Followers</div>
+                <div className={styles.followContent}>
+                  {followers.current.length &&
+                    followers.current.map((user, idx) => (
+                      <Link
+                        to={`/account/${user?.address}`}
+                        className={styles.followList}
+                        key={idx}
+                      >
+                        <div className={styles.followAvatar}>
+                          {!user ? (
+                            <Skeleton width={40} height={40} />
+                          ) : user.imageHash ? (
+                            <img
+                              src={`https://cloudflare-ipfs.com/ipfs/${user.imageHash}`}
+                              width={80}
+                              height={80}
+                            />
+                          ) : (
+                            <Identicon
+                              account={user.address}
+                              size={80}
+                              className={styles.avatar}
+                            />
+                          )}
+                        </div>
+                        <div className={styles.info}>
+                          <div className={styles.alias}>
+                            {user ? (
+                              user.alias || 'Unnamed'
+                            ) : (
+                              <Skeleton width={100} height={20} />
+                            )}
+                          </div>
+                          <div
+                            className={styles.address}
+                            style={{ color: 'black' }}
+                          >
+                            {user ? (
+                              shortenAddress(user.address)
+                            ) : (
+                              <Skeleton width={100} height={20} />
+                            )}
+                          </div>
+                        </div>
+                        <div className={styles.followerNum}>
+                          {user ? (
+                            `${formatFollowers(user.followers)} follower${
+                              user.followers !== 1 ? 's' : ''
+                            }`
+                          ) : (
+                            <Skeleton width={80} height={24} />
+                          )}
+                        </div>
+                      </Link>
+                    ))}
+                </div>
+              </>
+            ) : tab == 8 ? (
+              <>
+                <div className={styles.bioHeader}>Following</div>
+                <div className={styles.followContent}>
+                  {followings.current.length &&
+                    followings.current.map((user, idx) => (
+                      <Link
+                        to={`/account/${user?.address}`}
+                        className={styles.followList}
+                        key={idx}
+                      >
+                        <div className={styles.followAvatar}>
+                          {!user ? (
+                            <Skeleton width={40} height={40} />
+                          ) : user.imageHash ? (
+                            <img
+                              src={`https://cloudflare-ipfs.com/ipfs/${user.imageHash}`}
+                              width={80}
+                              height={80}
+                            />
+                          ) : (
+                            <Identicon
+                              account={user.address}
+                              size={80}
+                              className={styles.avatar}
+                            />
+                          )}
+                        </div>
+                        <div className={styles.info}>
+                          <div className={styles.alias}>
+                            {user ? (
+                              user.alias || 'Unnamed'
+                            ) : (
+                              <Skeleton width={100} height={20} />
+                            )}
+                          </div>
+                          <div
+                            className={styles.address}
+                            style={{ color: 'black' }}
+                          >
+                            {user ? (
+                              shortenAddress(user.address)
+                            ) : (
+                              <Skeleton width={100} height={20} />
+                            )}
+                          </div>
+                        </div>
+                        <div className={styles.followerNum}>
+                          {user ? (
+                            `${formatFollowers(user.followers)} follower${
+                              user.followers !== 1 ? 's' : ''
+                            }`
+                          ) : (
+                            <Skeleton width={80} height={24} />
+                          )}
+                        </div>
+                      </Link>
+                    ))}
                 </div>
               </>
             ) : (

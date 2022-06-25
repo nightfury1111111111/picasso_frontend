@@ -181,9 +181,9 @@ const AccountModal = () => {
     <div className={styles.root} ref={rootRef}>
       <Modal open className={styles.modal} container={() => rootRef.current}>
         <div className={styles.paper}>
-          <h2 className={styles.title}>Account Settings</h2>
+          <h2 className={styles.title}>My Account</h2>
           <div className={styles.formGroup}>
-            <p className={styles.formLabel}>User Avatar</p>
+            {/* <p className={styles.formLabel}>User Avatar</p> */}
             <input
               ref={inputRef}
               type="file"
@@ -202,7 +202,7 @@ const AccountModal = () => {
             </div>
           </div>
           <div className={styles.formGroup}>
-            <p className={styles.formLabel}>Name</p>
+            {/* <p className={styles.formLabel}>Name</p> */}
             <input
               type="text"
               className={styles.formInput}
@@ -215,7 +215,7 @@ const AccountModal = () => {
             <div className={styles.lengthIndicator}>{alias.length}/20</div>
           </div>
           <div className={styles.formGroup}>
-            <p className={styles.formLabel}>Email Address</p>
+            {/* <p className={styles.formLabel}>Email Address</p> */}
             <input
               type="text"
               className={cx(
@@ -233,7 +233,7 @@ const AccountModal = () => {
             )}
           </div>
           <div className={styles.formGroup}>
-            <p className={styles.formLabel}>Bio</p>
+            {/* <p className={styles.formLabel}>Bio</p> */}
             <textarea
               className={cx(styles.formInput, styles.longInput)}
               maxLength={120}
