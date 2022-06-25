@@ -22,9 +22,10 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
+    'no-unused-vars': 'off',
     'react/prop-types': 'off',
     'prettier/prettier': [
-      'error',
+      'off',
       {
         endOfLine: 'auto',
       },

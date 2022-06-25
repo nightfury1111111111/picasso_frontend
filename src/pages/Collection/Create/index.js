@@ -11,7 +11,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CloseIcon from '@material-ui/icons/Close';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import InfoIcon from '@material-ui/icons/Info';
+// import InfoIcon from '@material-ui/icons/Info';
 import { ClipLoader } from 'react-spinners';
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
@@ -925,12 +925,12 @@ const CollectionCreate = ({ isRegister }) => {
             </div>
           )}
         </div>
-        {!isRegister && (
+        {/* {!isRegister && (
           <div className={styles.fee}>
             <InfoIcon />
             &nbsp;0 FTMs are charged to create a new collection.
           </div>
-        )}
+        )} */}
       </div>
       {renderMenu}
       <div className={styles.footerBottom}>

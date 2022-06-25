@@ -171,6 +171,30 @@
   align-items: center;
 }
 
+.tabName {
+  margin-left: 40px;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1000;
+  &:last-child {
+    margin-right: 60px;
+  }
+}
+
+.tabVar {
+  width: 100%;
+  height: 120px;
+  padding-bottom: 20px;
+  margin-top: -110px;
+  border-radius: 10px;
+  display: flex;
+  background: #ededed;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
 .addressWrapper {
   width: fit-content;
   height: 30px;
@@ -207,6 +231,16 @@
   }
 }
 
+.activityHeaderWrapper {
+  width: calc(100% - 40px);
+  // height: 70px;
+  padding: 15px 20px;
+  background-color: #ededed;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
 .tooltip {
   font-size: 16px;
 }
@@ -220,12 +254,14 @@
 }
 
 .bio {
-  width: 90%;
-  max-width: 700px;
-  margin-top: 6px;
-  font-size: 18px;
+  width: calc(100% - 60px);
+  background: #ededed;
+  min-height: 100px;
+  // max-width: 700px;
+  // margin-top: 6px;
+  font-size: 16px;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.6);
+  padding: 40px 30px;
 }
 
 .content {
@@ -234,6 +270,15 @@
   box-sizing: border-box;
   border: 1px solid #eaeaf1;
   display: flex;
+}
+
+.bioHeader {
+  width: calc(100% - 60px);
+  background: #ededed;
+  padding: 20px 30px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 2px;
 }
 
 .contentSidebar {
@@ -267,9 +312,10 @@
 
 .contentBody {
   flex-grow: 1;
+  // height: -moz-fit-content;
   height: fit-content;
-  padding: 24px 32px 32px;
   box-sizing: border-box;
+  // min-height: 50vh;
   max-height: 100%;
   overflow-y: auto;
   overflow-x: auto;
@@ -337,8 +383,14 @@
 }
 
 .activity {
-  padding: 14px;
+  padding: 20px;
+  height: 210px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: #ededed;
+  margin-bottom: 2px;
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   .name,
   .owner {
@@ -361,14 +413,20 @@
   flex: 2 0 0;
 }
 
+.nftName {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
 .name {
-  flex: 3 0 0;
-  display: flex;
-  align-items: center;
+  // flex: 3 0 0;
+  // display: flex;
+  // align-items: center;
 
   .media {
-    width: 32px;
-    height: 32px;
+    width: 160px;
+    height: 160px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -403,10 +461,20 @@
   flex: 2 0 0;
 }
 
+.activityCont {
+  padding-left: 15px;
+  height: 90%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  font-size: 16px;
+}
+
 .tokenLogo {
   width: 24px;
   height: 24px;
   margin-right: 8px;
+  margin-left: 8px;
 
   img {
     width: 100%;

@@ -36,7 +36,7 @@ import iconArtion from 'assets/svgs/logo_small_blue.svg';
 import iconFacebook from 'assets/imgs/facebook.png';
 import iconTwitter from 'assets/svgs/twitter_blue.svg';
 import IconList from 'assets/icons/iconList';
-// import IconBundle from 'assets/icons/iconBundle';
+import IconBundle from 'assets/icons/iconBundle';
 import IconHeart from 'assets/icons/iconHeart';
 import IconClock from 'assets/icons/iconClock';
 
@@ -91,7 +91,9 @@ const AccountDetails = () => {
   const [followersModalVisible, setFollowersModalVisible] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [bundleFetching, setBundleFetching] = useState(false);
+  // eslint-disable-next-line
   const [favFetching, setFavFetching] = useState(false);
+  // eslint-disable-next-line
   const [fguresFetching, setFiguresFetching] = useState(false);
   const tokens = useRef([]);
   const bundles = useRef([]);
@@ -557,6 +559,7 @@ const AccountDetails = () => {
     try {
       const { data } = await getFollowers(uid);
       followers.current = data;
+      console.log('sdfsdf', data);
     } catch {
       followers.current = [];
     }
@@ -584,8 +587,9 @@ const AccountDetails = () => {
   const showFollowings = () => {
     if (loading || !user.followings || user.followings === 0) return;
 
-    setFollowingsModalVisible(true);
+    // setFollowingsModalVisible(true);
     fetchFollowings();
+    goToTab(7);
   };
 
   const followUser = async () => {
@@ -832,10 +836,23 @@ const AccountDetails = () => {
               </div>
             </div>
           </div>
-          <div className={styles.bio}>{user.bio || ''}</div>
+          <div className={styles.tabVar}>
+            <div className={styles.tabName} onClick={() => goToTab(0)}>
+              My NFTs
+            </div>
+            <div className={styles.tabName} onClick={() => goToTab(2)}>
+              About
+            </div>
+            <div className={styles.tabName} onClick={() => goToTab(3)}>
+              Activity
+            </div>
+            <div className={styles.tabName}>Follower</div>
+            <div className={styles.tabName}>Following</div>
+            <div className={styles.tabName}>Setting</div>
+          </div>
         </div>
         <div className={styles.content}>
-          <div className={styles.contentSidebar}>
+          {/* <div className={styles.contentSidebar}>
             <div className={styles.tabsGroup}>
               <div className={styles.groupTitle}>My Items</div>
               {renderTab(
@@ -845,13 +862,13 @@ const AccountDetails = () => {
                 count,
                 fetching || fguresFetching
               )}
-              {/* {renderTab(
-              'Bundles',
-              IconBundle,
-              1,
-              bundleCount,
-              bundleFetching || fguresFetching
-            )} */}
+              {renderTab(
+                'Bundles',
+                IconBundle,
+                1,
+                bundleCount,
+                bundleFetching || fguresFetching
+              )}
               {renderTab(
                 'Favorited',
                 IconHeart,
@@ -866,14 +883,17 @@ const AccountDetails = () => {
               {renderTab('Offers', IconList, 4)}
               {renderTab('My Offers', IconList, 5)}
             </div>
-          </div>
+          </div> */}
           <div ref={ref} className={styles.contentBody} onScroll={handleScroll}>
             {tab === 0 ? (
-              <NFTsGrid
-                items={tokens.current}
-                numPerRow={numPerRow}
-                loading={fetching}
-              />
+              <>
+                <div className={styles.bioHeader}>NFTs</div>
+                <NFTsGrid
+                  items={tokens.current}
+                  numPerRow={numPerRow}
+                  loading={fetching}
+                />
+              </>
             ) : // tab === 1 ? (
             //   <NFTsGrid
             //     items={bundles.current}
@@ -883,37 +903,37 @@ const AccountDetails = () => {
             //     onCreate={handleCreateBundle}
             //   />
             // ) :
+            // tab === 2 ? (
+            //   <NFTsGrid
+            //     items={likes.current}
+            //     numPerRow={numPerRow}
+            //     loading={fetching}
+            //     onLike={() => {
+            //       likes.current = [];
+            //       fetchLikes(0);
+            //     }}
+            //   />
+            // )
             tab === 2 ? (
-              <NFTsGrid
-                items={likes.current}
-                numPerRow={numPerRow}
-                loading={fetching}
-                onLike={() => {
-                  likes.current = [];
-                  fetchLikes(0);
-                }}
-              />
+              <div style={{ width: '100%' }}>
+                <div className={styles.bioHeader}>About</div>
+                <div className={styles.bio}>{user.bio || ''}</div>
+              </div>
             ) : tab === 3 ? (
               <div className={styles.tableWapper}>
-                <div className={styles.activityHeader}>
+                {/* <div className={styles.activityHeader}>
                   <div className={styles.event}>Event</div>
                   <div className={styles.name}>Item</div>
                   <div className={styles.price}>Price</div>
                   <div className={styles.quantity}>Quantity</div>
                   <div className={styles.owner}>Owner</div>
                   <div className={styles.date}>Date</div>
-                </div>
+                </div> */}
                 <div className={styles.activityList}>
-                  {(activityLoading ? new Array(5).fill(null) : activities).map(
+                  <div className={styles.bioHeader}>Activity</div>
+                  {(activityLoading ? new Array(1).fill(null) : activities).map(
                     (activity, idx) => (
                       <div key={idx} className={styles.activity}>
-                        <div className={styles.event}>
-                          {activity ? (
-                            activity.event
-                          ) : (
-                            <Skeleton width={100} height={20} />
-                          )}
-                        </div>
                         {activity ? (
                           <Link
                             to={`/explore/${activity.contractAddress}/${activity.tokenID}`}
@@ -926,67 +946,85 @@ const AccountDetails = () => {
                                   : activity.imageURL
                               )}
                             </div>
-                            {activity.name}
                           </Link>
                         ) : (
                           <div className={styles.name}>
                             <Skeleton width={120} height={20} />
                           </div>
                         )}
-                        <div className={styles.price}>
-                          {activity ? (
-                            <>
-                              <div className={styles.tokenLogo}>
-                                <img src={activity.token?.icon} />
-                              </div>
-                              {activity.price}
-                            </>
-                          ) : (
-                            <Skeleton width={100} height={20} />
-                          )}
-                        </div>
-                        <div className={styles.quantity}>
+                        <div className={styles.activityCont}>
+                          <div className={styles.nftName}>
+                            {activity ? (
+                              <>{activity.name}</>
+                            ) : (
+                              <Skeleton width={100} height={20} />
+                            )}
+                          </div>
+                          <div className={styles.event}>
+                            {activity ? (
+                              <>Action: {activity.event}</>
+                            ) : (
+                              <Skeleton width={100} height={20} />
+                            )}
+                          </div>
+                          <div className={styles.price}>
+                            {activity ? (
+                              <>
+                                Price:{' '}
+                                {/* <div className={styles.tokenLogo}>
+                                  <img src={activity.token?.icon} />
+                                </div> */}
+                                {activity.price} wFTM
+                              </>
+                            ) : (
+                              <Skeleton width={100} height={20} />
+                            )}
+                          </div>
+
+                          {/* <div className={styles.quantity}>
                           {activity ? (
                             activity.quantity
                           ) : (
                             <Skeleton width={80} height={20} />
                           )}
-                        </div>
-                        {activity ? (
-                          activity.to ? (
-                            <Link
-                              to={`/account/${activity.to}`}
-                              className={styles.owner}
-                            >
-                              <div className={styles.ownerAvatarWrapper}>
-                                {activity.image ? (
-                                  <img
-                                    src={`https://cloudflare-ipfs.com/ipfs/${activity.image}`}
-                                    className={styles.ownerAvatar}
-                                  />
-                                ) : (
-                                  <Identicon
-                                    account={activity.to}
-                                    size={24}
-                                    className={styles.ownerAvatar}
-                                  />
-                                )}
-                              </div>
-                              {activity.alias || shortenAddress(activity.to)}
-                            </Link>
-                          ) : (
-                            <div className={styles.owner} />
-                          )
-                        ) : (
-                          <div className={styles.owner}>
-                            <Skeleton width={130} height={20} />
+                        </div> */}
+
+                          <div className={styles.date}>
+                            {activity ? (
+                              <>At:{formatDate(activity.createdAt)}</>
+                            ) : (
+                              <Skeleton width={120} height={20} />
+                            )}
                           </div>
-                        )}
-                        <div className={styles.date}>
                           {activity ? (
-                            formatDate(activity.createdAt)
+                            activity.to ? (
+                              <Link
+                                to={`/account/${activity.to}`}
+                                className={styles.owner}
+                              >
+                                <div className={styles.ownerAvatarWrapper}>
+                                  {activity.image ? (
+                                    <img
+                                      src={`https://cloudflare-ipfs.com/ipfs/${activity.image}`}
+                                      className={styles.ownerAvatar}
+                                    />
+                                  ) : (
+                                    <Identicon
+                                      account={activity.to}
+                                      size={24}
+                                      className={styles.ownerAvatar}
+                                    />
+                                  )}
+                                </div>
+                                {activity.alias || shortenAddress(activity.to)}
+                              </Link>
+                            ) : (
+                              <div className={styles.owner} />
+                            )
                           ) : (
-                            <Skeleton width={120} height={20} />
+                            <div className={styles.owner}>
+                              <Skeleton width={130} height={20} />
+                            </div>
                           )}
                         </div>
                       </div>

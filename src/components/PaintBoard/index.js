@@ -625,7 +625,7 @@ const PaintBoard = () => {
               )}
             </div>
             <div className={styles.fee}>
-              {fee !== null ? (
+              {fee !== null && fee !== 0 ? (
                 <>
                   <InfoIcon />
                   &nbsp;{fee} FTM are charged to create a new NFT.
