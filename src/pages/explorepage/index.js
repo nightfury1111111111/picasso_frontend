@@ -286,12 +286,13 @@ const ExploreAllPage = () => {
     <>
       <Header border />
       <PageHeader text={PageHeaderText} />
-      <div
-        ref={conRef}
-        className={styles.container}
-        onScroll={width <= 600 ? handleScroll : null}
-      >
-        <div className={cx(styles.sidebar, collapsed && styles.collapsed)}>
+      <div className={styles.nftContainer}>
+        <div
+          ref={conRef}
+          className={styles.container}
+          onScroll={width <= 600 ? handleScroll : null}
+        >
+          {/* <div className={cx(styles.sidebar, collapsed && styles.collapsed)}>
           <div className={styles.sidebarHeader}>
             {!collapsed && <div className={styles.sidebarTitle}>Filters</div>}
             <img
@@ -305,26 +306,27 @@ const ExploreAllPage = () => {
             <CollectionsFilter />
             <CategoriesFilter />
           </div>
-        </div>
-        <div className={styles.body}>
-          <div className={styles.filterHeader}>
-            <ExploreFilterHeader
-              loading={upFetching || downFetching}
-              category={category}
-            />
-          </div>
-          <div
-            ref={ref}
-            className={styles.exploreAll}
-            onScroll={width > 600 ? handleScroll : null}
-          >
-            <NFTsGrid
-              items={tokens}
-              uploading={upFetching}
-              loading={downFetching}
-              numPerRow={numPerRow}
-              category={category}
-            />
+        </div> */}
+          <div className={styles.body}>
+            <div className={styles.filterHeader}>
+              <ExploreFilterHeader
+                loading={upFetching || downFetching}
+                categoryList={category}
+              />
+            </div>
+            <div
+              ref={ref}
+              className={styles.exploreAll}
+              onScroll={width > 600 ? handleScroll : null}
+            >
+              <NFTsGrid
+                items={tokens}
+                uploading={upFetching}
+                loading={downFetching}
+                numPerRow={numPerRow}
+                category={category}
+              />
+            </div>
           </div>
         </div>
       </div>

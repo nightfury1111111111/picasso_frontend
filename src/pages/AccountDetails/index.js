@@ -997,10 +997,10 @@ const AccountDetails = () => {
                             {activity ? (
                               <>
                                 Price:{' '}
-                                {/* <div className={styles.tokenLogo}>
+                                <div className={styles.tokenLogo}>
                                   <img src={activity.token?.icon} />
-                                </div> */}
-                                {activity.price} wFTM
+                                </div>
+                                {activity.price}
                               </>
                             ) : (
                               <Skeleton width={100} height={20} />

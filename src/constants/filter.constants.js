@@ -5,6 +5,7 @@ import iconUtility from 'assets/svgs/tools.svg';
 import iconTrading from 'assets/svgs/cardboard.svg';
 import iconVirtual from 'assets/svgs/monster.svg';
 import iconDomain from 'assets/svgs/domain.svg';
+import iconAll from 'assets/svgs/magnifier.svg';
 
 export const GroupFilters = [
   {
@@ -56,6 +57,11 @@ export const Categories = [
     id: 6,
     icon: iconDomain,
     label: 'Domain Names',
+  },
+  {
+    id: null,
+    icon: iconAll,
+    label: 'ALL Category',
   },
 ];
 

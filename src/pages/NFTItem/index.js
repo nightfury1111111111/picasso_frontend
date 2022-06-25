@@ -7,6 +7,7 @@ import React, {
   Suspense,
 } from 'react';
 import { useParams, Link, useHistory } from 'react-router-dom';
+import StickyBox from 'react-sticky-box';
 import { useDispatch, useSelector } from 'react-redux';
 import cx from 'classnames';
 import axios from 'axios';
@@ -47,6 +48,8 @@ import {
   Redeem as RedeemIcon,
 } from '@material-ui/icons';
 import toast from 'react-hot-toast';
+
+import Footer from 'components/Footer';
 
 import Panel from 'components/Panel';
 import Identicon from 'components/Identicon';
@@ -97,6 +100,12 @@ import iconTwitter from 'assets/svgs/twitter_blue.svg';
 
 import styles from './styles.module.scss';
 import FilterActions from '../../actions/filter.actions';
+
+import PageHeader from '../../components/PageHeader';
+
+const PageHeaderText = {
+  heading: 'Item Detail',
+};
 
 const ONE_MIN = 60;
 const ONE_HOUR = ONE_MIN * 60;
@@ -197,6 +206,8 @@ const NFTItem = () => {
   const [auctionContractApproving, setAuctionContractApproving] = useState(
     false
   );
+
+  const [tab, setTab] = useState(0);
 
   const [previewIndex, setPreviewIndex] = useState(0);
   const [minBid, setMinBid] = useState(0);
@@ -2458,7 +2469,7 @@ const NFTItem = () => {
 
   const renderItemInfo = () => (
     <>
-      <div className={styles.itemMenu}>
+      {/* <div className={styles.itemMenu}>
         {isMine && !bundleID && (
           <div className={styles.itemMenuBtn} onClick={onTransferClick}>
             <RedeemIcon src={shareIcon} className={styles.itemMenuIcon} />
@@ -2470,7 +2481,7 @@ const NFTItem = () => {
         >
           <img src={shareIcon} className={styles.itemMenuIcon} />
         </div>
-      </div>
+      </div> */}
       <div
         className={styles.itemCategory}
         style={{ cursor: 'pointer' }}
@@ -2482,6 +2493,7 @@ const NFTItem = () => {
             );
         }}
       >
+        <span style={{ color: 'black' }}>Collection:</span>{' '}
         {collection?.collectionName || collection?.name || ''}
       </div>
       <div className={styles.itemName}>
@@ -2490,13 +2502,14 @@ const NFTItem = () => {
       {info?.description && (
         <div className={styles.itemDescription}>{info.description}</div>
       )}
-      <div className={styles.itemStats}>
+      {/* <div className={styles.itemStats}>
         {(ownerInfoLoading || tokenOwnerLoading || owner || tokenInfo) && (
           <div className={styles.itemOwner}>
             {ownerInfoLoading || tokenOwnerLoading ? (
               <Skeleton width={150} height={20} />
             ) : tokenType.current === 721 || bundleID ? (
               <>
+                Owner&nbsp;
                 <div className={styles.ownerAvatar}>
                   {ownerInfo?.imageHash ? (
                     <img
@@ -2511,7 +2524,6 @@ const NFTItem = () => {
                     />
                   )}
                 </div>
-                Owned by&nbsp;
                 <Link to={`/account/${owner}`} className={styles.ownerName}>
                   {isMine ? 'Me' : ownerInfo?.alias || shortenAddress(owner)}
                 </Link>
@@ -2534,78 +2546,51 @@ const NFTItem = () => {
             ) : null}
           </div>
         )}
-        <div className={styles.itemViews}>
-          <FontAwesomeIcon icon={faEye} color="#A2A2AD" />
-          &nbsp;
-          {isNaN(views) ? (
-            <Skeleton width={80} height={20} />
-          ) : (
-            `${formatNumber(views)} view${views !== 1 ? 's' : ''}`
-          )}
-        </div>
-        <div
-          className={cx(
-            styles.itemViews,
-            styles.clickable,
-            isLike && styles.liking
-          )}
-        >
-          {isNaN(liked) || likeFetching ? (
-            <Skeleton width={80} height={20} />
-          ) : (
-            <>
-              {isLike ? (
-                <FavoriteIcon
-                  className={styles.favIcon}
-                  onClick={toggleFavorite}
-                />
-              ) : (
-                <FavoriteBorderIcon
-                  className={styles.favIcon}
-                  onClick={toggleFavorite}
-                />
-              )}
-              &nbsp;
-              <span onClick={liked ? showLikeUsers : null}>
-                {formatNumber(liked || 0)} favorite{liked !== 1 ? 's' : ''}
-              </span>
-            </>
-          )}
-        </div>
-      </div>
-      {hasUnlockable && (
-        <div className={styles.bestBuy}>
-          <div
-            className={styles.unlockableLabel}
-          >{`This item has unlockable content.${
-            !isMine ? ' Only owners can see the content.' : ''
-          }`}</div>
-          {isMine ? (
-            unlockableContent ? (
-              <textarea
-                className={styles.unlockableContent}
-                value={unlockableContent}
-                readOnly
-              />
+        <div style={{ display: 'flex' }}>
+          <div className={styles.itemViews}>
+            <FontAwesomeIcon icon={faEye} color="#A2A2AD" />
+            &nbsp;
+            {isNaN(views) ? (
+              <Skeleton width={80} height={20} />
             ) : (
-              <div
-                className={cx(styles.revealBtn, revealing && styles.disabled)}
-                onClick={handleRevealContent}
-              >
-                {revealing ? (
-                  <ClipLoader color="#FFF" size={16} />
+              `${formatNumber(views)} view${views !== 1 ? 's' : ''}`
+            )}
+          </div>
+          <div
+            className={cx(
+              styles.itemViews,
+              styles.clickable,
+              isLike && styles.liking
+            )}
+          >
+            {isNaN(liked) || likeFetching ? (
+              <Skeleton width={80} height={20} />
+            ) : (
+              <>
+                {isLike ? (
+                  <FavoriteIcon
+                    className={styles.favIcon}
+                    onClick={toggleFavorite}
+                  />
                 ) : (
-                  `Reveal Content`
+                  <FavoriteBorderIcon
+                    className={styles.favIcon}
+                    onClick={toggleFavorite}
+                  />
                 )}
-              </div>
-            )
-          ) : null}
+                &nbsp;
+                <span onClick={liked ? showLikeUsers : null}>
+                  {formatNumber(liked || 0)} favorite{liked !== 1 ? 's' : ''}
+                </span>
+              </>
+            )}
+          </div>
         </div>
-      )}
+      </div> */}
 
       {bestListing && (
         <div className={styles.bestBuy}>
-          <div className={styles.currentPriceLabel}>Current price</div>
+          <div className={styles.currentPriceLabel}>Price</div>
           <div className={styles.currentPriceWrapper}>
             <div className={styles.tokenLogo}>
               <img src={bestListing.token?.icon} />
@@ -2627,17 +2612,21 @@ const NFTItem = () => {
               )
             </div> */}
           </div>
-          {bestListing.owner.toLocaleLowerCase() !==
-            account?.toLocaleLowerCase() && (
-            <TxButton
-              className={cx(styles.buyNow, buyingItem && styles.disabled)}
-              onClick={
-                bundleID ? handleBuyBundle : () => handleBuyItem(bestListing)
-              }
-            >
-              {buyingItem ? <ClipLoader color="#FFF" size={16} /> : 'Buy Now'}
-            </TxButton>
-          )}
+          <div
+            style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+          >
+            {bestListing.owner.toLocaleLowerCase() !==
+              account?.toLocaleLowerCase() && (
+              <TxButton
+                className={cx(styles.buyNow, buyingItem && styles.disabled)}
+                onClick={
+                  bundleID ? handleBuyBundle : () => handleBuyItem(bestListing)
+                }
+              >
+                {buyingItem ? <ClipLoader color="#FFF" size={16} /> : 'Buy Now'}
+              </TxButton>
+            )}
+          </div>
         </div>
       )}
     </>
@@ -2855,183 +2844,491 @@ const NFTItem = () => {
     );
 
   return (
-    <div className={styles.container}>
+    <>
       <Header border />
-      {isLoggedIn() && (
-        <div className={styles.header}>
-          {isMine && (
-            <>
-              {auction.current?.resulted === false ? (
-                <div
-                  className={cx(
-                    styles.headerButton,
-                    auctionCanceling && styles.disabled
-                  )}
-                  onClick={cancelCurrentAuction}
-                >
-                  {auctionCancelConfirming ? (
-                    <ClipLoader color="#FFF" size={16} />
-                  ) : (
-                    'Cancel Auction'
-                  )}
-                </div>
-              ) : null}
-              {!bundleID &&
-                (!auction.current || !auction.current.resulted) &&
-                !hasListing &&
-                tokenType.current !== 1155 && (
-                  <div
-                    className={cx(
-                      styles.headerButton,
-                      (auctionStarting || auctionUpdating || auctionEnded) &&
-                        styles.disabled
-                    )}
-                    onClick={() => {
-                      !auctionEnded && setAuctionModalVisible(true);
-                    }}
-                  >
-                    {auctionStartConfirming || auctionUpdateConfirming ? (
-                      <ClipLoader color="#FFF" size={16} />
-                    ) : auction.current ? (
-                      'Update Auction'
+      <PageHeader text={PageHeaderText} />
+      <div className={styles.container}>
+        <div className={styles.inner}>
+          <div className={styles.topContainer}>
+            <div className={styles.itemSummary}>
+              <div className={styles.itemMedia}>
+                <div className={styles.media}>
+                  {loading ? (
+                    <Loader
+                      type="Oval"
+                      color="#007BFF"
+                      height={32}
+                      width={32}
+                      className={styles.loader}
+                    />
+                  ) : !bundleID || bundleItems.current.length ? (
+                    bundleID ? (
+                      renderMedia(
+                        bundleItems.current[previewIndex].metadata?.image,
+                        bundleItems.current[previewIndex].contentType
+                      )
                     ) : (
-                      'Start Auction'
-                    )}
-                  </div>
-                )}
-              {(!auction.current || auction.current.resulted) && (
-                <>
-                  {hasListing ? (
-                    <div
-                      className={cx(
-                        styles.headerButton,
-                        cancelingListing && styles.disabled
-                      )}
-                      onClick={cancelList}
-                    >
-                      {cancelListingConfirming ? (
-                        <ClipLoader color="#FFF" size={16} />
-                      ) : (
-                        'Cancel Listing'
-                      )}
-                    </div>
-                  ) : null}
-                  <div
-                    className={cx(
-                      styles.headerButton,
-                      (listingItem || priceUpdating) && styles.disabled
-                    )}
-                    onClick={() =>
-                      !(listingItem || priceUpdating)
-                        ? setSellModalVisible(true)
-                        : null
-                    }
-                  >
-                    {listingConfirming ? (
-                      <ClipLoader color="#FFF" size={16} />
-                    ) : hasListing ? (
-                      'Update Listing'
-                    ) : (
-                      'Sell'
-                    )}
-                  </div>
-                </>
-              )}
-            </>
-          )}
-          {(!isMine ||
-            (tokenType.current === 1155 &&
-              myHolding.supply < tokenInfo.totalSupply)) &&
-            (!auction.current || auction.current.resulted) && (
-              <TxButton
-                className={cx(
-                  styles.headerButton,
-                  (offerPlacing || offerCanceling) && styles.disabled
-                )}
-                onClick={
-                  hasMyOffer
-                    ? handleCancelOffer
-                    : () => setOfferModalVisible(true)
-                }
-              >
-                {offerConfirming ? (
-                  <ClipLoader color="#FFF" size={16} />
-                ) : hasMyOffer ? (
-                  'Withdraw Offer'
-                ) : (
-                  'Make Offer'
-                )}
-              </TxButton>
-            )}
-        </div>
-      )}
-      <div className={styles.inner}>
-        <div className={styles.topContainer}>
-          <div className={styles.itemSummary}>
-            <div className={styles.itemMedia}>
-              <div className={styles.media}>
-                {loading ? (
-                  <Loader
-                    type="Oval"
-                    color="#007BFF"
-                    height={32}
-                    width={32}
-                    className={styles.loader}
-                  />
-                ) : !bundleID || bundleItems.current.length ? (
-                  bundleID ? (
-                    renderMedia(
-                      bundleItems.current[previewIndex].metadata?.image,
-                      bundleItems.current[previewIndex].contentType
+                      renderMedia(info?.image, contentType.current)
                     )
-                  ) : (
-                    renderMedia(info?.image, contentType.current)
-                  )
-                ) : null}
-              </div>
-              {bundleID && (
-                <div className={styles.previewList}>
-                  {(loading ? [null, null, null] : bundleItems.current).map(
-                    (item, idx) => (
-                      <div
-                        key={idx}
-                        className={cx(
-                          styles.preview,
-                          !loading && idx === previewIndex && styles.active
-                        )}
-                        onClick={() => setPreviewIndex(idx)}
-                      >
-                        {item ? (
-                          <Suspense
-                            fallback={
-                              <Loader
-                                type="Oval"
-                                color="#007BFF"
-                                height={32}
-                                width={32}
-                                className={styles.loader}
-                              />
-                            }
-                          >
-                            <SuspenseImg
-                              src={
-                                item.thumbnailPath?.length > 10
-                                  ? `${storageUrl}/image/${item.thumbnailPath}`
-                                  : item.metadata?.image
+                  ) : null}
+                </div>
+                {bundleID && (
+                  <div className={styles.previewList}>
+                    {(loading ? [null, null, null] : bundleItems.current).map(
+                      (item, idx) => (
+                        <div
+                          key={idx}
+                          className={cx(
+                            styles.preview,
+                            !loading && idx === previewIndex && styles.active
+                          )}
+                          onClick={() => setPreviewIndex(idx)}
+                        >
+                          {item ? (
+                            <Suspense
+                              fallback={
+                                <Loader
+                                  type="Oval"
+                                  color="#007BFF"
+                                  height={32}
+                                  width={32}
+                                  className={styles.loader}
+                                />
                               }
-                            />
-                          </Suspense>
+                            >
+                              <SuspenseImg
+                                src={
+                                  item.thumbnailPath?.length > 10
+                                    ? `${storageUrl}/image/${item.thumbnailPath}`
+                                    : item.metadata?.image
+                                }
+                              />
+                            </Suspense>
+                          ) : (
+                            <Skeleton width={72} height={72} />
+                          )}
+                        </div>
+                      )
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className={styles.tabBar}>
+                <div
+                  className={cx(styles.tabItem, tab == 0 && styles.activeTab)}
+                  onClick={() => {
+                    setTab(0);
+                  }}
+                >
+                  Details
+                </div>
+                <div
+                  className={cx(styles.tabItem, tab == 1 && styles.activeTab)}
+                  onClick={() => {
+                    setTab(1);
+                  }}
+                >
+                  Collection
+                </div>
+                <div
+                  className={cx(styles.tabItem, tab == 2 && styles.activeTab)}
+                  onClick={() => {
+                    setTab(2);
+                  }}
+                >
+                  History
+                </div>
+              </div>
+              {tab == 0 && (
+                <div className={styles.tabContent}>
+                  {info?.description && (
+                    <div className={styles.itemDescription}>
+                      {info.description}
+                    </div>
+                  )}
+                  {hasUnlockable && (
+                    <div className={styles.bestBuy}>
+                      <div
+                        className={styles.unlockableLabel}
+                      >{`This item has unlockable content.${
+                        !isMine ? ' Only owners can see the content.' : ''
+                      }`}</div>
+                      {isMine ? (
+                        unlockableContent ? (
+                          <textarea
+                            className={styles.unlockableContent}
+                            value={unlockableContent}
+                            readOnly
+                          />
                         ) : (
-                          <Skeleton width={72} height={72} />
+                          <div
+                            className={cx(
+                              styles.revealBtn,
+                              revealing && styles.disabled
+                            )}
+                            onClick={handleRevealContent}
+                          >
+                            {revealing ? (
+                              <ClipLoader color="#FFF" size={16} />
+                            ) : (
+                              `Reveal Content`
+                            )}
+                          </div>
+                        )
+                      ) : null}
+                    </div>
+                  )}
+                  <div className={styles.itemStats}>
+                    {(ownerInfoLoading ||
+                      tokenOwnerLoading ||
+                      owner ||
+                      tokenInfo) && (
+                      <div className={styles.itemOwner}>
+                        {ownerInfoLoading || tokenOwnerLoading ? (
+                          <Skeleton width={150} height={20} />
+                        ) : tokenType.current === 721 || bundleID ? (
+                          <>
+                            Owner&nbsp;
+                            <div className={styles.ownerAvatar}>
+                              {ownerInfo?.imageHash ? (
+                                <img
+                                  src={`https://cloudflare-ipfs.com/ipfs/${ownerInfo.imageHash}`}
+                                  className={styles.avatar}
+                                />
+                              ) : (
+                                <Identicon
+                                  account={owner}
+                                  size={32}
+                                  className={styles.avatar}
+                                />
+                              )}
+                            </div>
+                            <Link
+                              to={`/account/${owner}`}
+                              className={styles.ownerName}
+                            >
+                              {isMine
+                                ? 'Me'
+                                : ownerInfo?.alias || shortenAddress(owner)}
+                            </Link>
+                          </>
+                        ) : tokenInfo ? (
+                          <>
+                            <div
+                              className={cx(styles.itemViews, styles.clickable)}
+                              onClick={() => setOwnersModalVisible(true)}
+                            >
+                              <PeopleIcon style={styles.itemIcon} />
+                              &nbsp;{formatNumber(holders.length)}
+                              &nbsp;owner{holders.length > 1 && 's'}
+                            </div>
+                            <div className={styles.itemViews}>
+                              <ViewModuleIcon style={styles.itemIcon} />
+                              &nbsp;{formatNumber(tokenInfo.totalSupply)} total
+                            </div>
+                          </>
+                        ) : null}
+                      </div>
+                    )}
+                    <div style={{ display: 'flex' }}>
+                      <div className={styles.itemViews}>
+                        <FontAwesomeIcon icon={faEye} color="#A2A2AD" />
+                        &nbsp;
+                        {isNaN(views) ? (
+                          <Skeleton width={80} height={20} />
+                        ) : (
+                          `${formatNumber(views)} view${views !== 1 ? 's' : ''}`
                         )}
                       </div>
-                    )
-                  )}
+                      <div
+                        className={cx(
+                          styles.itemViews,
+                          styles.clickable,
+                          isLike && styles.liking
+                        )}
+                      >
+                        {isNaN(liked) || likeFetching ? (
+                          <Skeleton width={80} height={20} />
+                        ) : (
+                          <>
+                            {isLike ? (
+                              <FavoriteIcon
+                                className={styles.favIcon}
+                                onClick={toggleFavorite}
+                              />
+                            ) : (
+                              <FavoriteBorderIcon
+                                className={styles.favIcon}
+                                onClick={toggleFavorite}
+                              />
+                            )}
+                            &nbsp;
+                            <span onClick={liked ? showLikeUsers : null}>
+                              {formatNumber(liked || 0)} favorite
+                              {liked !== 1 ? 's' : ''}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      width: '100%',
+                      marginTop: '10px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <div style={{ width: '35%' }}>Contract Address :</div>
+                    <a
+                      href={`${explorerUrl}/token/${address}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.panelValue}
+                    >
+                      {shortenAddress(address)}
+                    </a>
+                  </div>
+                  <div
+                    style={{
+                      width: '100%',
+                      marginTop: '10px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <div style={{ width: '35%' }}>Blockchain :</div>
+                    <div>Fantom Opera</div>
+                  </div>
+                  <div
+                    style={{
+                      width: '100%',
+                      marginTop: '10px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <div style={{ width: '35%' }}>Chain ID :</div>
+                    <div>250</div>
+                  </div>
                 </div>
               )}
-            </div>
-            <div className={styles.itemInfo}>{renderItemInfo()}</div>
-            <div className={styles.itemInfoCont}>
+              {tab == 1 && (
+                <div className={styles.tabContent}>
+                  <div className={styles.panelBody}>
+                    <div className={styles.collectionDescription}>
+                      {collection?.description || 'Unverified Collection'}
+                    </div>
+
+                    <div className={styles.socialLinks}>
+                      {collection?.siteUrl?.length > 0 && (
+                        <a
+                          href={collection?.siteUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.socialLink}
+                        >
+                          <img src={webIcon} />
+                        </a>
+                      )}
+                      {collection?.twitterHandle?.length > 0 && (
+                        <a
+                          href={collection?.twitterHandle}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.socialLink}
+                        >
+                          <img src={twitterIcon} />
+                        </a>
+                      )}
+                      {collection?.mediumHandle?.length > 0 && (
+                        <a
+                          href={collection?.mediumHandle}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.socialLink}
+                        >
+                          <img src={mediumIcon} />
+                        </a>
+                      )}
+                      {collection?.telegram?.length > 0 && (
+                        <a
+                          href={collection?.telegram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.socialLink}
+                        >
+                          <img src={telegramIcon} />
+                        </a>
+                      )}
+                      {collection?.discord?.length > 0 && (
+                        <a
+                          href={collection?.discord}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.socialLink}
+                        >
+                          <img src={discordIcon} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+              {tab == 2 && (
+                <div className={styles.tabContent}>
+                  <div className={styles.tradeHistoryWrapper}>
+                    <div className={styles.tradeHistoryHeader}>
+                      <div className={styles.tradeHistoryTitle}>
+                        {filters[filter]}
+                      </div>
+                      {!bundleID && (
+                        <div className={styles.filter} onClick={handleMenuOpen}>
+                          <img src={filterIcon} className={styles.filterIcon} />
+                        </div>
+                      )}
+                    </div>
+                    <div className={styles.histories}>
+                      <div className={cx(styles.history, styles.heading)}>
+                        {filter === 0 && (
+                          <div className={styles.historyPrice}>Price</div>
+                        )}
+                        {tokenType.current === 1155 && (
+                          <div className={styles.quantity}>Quantity</div>
+                        )}
+                        <div className={styles.from}>From</div>
+                        <div className={styles.to}>To</div>
+                        <div className={styles.saleDate}>Date</div>
+                      </div>
+                      {(historyLoading
+                        ? [null, null, null]
+                        : filter === 0
+                        ? tradeHistory.current
+                        : transferHistory.current
+                      ).map((history, idx) => {
+                        const saleDate = history
+                          ? new Date(history.createdAt)
+                          : null;
+                        return (
+                          <div className={styles.history} key={idx}>
+                            {filter === 0 && (
+                              <div className={styles.historyPrice}>
+                                {history ? (
+                                  <>
+                                    <img
+                                      src={history.token?.icon}
+                                      className={styles.tokenIcon}
+                                    />
+                                    {formatNumber(history.price)}
+                                    &nbsp;( $
+                                    {formatNumber(
+                                      history.priceInUSD.toFixed(3)
+                                    )}{' '}
+                                    )
+                                  </>
+                                ) : (
+                                  <Skeleton width={100} height={20} />
+                                )}
+                              </div>
+                            )}
+                            {tokenType.current === 1155 && (
+                              <div className={styles.quantity}>
+                                {history ? (
+                                  formatNumber(history.value)
+                                ) : (
+                                  <Skeleton width={100} height={20} />
+                                )}
+                              </div>
+                            )}
+                            <div className={styles.from}>
+                              {history ? (
+                                <Link to={`/account/${history.from}`}>
+                                  <div className={styles.userAvatarWrapper}>
+                                    {history.fromImage ? (
+                                      <img
+                                        src={`https://cloudflare-ipfs.com/ipfs/${history.fromImage}`}
+                                        className={styles.userAvatar}
+                                      />
+                                    ) : (
+                                      <Identicon
+                                        account={history.from}
+                                        size={24}
+                                        className={styles.userAvatar}
+                                      />
+                                    )}
+                                  </div>
+                                  {history.fromAlias ||
+                                    history.from?.substr(0, 6)}
+                                </Link>
+                              ) : (
+                                <Skeleton width={180} height={20} />
+                              )}
+                            </div>
+                            <div className={styles.to}>
+                              {history ? (
+                                <Link to={`/account/${history.to}`}>
+                                  <div className={styles.userAvatarWrapper}>
+                                    {history.toImage ? (
+                                      <img
+                                        src={`https://cloudflare-ipfs.com/ipfs/${history.toImage}`}
+                                        className={styles.userAvatar}
+                                      />
+                                    ) : (
+                                      <Identicon
+                                        account={history.to}
+                                        size={24}
+                                        className={styles.userAvatar}
+                                      />
+                                    )}
+                                  </div>
+                                  {history.toAlias || history.to?.substr(0, 6)}
+                                </Link>
+                              ) : (
+                                <Skeleton width={180} height={20} />
+                              )}
+                            </div>
+                            <div className={styles.saleDate}>
+                              {saleDate ? (
+                                formatDate(saleDate)
+                              ) : (
+                                <Skeleton width={150} height={20} />
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    {/* {!bundleID && (
+                  <div className={styles.panelWrapper}>
+                    <Panel
+                      title="More from this collection"
+                      icon={ViewModuleIcon}
+                      responsive
+                    >
+                      <div className={styles.panelBody}>
+                        {loading ? (
+                          <div className={styles.loadingIndicator}>
+                            <ClipLoader color="#007BFF" size={16} />
+                          </div>
+                        ) : (
+                          <div className={styles.itemsList}>
+                            {moreItems.current.map((item, idx) => (
+                              <div key={idx} className={styles.moreItem}>
+                                <NFTCard item={item} />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </Panel>
+                  </div>
+                )} */}
+                  </div>
+                </div>
+              )}
+              <div className={styles.itemInfo}>{renderItemInfo()}</div>
+              {/* <div className={styles.itemInfoCont}>
               {info?.properties && (
                 <Panel title="Properties" icon={LabelIcon}>
                   <div className={styles.panelBody}>
@@ -3043,198 +3340,202 @@ const NFTItem = () => {
               {!bundleID && renderAboutPanel()}
               {!bundleID && renderCollectionPanel()}
               {!bundleID && renderRoyaltyPanel()}
+            </div> */}
             </div>
-          </div>
-          <div className={styles.itemMain}>
-            <div className={styles.itemInfoWrapper}>{renderItemInfo()}</div>
-            {info?.properties && (
-              <div className={cx(styles.panelWrapper, styles.infoPanel)}>
-                <Panel title="Properties">
-                  <div className={styles.panelBody}>
-                    {renderProperties(info.properties)}
-                  </div>
-                </Panel>
-              </div>
-            )}
-            {bundleID && (
-              <div className={cx(styles.panelWrapper, styles.infoPanel)}>
-                {renderBundleInfoPanel()}
-              </div>
-            )}
-            {!bundleID && (
-              <div className={cx(styles.panelWrapper, styles.infoPanel)}>
-                {renderAboutPanel()}
-              </div>
-            )}
-            {!bundleID && (
-              <div className={cx(styles.panelWrapper, styles.infoPanel)}>
-                {renderCollectionPanel()}
-              </div>
-            )}
-            {!bundleID && (
-              <div className={cx(styles.panelWrapper, styles.infoPanel)}>
-                {renderRoyaltyPanel()}
-              </div>
-            )}
-            {(winner || auction.current?.resulted === false) && (
-              <div className={styles.panelWrapper}>
-                <Panel
-                  title={
-                    auctionStarted
-                      ? auctionEnded
-                        ? 'Sale ended'
-                        : `Sale ends in ${formatDuration(
-                            auction.current.endTime
-                          )} (${new Date(
-                            auction.current.endTime * 1000
-                          ).toLocaleString()})`
-                      : `Sale starts in ${formatDuration(
-                          auction.current.startTime
-                        )}`
-                  }
-                  fixed
+            <div className={styles.itemMain}>
+              <div className={styles.itemInfoWrapper}>{renderItemInfo()}</div>
+              {info?.properties && (
+                <div className={cx(styles.panelWrapper, styles.infoPanel)}>
+                  <Panel title="Properties">
+                    <div className={styles.panelBody}>
+                      {renderProperties(info.properties)}
+                    </div>
+                  </Panel>
+                </div>
+              )}
+              {bundleID && (
+                <div className={cx(styles.panelWrapper, styles.infoPanel)}>
+                  {renderBundleInfoPanel()}
+                </div>
+              )}
+              {!bundleID && (
+                <div className={cx(styles.panelWrapper, styles.infoPanel)}>
+                  {renderAboutPanel()}
+                </div>
+              )}
+              {!bundleID && (
+                <div className={cx(styles.panelWrapper, styles.infoPanel)}>
+                  {renderCollectionPanel()}
+                </div>
+              )}
+              {!bundleID && (
+                <div className={cx(styles.panelWrapper, styles.infoPanel)}>
+                  {renderRoyaltyPanel()}
+                </div>
+              )}
+              {(winner || auction.current?.resulted === false) && (
+                <div
+                  className={styles.panelWrapper}
+                  style={{ paddingLeft: '-12px' }}
                 >
-                  <div className={styles.bids}>
-                    {auctionEnded ? (
-                      <div className={styles.result}>
-                        {auction.current.resulted ? (
-                          <>
-                            {'Winner: '}
-                            <Link to={`/account/${winner}`}>
-                              {winner?.toLowerCase() === account?.toLowerCase()
-                                ? 'Me'
-                                : shortenAddress(winner)}
-                            </Link>
-                            &nbsp;(
+                  <Panel
+                    title={
+                      auctionStarted
+                        ? auctionEnded
+                          ? 'Sale ended'
+                          : `Sale ends in ${formatDuration(
+                              auction.current.endTime
+                            )} (${new Date(
+                              auction.current.endTime * 1000
+                            ).toLocaleString()})`
+                        : `Sale starts in ${formatDuration(
+                            auction.current.startTime
+                          )}`
+                    }
+                    fixed
+                  >
+                    <div className={styles.bids}>
+                      {auctionEnded ? (
+                        <div className={styles.result}>
+                          {auction.current.resulted ? (
+                            <>
+                              {'Winner: '}
+                              <Link to={`/account/${winner}`}>
+                                {winner?.toLowerCase() ===
+                                account?.toLowerCase()
+                                  ? 'Me'
+                                  : shortenAddress(winner)}
+                              </Link>
+                              &nbsp;(
+                              <img
+                                src={winningToken?.icon}
+                                className={styles.tokenIcon}
+                              />
+                              {formatNumber(winningBid)})
+                            </>
+                          ) : (
+                            'Auction has concluded'
+                          )}
+                        </div>
+                      ) : (
+                        ''
+                      )}
+                      {bid ? (
+                        <div>
+                          <div className={styles.bidtitle}>
+                            Reserve Price :&nbsp;
                             <img
-                              src={winningToken?.icon}
+                              src={auction.current.token?.icon}
                               className={styles.tokenIcon}
                             />
-                            {formatNumber(winningBid)})
-                          </>
-                        ) : (
-                          'Auction has concluded'
-                        )}
-                      </div>
-                    ) : (
-                      ''
-                    )}
-                    {bid ? (
-                      <div>
+                            {formatNumber(auction.current.reservePrice)}
+                          </div>
+                          <br />
+                          <div className={styles.bidtitle}>
+                            Highest Bid :&nbsp;
+                            <img
+                              src={auction.current.token?.icon}
+                              className={styles.tokenIcon}
+                            />
+                            {formatNumber(bid.bid)}
+                            {bid.bid < auction.current.reservePrice
+                              ? ' -- Reserve price not met'
+                              : ''}
+                          </div>
+                        </div>
+                      ) : (
                         <div className={styles.bidtitle}>
-                          Reserve Price :&nbsp;
+                          No bids yet (Reserve Price :&nbsp;
                           <img
                             src={auction.current.token?.icon}
                             className={styles.tokenIcon}
                           />
                           {formatNumber(auction.current.reservePrice)}
-                        </div>
-                        <br />
-                        <div className={styles.bidtitle}>
-                          Highest Bid :&nbsp;
-                          <img
-                            src={auction.current.token?.icon}
-                            className={styles.tokenIcon}
-                          />
-                          {formatNumber(bid.bid)}
-                          {bid.bid < auction.current.reservePrice
-                            ? ' -- Reserve price not met'
-                            : ''}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className={styles.bidtitle}>
-                        No bids yet (Reserve Price :&nbsp;
-                        <img
-                          src={auction.current.token?.icon}
-                          className={styles.tokenIcon}
-                        />
-                        {formatNumber(auction.current.reservePrice)}
-                        {minBid > 0 &&
-                          ` | First Bid
+                          {minBid > 0 &&
+                            ` | First Bid
                         should match reserve price`}
-                        )
-                      </div>
-                    )}
-
-                    {!isMine &&
-                      auctionActive() &&
-                      bid?.bidder?.toLowerCase() === account?.toLowerCase() &&
-                      now.getTime() / 1000 >=
-                        auction?.current?.startTime + 5184000 && (
-                        <div
-                          className={cx(
-                            styles.withdrawBid,
-                            bidWithdrawing && styles.disabled
-                          )}
-                          onClick={() => handleWithdrawBid()}
-                        >
-                          {bidWithdrawing
-                            ? 'Withdrawing Bid...'
-                            : 'Withdraw Bid'}
+                          )
                         </div>
                       )}
 
-                    {!isMine &&
-                      (!auctionActive() &&
-                      bid?.bidder?.toLowerCase() === account?.toLowerCase()
-                        ? now.getTime() / 1000 >=
-                            auction?.current?.endTime + 43200 && (
-                            <div
-                              className={cx(
-                                styles.withdrawBid,
-                                bidWithdrawing && styles.disabled
-                              )}
-                              onClick={() => handleWithdrawBid()}
-                            >
-                              {bidWithdrawing
-                                ? 'Withdrawing Bid...'
-                                : 'Withdraw Bid'}
-                            </div>
-                          )
-                        : // )
-                          !isMine &&
-                          bid?.bidder?.toLowerCase() !==
-                            account?.toLowerCase() &&
-                          auctionActive() && (
-                            <div
-                              className={cx(
-                                styles.placeBid,
-                                bidPlacing && styles.disabled
-                              )}
-                              onClick={() => setBidModalVisible(true)}
-                            >
-                              Place Bid
-                            </div>
-                          ))}
-                    {isMine && auctionEnded && !auction.current.resulted && (
-                      <div
-                        className={cx(
-                          styles.placeBid,
-                          resulting && styles.disabled
+                      {!isMine &&
+                        auctionActive() &&
+                        bid?.bidder?.toLowerCase() === account?.toLowerCase() &&
+                        now.getTime() / 1000 >=
+                          auction?.current?.startTime + 5184000 && (
+                          <div
+                            className={cx(
+                              styles.withdrawBid,
+                              bidWithdrawing && styles.disabled
+                            )}
+                            onClick={() => handleWithdrawBid()}
+                          >
+                            {bidWithdrawing
+                              ? 'Withdrawing Bid...'
+                              : 'Withdraw Bid'}
+                          </div>
                         )}
-                        onClick={
-                          bid === null ||
-                          bid?.bid < auction.current?.reservePrice
-                            ? cancelCurrentAuction
-                            : handleResultAuction
-                        }
-                      >
-                        {auctionCancelConfirming ? (
-                          <ClipLoader color="#FFF" size={16} />
-                        ) : bid === null ||
-                          bid?.bid < auction.current.reservePrice ? (
-                          'Reserve Price not met. Cancel Auction'
-                        ) : (
-                          'Accept highest bid'
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </Panel>
-              </div>
-            )}
-            {!bundleID && (
+
+                      {!isMine &&
+                        (!auctionActive() &&
+                        bid?.bidder?.toLowerCase() === account?.toLowerCase()
+                          ? now.getTime() / 1000 >=
+                              auction?.current?.endTime + 43200 && (
+                              <div
+                                className={cx(
+                                  styles.withdrawBid,
+                                  bidWithdrawing && styles.disabled
+                                )}
+                                onClick={() => handleWithdrawBid()}
+                              >
+                                {bidWithdrawing
+                                  ? 'Withdrawing Bid...'
+                                  : 'Withdraw Bid'}
+                              </div>
+                            )
+                          : // )
+                            !isMine &&
+                            bid?.bidder?.toLowerCase() !==
+                              account?.toLowerCase() &&
+                            auctionActive() && (
+                              <div
+                                className={cx(
+                                  styles.placeBid,
+                                  bidPlacing && styles.disabled
+                                )}
+                                onClick={() => setBidModalVisible(true)}
+                              >
+                                Place Bid
+                              </div>
+                            ))}
+                      {isMine && auctionEnded && !auction.current.resulted && (
+                        <div
+                          className={cx(
+                            styles.placeBid,
+                            resulting && styles.disabled
+                          )}
+                          onClick={
+                            bid === null ||
+                            bid?.bid < auction.current?.reservePrice
+                              ? cancelCurrentAuction
+                              : handleResultAuction
+                          }
+                        >
+                          {auctionCancelConfirming ? (
+                            <ClipLoader color="#FFF" size={16} />
+                          ) : bid === null ||
+                            bid?.bid < auction.current.reservePrice ? (
+                            'Reserve Price not met. Cancel Auction'
+                          ) : (
+                            'Accept highest bid'
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </Panel>
+                </div>
+              )}
+              {/* {!bundleID && (
               <div className={styles.panelWrapper}>
                 <Panel title="Price History" icon={TimelineIcon}>
                   <ReactResizeDetector>
@@ -3272,8 +3573,8 @@ const NFTItem = () => {
                   </ReactResizeDetector>
                 </Panel>
               </div>
-            )}
-            <div className={styles.panelWrapper}>
+            )} */}
+              {/* <div className={styles.panelWrapper}>
               <Panel title="Listings" icon={LocalOfferIcon} expanded>
                 <div className={styles.listings}>
                   <div className={cx(styles.listing, styles.heading)}>
@@ -3371,7 +3672,7 @@ const NFTItem = () => {
                               className={styles.tokenIcon}
                             />
                             {formatNumber(listing.price)}
-                            {/* &nbsp;(
+                            &nbsp;(
                             {prices[listing.token?.address] !== undefined ? (
                               `$${(
                                 listing.price * prices[listing.token?.address]
@@ -3379,7 +3680,7 @@ const NFTItem = () => {
                             ) : (
                               <Skeleton width={60} height={24} />
                             )}
-                            ) */}
+                            )
                           </div>
                           {tokenInfo?.totalSupply > 1 && (
                             <div className={styles.quantity}>
@@ -3408,8 +3709,8 @@ const NFTItem = () => {
                       ))}
                 </div>
               </Panel>
-            </div>
-            <div className={styles.panelWrapper}>
+            </div> */}
+              {/* <div className={styles.panelWrapper}>
               <Panel title="Direct Offers" icon={TocIcon} expanded>
                 <div className={styles.offers}>
                   {offers.current.length ? (
@@ -3455,7 +3756,7 @@ const NFTItem = () => {
                                 className={styles.tokenIcon}
                               />
                               {formatNumber(offer.pricePerItem || offer.price)}
-                              {/* &nbsp;(
+                              &nbsp;(
                               {prices[offer.token.address] !== undefined ? (
                                 `$${(
                                   (offer.pricePerItem || offer.price) *
@@ -3464,7 +3765,7 @@ const NFTItem = () => {
                               ) : (
                                 <Skeleton width={60} height={24} />
                               )}
-                              ) */}
+                              )
                             </div>
                             {tokenInfo?.totalSupply > 1 && (
                               <div className={styles.quantity}>
@@ -3553,267 +3854,245 @@ const NFTItem = () => {
                   )}
                 </div>
               </Panel>
-            </div>
-            {bundleID && (
-              <div className={styles.panelWrapper}>
-                <Panel title="Items" icon={ViewModuleIcon} expanded>
-                  <div className={styles.items}>
-                    {(loading
-                      ? [null, null, null]
-                      : bundleItems.current
-                    ).map((item, idx) => renderBundleItem(item, idx))}
-                  </div>
-                </Panel>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className={styles.tradeHistoryWrapper}>
-          <div className={styles.tradeHistoryHeader}>
-            <div className={styles.tradeHistoryTitle}>{filters[filter]}</div>
-            {!bundleID && (
-              <div className={styles.filter} onClick={handleMenuOpen}>
-                <img src={filterIcon} className={styles.filterIcon} />
-              </div>
-            )}
-          </div>
-          <div className={styles.histories}>
-            <div className={cx(styles.history, styles.heading)}>
-              {filter === 0 && <div className={styles.historyPrice}>Price</div>}
-              {tokenType.current === 1155 && (
-                <div className={styles.quantity}>Quantity</div>
+            </div> */}
+              {bundleID && (
+                <div className={styles.panelWrapper}>
+                  <Panel title="Items" icon={ViewModuleIcon} expanded>
+                    <div className={styles.items}>
+                      {(loading
+                        ? [null, null, null]
+                        : bundleItems.current
+                      ).map((item, idx) => renderBundleItem(item, idx))}
+                    </div>
+                  </Panel>
+                </div>
               )}
-              <div className={styles.from}>From</div>
-              <div className={styles.to}>To</div>
-              <div className={styles.saleDate}>Date</div>
-            </div>
-            {(historyLoading
-              ? [null, null, null]
-              : filter === 0
-              ? tradeHistory.current
-              : transferHistory.current
-            ).map((history, idx) => {
-              const saleDate = history ? new Date(history.createdAt) : null;
-              return (
-                <div className={styles.history} key={idx}>
-                  {filter === 0 && (
-                    <div className={styles.historyPrice}>
-                      {history ? (
+              {isLoggedIn() && (
+                <div className={styles.header}>
+                  {isMine && (
+                    <>
+                      {auction.current?.resulted === false ? (
+                        <div
+                          className={cx(
+                            styles.headerButton,
+                            auctionCanceling && styles.disabled
+                          )}
+                          onClick={cancelCurrentAuction}
+                        >
+                          {auctionCancelConfirming ? (
+                            <ClipLoader color="#FFF" size={16} />
+                          ) : (
+                            'Cancel Auction'
+                          )}
+                        </div>
+                      ) : null}
+                      {!bundleID &&
+                        (!auction.current || !auction.current.resulted) &&
+                        !hasListing &&
+                        tokenType.current !== 1155 && (
+                          <div
+                            className={cx(
+                              styles.headerButton,
+                              (auctionStarting ||
+                                auctionUpdating ||
+                                auctionEnded) &&
+                                styles.disabled
+                            )}
+                            onClick={() => {
+                              !auctionEnded && setAuctionModalVisible(true);
+                            }}
+                          >
+                            {auctionStartConfirming ||
+                            auctionUpdateConfirming ? (
+                              <ClipLoader color="#FFF" size={16} />
+                            ) : auction.current ? (
+                              'Update Auction'
+                            ) : (
+                              'Start Auction'
+                            )}
+                          </div>
+                        )}
+                      {(!auction.current || auction.current.resulted) && (
                         <>
-                          <img
-                            src={history.token?.icon}
-                            className={styles.tokenIcon}
-                          />
-                          {formatNumber(history.price)}
-                          &nbsp;( ${formatNumber(
-                            history.priceInUSD.toFixed(3)
-                          )}{' '}
-                          )
+                          {hasListing ? (
+                            <div
+                              className={cx(
+                                styles.headerButton,
+                                cancelingListing && styles.disabled
+                              )}
+                              onClick={cancelList}
+                            >
+                              {cancelListingConfirming ? (
+                                <ClipLoader color="#FFF" size={16} />
+                              ) : (
+                                'Cancel Listing'
+                              )}
+                            </div>
+                          ) : null}
+                          <div
+                            className={cx(
+                              styles.headerButton,
+                              (listingItem || priceUpdating) && styles.disabled
+                            )}
+                            onClick={() =>
+                              !(listingItem || priceUpdating)
+                                ? setSellModalVisible(true)
+                                : null
+                            }
+                          >
+                            {listingConfirming ? (
+                              <ClipLoader color="#FFF" size={16} />
+                            ) : hasListing ? (
+                              'Update Listing'
+                            ) : (
+                              'Sell'
+                            )}
+                          </div>
                         </>
-                      ) : (
-                        <Skeleton width={100} height={20} />
                       )}
-                    </div>
+                    </>
                   )}
-                  {tokenType.current === 1155 && (
-                    <div className={styles.quantity}>
-                      {history ? (
-                        formatNumber(history.value)
-                      ) : (
-                        <Skeleton width={100} height={20} />
-                      )}
-                    </div>
-                  )}
-                  <div className={styles.from}>
-                    {history ? (
-                      <Link to={`/account/${history.from}`}>
-                        <div className={styles.userAvatarWrapper}>
-                          {history.fromImage ? (
-                            <img
-                              src={`https://cloudflare-ipfs.com/ipfs/${history.fromImage}`}
-                              className={styles.userAvatar}
-                            />
-                          ) : (
-                            <Identicon
-                              account={history.from}
-                              size={24}
-                              className={styles.userAvatar}
-                            />
-                          )}
-                        </div>
-                        {history.fromAlias || history.from?.substr(0, 6)}
-                      </Link>
-                    ) : (
-                      <Skeleton width={180} height={20} />
+                  {(!isMine ||
+                    (tokenType.current === 1155 &&
+                      myHolding.supply < tokenInfo.totalSupply)) &&
+                    (!auction.current || auction.current.resulted) && (
+                      <TxButton
+                        className={cx(
+                          styles.headerButton,
+                          (offerPlacing || offerCanceling) && styles.disabled
+                        )}
+                        onClick={
+                          hasMyOffer
+                            ? handleCancelOffer
+                            : () => setOfferModalVisible(true)
+                        }
+                      >
+                        {offerConfirming ? (
+                          <ClipLoader color="#FFF" size={16} />
+                        ) : hasMyOffer ? (
+                          'Withdraw Offer'
+                        ) : (
+                          'Make Offer'
+                        )}
+                      </TxButton>
                     )}
-                  </div>
-                  <div className={styles.to}>
-                    {history ? (
-                      <Link to={`/account/${history.to}`}>
-                        <div className={styles.userAvatarWrapper}>
-                          {history.toImage ? (
-                            <img
-                              src={`https://cloudflare-ipfs.com/ipfs/${history.toImage}`}
-                              className={styles.userAvatar}
-                            />
-                          ) : (
-                            <Identicon
-                              account={history.to}
-                              size={24}
-                              className={styles.userAvatar}
-                            />
-                          )}
-                        </div>
-                        {history.toAlias || history.to?.substr(0, 6)}
-                      </Link>
-                    ) : (
-                      <Skeleton width={180} height={20} />
-                    )}
-                  </div>
-                  <div className={styles.saleDate}>
-                    {saleDate ? (
-                      formatDate(saleDate)
-                    ) : (
-                      <Skeleton width={150} height={20} />
-                    )}
-                  </div>
                 </div>
-              );
-            })}
-          </div>
-          {!bundleID && (
-            <div className={styles.panelWrapper}>
-              <Panel
-                title="More from this collection"
-                icon={ViewModuleIcon}
-                responsive
-              >
-                <div className={styles.panelBody}>
-                  {loading ? (
-                    <div className={styles.loadingIndicator}>
-                      <ClipLoader color="#007BFF" size={16} />
-                    </div>
-                  ) : (
-                    <div className={styles.itemsList}>
-                      {moreItems.current.map((item, idx) => (
-                        <div key={idx} className={styles.moreItem}>
-                          <NFTCard item={item} />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </Panel>
+              )}
             </div>
-          )}
+          </div>
         </div>
-      </div>
+        <Footer />
 
-      {renderMenu}
+        {renderMenu}
 
-      <Menu
-        id="simple-menu"
-        anchorEl={shareAnchorEl}
-        keepMounted
-        open={Boolean(shareAnchorEl)}
-        onClose={handleClose}
-        classes={{ paper: styles.shareMenu, list: styles.shareMenuList }}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
-        <CopyToClipboard text={window.location.href} onCopy={handleCopyLink}>
-          <MenuItem classes={{ root: styles.menuItem }}>
-            <img src={iconArtion} />
-            Copy Link
+        <Menu
+          id="simple-menu"
+          anchorEl={shareAnchorEl}
+          keepMounted
+          open={Boolean(shareAnchorEl)}
+          onClose={handleClose}
+          classes={{ paper: styles.shareMenu, list: styles.shareMenuList }}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+        >
+          <CopyToClipboard text={window.location.href} onCopy={handleCopyLink}>
+            <MenuItem classes={{ root: styles.menuItem }}>
+              <img src={iconArtion} />
+              Copy Link
+            </MenuItem>
+          </CopyToClipboard>
+          <MenuItem
+            classes={{ root: styles.menuItem }}
+            onClick={handleShareOnFacebook}
+          >
+            <img src={iconFacebook} />
+            Share on Facebook
           </MenuItem>
-        </CopyToClipboard>
-        <MenuItem
-          classes={{ root: styles.menuItem }}
-          onClick={handleShareOnFacebook}
-        >
-          <img src={iconFacebook} />
-          Share on Facebook
-        </MenuItem>
-        <MenuItem
-          classes={{ root: styles.menuItem }}
-          onClick={handleShareToTwitter}
-        >
-          <img src={iconTwitter} />
-          Share to Twitter
-        </MenuItem>
-      </Menu>
-      <TransferModal
-        visible={transferModalVisible}
-        totalSupply={tokenType.current === 1155 ? myHolding?.supply : null}
-        transferring={transferring}
-        onTransfer={handleTransfer}
-        onClose={() => setTransferModalVisible(false)}
-      />
-      <SellModal
-        visible={sellModalVisible}
-        onClose={() => setSellModalVisible(false)}
-        onSell={hasListing ? handleUpdateListing : handleListItem}
-        startPrice={
-          bundleID ? bundleListing.current?.price || 0 : myListing()?.price || 0
-        }
-        confirming={listingItem || priceUpdating}
-        approveContract={
-          bundleID
-            ? handleApproveBundleSalesContract
-            : handleApproveSalesContract
-        }
-        contractApproving={salesContractApproving}
-        contractApproved={
-          bundleID ? isBundleContractApproved : salesContractApproved
-        }
-        totalSupply={tokenType.current === 1155 ? myHolding?.supply : null}
-      />
-      <OfferModal
-        visible={offerModalVisible}
-        onClose={() => setOfferModalVisible(false)}
-        onMakeOffer={handleMakeOffer}
-        confirming={offerPlacing}
-        totalSupply={tokenType.current === 1155 ? maxSupply() : null}
-      />
-      <AuctionModal
-        visible={auctionModalVisible}
-        onClose={() => setAuctionModalVisible(false)}
-        onStartAuction={
-          auction.current ? handleUpdateAuction : handleStartAuction
-        }
-        auction={auction.current}
-        auctionStarted={auctionStarted}
-        confirming={auctionStarting || auctionUpdating}
-        approveContract={handleApproveAuctionContract}
-        contractApproving={auctionContractApproving}
-        contractApproved={auctionContractApproved}
-      />
-      <BidModal
-        visible={bidModalVisible}
-        onClose={() => setBidModalVisible(false)}
-        onPlaceBid={handlePlaceBid}
-        minBidAmount={bid?.bid ? bid?.bid : minBid}
-        confirming={bidPlacing}
-        token={auction.current?.token}
-        firstBid={bid?.bid ? false : minBid > 0 ? true : false}
-      />
-      <OwnersModal
-        visible={ownersModalVisible}
-        onClose={() => setOwnersModalVisible(false)}
-        holders={holders}
-      />
-      <LikesModal
-        visible={likesModalVisible}
-        onClose={() => setLikesModalVisible(false)}
-        users={likeUsersFetching ? new Array(5).fill(null) : likeUsers.current}
-      />
-    </div>
+          <MenuItem
+            classes={{ root: styles.menuItem }}
+            onClick={handleShareToTwitter}
+          >
+            <img src={iconTwitter} />
+            Share to Twitter
+          </MenuItem>
+        </Menu>
+        <TransferModal
+          visible={transferModalVisible}
+          totalSupply={tokenType.current === 1155 ? myHolding?.supply : null}
+          transferring={transferring}
+          onTransfer={handleTransfer}
+          onClose={() => setTransferModalVisible(false)}
+        />
+        <SellModal
+          visible={sellModalVisible}
+          onClose={() => setSellModalVisible(false)}
+          onSell={hasListing ? handleUpdateListing : handleListItem}
+          startPrice={
+            bundleID
+              ? bundleListing.current?.price || 0
+              : myListing()?.price || 0
+          }
+          confirming={listingItem || priceUpdating}
+          approveContract={
+            bundleID
+              ? handleApproveBundleSalesContract
+              : handleApproveSalesContract
+          }
+          contractApproving={salesContractApproving}
+          contractApproved={
+            bundleID ? isBundleContractApproved : salesContractApproved
+          }
+          totalSupply={tokenType.current === 1155 ? myHolding?.supply : null}
+        />
+        <OfferModal
+          visible={offerModalVisible}
+          onClose={() => setOfferModalVisible(false)}
+          onMakeOffer={handleMakeOffer}
+          confirming={offerPlacing}
+          totalSupply={tokenType.current === 1155 ? maxSupply() : null}
+        />
+        <AuctionModal
+          visible={auctionModalVisible}
+          onClose={() => setAuctionModalVisible(false)}
+          onStartAuction={
+            auction.current ? handleUpdateAuction : handleStartAuction
+          }
+          auction={auction.current}
+          auctionStarted={auctionStarted}
+          confirming={auctionStarting || auctionUpdating}
+          approveContract={handleApproveAuctionContract}
+          contractApproving={auctionContractApproving}
+          contractApproved={auctionContractApproved}
+        />
+        <BidModal
+          visible={bidModalVisible}
+          onClose={() => setBidModalVisible(false)}
+          onPlaceBid={handlePlaceBid}
+          minBidAmount={bid?.bid ? bid?.bid : minBid}
+          confirming={bidPlacing}
+          token={auction.current?.token}
+          firstBid={bid?.bid ? false : minBid > 0 ? true : false}
+        />
+        <OwnersModal
+          visible={ownersModalVisible}
+          onClose={() => setOwnersModalVisible(false)}
+          holders={holders}
+        />
+        <LikesModal
+          visible={likesModalVisible}
+          onClose={() => setLikesModalVisible(false)}
+          users={
+            likeUsersFetching ? new Array(5).fill(null) : likeUsers.current
+          }
+        />
+      </div>
+    </>
   );
 };
 

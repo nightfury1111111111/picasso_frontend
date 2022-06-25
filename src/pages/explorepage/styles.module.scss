@@ -3,6 +3,7 @@
   box-sizing: border-box;
   display: flex;
   overflow-y: auto;
+  width: calc(100% - 360px);
 }
 
 .sidebar {
@@ -14,6 +15,12 @@
   overflow-y: auto;
   overflow-x: hidden;
   transition: flex-basis ease 300ms;
+}
+
+.nftContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .collapsed {
@@ -117,7 +124,7 @@
   box-sizing: border-box;
   margin-bottom: 10px;
   padding: 10px 0;
-  margin: 18px 30px 10px 10px;
+  margin: 18px 0px 20px 12px;
   background: #e1dff5;
   padding: 15px;
   border-radius: 3px;
@@ -127,6 +134,7 @@
 @media only screen and (max-width: 768px) {
   .container {
     padding-top: 133px;
+    width: 90%;
   }
 
   .sidebar:not(.collapsed) {

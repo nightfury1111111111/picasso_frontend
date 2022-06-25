@@ -6,6 +6,7 @@ import { Menu } from '@material-ui/core';
 import { useWeb3React } from '@web3-react/core';
 import { ExpandMore, Search as SearchIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
+import StickyBox from 'react-sticky-box';
 import axios from 'axios';
 
 import WalletConnectActions from 'actions/walletconnect.actions';
@@ -564,6 +565,7 @@ const Header = () => {
   );
 
   return (
+    // <StickyBox offsetTop={80}>
     <div
       className={
         !stikyHeaderStatus ? styles.header_first : styles.header_second
@@ -704,6 +706,7 @@ const Header = () => {
         onClose={() => dispatch(ModalActions.hideConnectWalletModal())}
       />
     </div>
+    // </StickyBox>
     // </header>
   );
 };

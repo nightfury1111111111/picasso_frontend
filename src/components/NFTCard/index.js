@@ -15,6 +15,8 @@ import '@brainhubeu/react-carousel/lib/style.css';
 import axios from 'axios';
 import ReactPlayer from 'react-player';
 
+import Clock from 'components/Clock';
+
 import SuspenseImg from 'components/SuspenseImg';
 import BootstrapTooltip from 'components/BootstrapTooltip';
 import { formatNumber, getRandomIPFS } from 'utils';
@@ -24,6 +26,7 @@ import useTokens from 'hooks/useTokens';
 
 import iconPlus from 'assets/svgs/plus.svg';
 import wFTMLogo from 'assets/imgs/wftm.png';
+import nftActiveIcon from 'assets/svgs/nft_active.svg';
 
 import styles from './styles.module.scss';
 
@@ -85,6 +88,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
           ethers.utils.formatUnits(_auction.reservePrice, token.decimals)
         );
         _auction.token = token;
+        console.log(_auction);
         setAuction(_auction);
       }
     } catch (e) {
@@ -232,22 +236,25 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
     return (
       <>
         <div className={cx(styles.cardHeader, isLike && styles.liking)}>
-          {!item ? (
-            <Skeleton width={80} height={20} />
-          ) : (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              className={styles.collectionAvatar}
+              src={
+                collection?.logoImageHash
+                  ? `${getRandomIPFS('', true)}${collection.logoImageHash}`
+                  : nftActiveIcon
+              }
+            />{' '}
+            <div style={{ fontSize: '20px', fontWeight: '700' }}>
+              {collection?.collectionName || collection?.name}
+            </div>
+          </div>
+        </div>
+        <div className={styles.clockWrapper}>
+          {auctionActive && (
+            // formatDuration(auction.endTime)
             <>
-              {isLike ? (
-                <FavoriteIcon
-                  className={styles.favIcon}
-                  onClick={toggleFavorite}
-                />
-              ) : (
-                <FavoriteBorderIcon
-                  className={styles.favIcon}
-                  onClick={toggleFavorite}
-                />
-              )}
-              <span className={styles.favLabel}>{liked || 0}</span>
+              <Clock endTime={auction.endTime} />
             </>
           )}
         </div>
@@ -323,7 +330,60 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
           </div>
         </div>
         <div className={styles.content}>
-          <div className={styles.topLine}>
+          {loading || fetching ? (
+            <Skeleton width={100} height={20} />
+          ) : (
+            <div className={styles.name}>{item?.name || info?.name}</div>
+          )}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            {auction?.reservePrice || item?.price ? (
+              <div className={styles.priceWrapper}>
+                {!loading && <div style={{ marginRight: '10px' }}>Price:</div>}
+                {loading || fetching ? (
+                  <Skeleton width={80} height={20} />
+                ) : (
+                  <div className={cx(styles.label, styles.price)}>
+                    <img
+                      src={
+                        auctionActive
+                          ? auction?.token?.icon
+                          : getTokenByAddress(item?.paymentToken)?.icon ||
+                            wFTMLogo
+                      }
+                    />
+                    {formatNumber(
+                      auctionActive
+                        ? auction.reservePrice
+                        : item.price.toFixed(2)
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : (
+              ''
+            )}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {!item ? (
+                <Skeleton width={80} height={20} />
+              ) : (
+                <>
+                  {isLike ? (
+                    <FavoriteIcon
+                      className={styles.favIcon}
+                      onClick={toggleFavorite}
+                    />
+                  ) : (
+                    <FavoriteBorderIcon
+                      className={styles.favIcon}
+                      onClick={toggleFavorite}
+                    />
+                  )}
+                  <span className={styles.favLabel}>{liked || 0}</span>
+                </>
+              )}
+            </div>
+          </div>
+          {/* <div className={styles.topLine}>
             <div className={styles.itemName}>
               {loading || fetching ? (
                 <Skeleton width={100} height={20} />
@@ -376,18 +436,9 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
             ) : (
               ''
             )}
-          </div>
-          <div className={styles.alignBottom}>
-            <div>
-              {auctionActive && (
-                <>
-                  {!loading && <div className={styles.label2}>Time left</div>}
-                  <div className={styles.name2}>
-                    {formatDuration(auction.endTime)}
-                  </div>
-                </>
-              )}
-            </div>
+          </div> */}
+          {/* <div className={styles.alignBottom}>
+
             {item?.lastSalePrice > 0 && (
               <div className={styles.alignRight}>
                 {!loading && <div className={styles.label2}>Last Price</div>}
@@ -405,7 +456,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
                 )}
               </div>
             )}
-            {/* {loading || fetching ? (
+            {loading || fetching ? (
               <Skeleton width={80} height={20} />
             ) : (
               <div className={styles.label}>
@@ -417,8 +468,8 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
                       item?.holderSupply || item?.supply || 1
                     )} of ${formatNumber(item?.supply || 1)}`}
               </div>
-            )} */}
-          </div>
+            )}
+          </div> */}
         </div>
       </>
     );

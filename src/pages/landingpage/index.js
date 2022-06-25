@@ -221,7 +221,7 @@ const LandingPage = () => {
             </div>
           </div>
           <div className={styles.categories}>
-            {renderCategoryCard('all', search, 'All NFTs')}
+            {/* {renderCategoryCard('all', search, 'All NFTs')} */}
             {Categories.map(cat =>
               renderCategoryCard(cat.id, cat.icon, cat.label)
             )}
