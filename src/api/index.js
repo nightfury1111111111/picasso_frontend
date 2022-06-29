@@ -391,6 +391,14 @@ export const useApi = () => {
     return res.data;
   };
 
+  const getCollectionCreator = async address => {
+    const res = await axios({
+      method: 'get',
+      url: `${apiUrl}/collection/getCreator/${address}`,
+    });
+    return res.data;
+  };
+
   const getActivityFromOthers = async address => {
     const res = await axios({
       method: 'get',
@@ -867,6 +875,7 @@ export const useApi = () => {
     getTransferHistory,
     getAccountActivity,
     getActivityFromOthers,
+    getCollectionCreator,
     getMyOffers,
     addMod,
     removeMod,
