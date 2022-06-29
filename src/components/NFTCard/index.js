@@ -8,6 +8,8 @@ import {
   FavoriteBorder as FavoriteBorderIcon,
   Favorite as FavoriteIcon,
   CheckCircle as CheckCircleIcon,
+  BusinessCenter as BusinessCenterIcon,
+  Sync as SyncIcon,
 } from '@material-ui/icons';
 import Loader from 'react-loader-spinner';
 import Carousel, { Dots } from '@brainhubeu/react-carousel';
@@ -16,10 +18,10 @@ import axios from 'axios';
 import ReactPlayer from 'react-player';
 
 import Clock from 'components/Clock';
-
+import Button from '@material-ui/core/Button';
 import SuspenseImg from 'components/SuspenseImg';
 import BootstrapTooltip from 'components/BootstrapTooltip';
-import { formatNumber, getRandomIPFS } from 'utils';
+import { formatNumber, getRandomIPFS,shortenAddress, isAddress } from 'utils';
 import { useApi } from 'api';
 import { useAuctionContract } from 'contracts';
 import useTokens from 'hooks/useTokens';
@@ -235,21 +237,6 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
   const renderContent = () => {
     return (
       <>
-        <div className={cx(styles.cardHeader, isLike && styles.liking)}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img
-              className={styles.collectionAvatar}
-              src={
-                collection?.logoImageHash
-                  ? `${getRandomIPFS('', true)}${collection.logoImageHash}`
-                  : nftActiveIcon
-              }
-            />{' '}
-            <div style={{ fontSize: '20px', fontWeight: '700' }}>
-              {collection?.collectionName || collection?.name}
-            </div>
-          </div>
-        </div>
         <div className={styles.clockWrapper}>
           {auctionActive && (
             // formatDuration(auction.endTime)
@@ -258,78 +245,157 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
             </>
           )}
         </div>
-        <div className={styles.mediaBox}>
-          <div className={styles.mediaPanel}>
-            {loading || fetching ? (
-              <Skeleton
-                width="100%"
-                height="100%"
-                className={styles.mediaLoading}
+          {item.items ? (
+            <>
+              <Carousel
+                className={styles.carousel}
+                plugins={['fastSwipe']}
+                value={index}
+                onChange={_index =>
+                  setIndex(Math.min(Math.max(_index, 0), 2))
+                }
+                slides={renderSlides()}
+                numberOfInfiniteClones={1}
               />
-            ) : item.items ? (
-              <>
-                <Carousel
-                  className={styles.carousel}
-                  plugins={['fastSwipe']}
-                  value={index}
-                  onChange={_index =>
-                    setIndex(Math.min(Math.max(_index, 0), 2))
-                  }
-                  slides={renderSlides()}
-                  numberOfInfiniteClones={1}
-                />
-                <Dots
-                  className={styles.dots}
-                  value={index}
-                  onChange={setIndex}
-                  number={Math.min(item.items.length, 18)}
-                  thumbnails={renderDots()}
-                />
-              </>
-            ) : (
-              <div className={styles.imageBox}>
-                {(item?.imageURL ||
-                  info?.image ||
-                  item?.thumbnailPath?.length > 10 ||
-                  item?.thumbnailPath === 'embed') &&
-                  (item?.thumbnailPath === 'embed' ? (
-                    <iframe src={item?.imageURL} className={styles.media} />
-                  ) : (item?.imageURL || info?.image)?.includes('youtube') ? (
-                    <ReactPlayer
-                      className={styles.media}
-                      url={item?.imageURL || info?.image}
-                      controls={true}
-                      width="100%"
-                      height="100%"
-                    />
-                  ) : (
-                    <Suspense
-                      fallback={
-                        <Loader
-                          type="Oval"
-                          color="#007BFF"
-                          height={32}
-                          width={32}
-                          className={styles.loader}
-                        />
-                      }
-                    >
-                      <SuspenseImg
-                        src={
-                          item.thumbnailPath?.length > 10
-                            ? `${storageUrl}/image/${item.thumbnailPath}`
-                            : item?.imageURL || info?.image
-                        }
-                        className={styles.media}
-                        alt={item.name}
+              <Dots
+                className={styles.dots}
+                value={index}
+                onChange={setIndex}
+                number={Math.min(item.items.length, 18)}
+                thumbnails={renderDots()}
+              />
+            </>
+          ) : (
+            <div className={styles.imageBox}>
+              {(item?.imageURL ||
+                info?.image ||
+                item?.thumbnailPath?.length > 10 ||
+                item?.thumbnailPath === 'embed') &&
+                (item?.thumbnailPath === 'embed' ? (
+                  <iframe src={item?.imageURL} className={styles.media} />
+                ) : (item?.imageURL || info?.image)?.includes('youtube') ? (
+                  <ReactPlayer
+                    className={styles.media}
+                    url={item?.imageURL || info?.image}
+                    controls={true}
+                    width="100%"
+                    height="100%"
+                  />
+                ) : (
+                  <Suspense
+                    fallback={
+                      <Loader
+                        type="Oval"
+                        color="#007BFF"
+                        height={32}
+                        width={32}
+                        className={styles.loader}
                       />
-                    </Suspense>
-                  ))}
+                    }
+                  >
+                    <SuspenseImg
+                      src={
+                        item.thumbnailPath?.length > 10
+                          ? `${storageUrl}/image/${item.thumbnailPath}`
+                          : item?.imageURL || info?.image
+                      }
+                      className={styles.media}
+                      alt={item.name}
+                    />
+                  </Suspense>
+                ))}
+                <div className={styles.liked} onClick={toggleFavorite} >{liked?<FavoriteIcon />:<FavoriteBorderIcon />}&nbsp;{item.liked}</div>
+            </div>
+          )}
+      </>
+    );
+  };
+
+  return (
+    <div style={style} className={cx(styles.root,'sc-card-product')} onClick={onCreate}>
+      {loading || fetching ? (
+        <Skeleton
+          width="100%"
+          height="100%"
+          className={styles.mediaLoading}
+        />
+      ):(
+        <>
+          <div className={styles.card}>
+            {create ? (
+              <div className={styles.createBtn}>
+                <div className={styles.createIcon}>
+                  <img src={iconPlus} />
+                </div>
+                <div className={styles.createLabel}>Create Bundle</div>
               </div>
+            ) : item ? (
+              <Link
+                to={
+                  item.items
+                    ? `/bundle/${item._id}`
+                    : `/explore/${item.contractAddress}/${item.tokenID}`
+                }
+                className={styles.link}
+              >
+                {renderContent()}
+              </Link>
+            ) : (
+              renderContent()
             )}
           </div>
-        </div>
-        <div className={styles.content}>
+          <div className={styles.flexBetween}>
+            <h5>{item.name}</h5>
+            <div className={styles.netLogo}>FTM</div>
+          </div>
+          <div className={styles.flexBetween}>
+            <div className={styles.flexRow}>
+              <img 
+                src={
+                  collection?.logoImageHash
+                      ? `${getRandomIPFS('', true)}${collection.logoImageHash}`
+                      : nftActiveIcon
+                } 
+                alt="Collection" 
+                className={styles.collectionAvatar} 
+              />
+              <div className={styles.info} >
+                <span>Owned By</span>
+                <h6>{item.alias?item.alias:isAddress(item.owner)?shortenAddress(item.owner):item.owner}</h6>
+              </div>
+            </div>
+            <div className={styles.info} >
+              <span>Current Bid</span>
+              <h6>
+                {formatNumber(
+                  auctionActive
+                    ? auction.reservePrice
+                    : item.price.toFixed(2)
+                )}
+              </h6>
+            </div>
+          </div>
+          <div className={styles.flexBetween}>
+            <Link to={
+                  item.items
+                    ? `/bundle/${item._id}`
+                    : `/explore/${item.contractAddress}/${item.tokenID}`
+                }>
+            <div className={styles.actionButton}>
+              <BusinessCenterIcon style={{marginRight:"10px"}}/> Place Bid
+            </div>
+            </Link>
+            <Link to={
+                  item.items
+                    ? `/bundle/${item._id}`
+                    : `/explore/${item.contractAddress}/${item.tokenID}`
+                }>
+              <div className={styles.history}>
+                <SyncIcon style={{marginRight:"10px", fontSize: "20px"}}/> View History
+              </div>
+            </Link>
+          </div>
+          {/* <div className={styles.content}>
           {loading || fetching ? (
             <Skeleton width={100} height={20} />
           ) : (
@@ -383,129 +449,30 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
               )}
             </div>
           </div>
-          {/* <div className={styles.topLine}>
-            <div className={styles.itemName}>
-              {loading || fetching ? (
-                <Skeleton width={100} height={20} />
-              ) : (
-                <div className={styles.label}>
+        </div> */}
+          {/* <div className={cx(styles.cardHeader, isLike && styles.liking)}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <img
+                  className={styles.collectionAvatar}
+                  src={
+                    collection?.logoImageHash
+                      ? `${getRandomIPFS('', true)}${collection.logoImageHash}`
+                      : nftActiveIcon
+                  }
+                />{' '}
+                <div style={{ fontSize: '20px', fontWeight: '700' }}>
                   {collection?.collectionName || collection?.name}
-                  {collection?.isVerified && (
-                    <BootstrapTooltip
-                      title="Verified Collection"
-                      placement="top"
-                    >
-                      <CheckCircleIcon className={styles.checkIcon} />
-                    </BootstrapTooltip>
-                  )}
                 </div>
-              )}
-              {loading || fetching ? (
-                <Skeleton width={100} height={20} />
-              ) : (
-                <div className={styles.name}>{item?.name || info?.name}</div>
-              )}
-            </div>
-            {auction?.reservePrice || item?.price ? (
-              <div className={styles.alignRight}>
-                {!loading && (
-                  <div className={styles.label}>
-                    {auctionActive ? 'Auction' : 'Price'}
-                  </div>
-                )}
-                {loading || fetching ? (
-                  <Skeleton width={80} height={20} />
-                ) : (
-                  <div className={cx(styles.label, styles.price)}>
-                    <img
-                      src={
-                        auctionActive
-                          ? auction?.token?.icon
-                          : getTokenByAddress(item?.paymentToken)?.icon ||
-                            wFTMLogo
-                      }
-                    />
-                    {formatNumber(
-                      auctionActive
-                        ? auction.reservePrice
-                        : item.price.toFixed(2)
-                    )}
-                  </div>
-                )}
               </div>
-            ) : (
-              ''
-            )}
-          </div> */}
-          {/* <div className={styles.alignBottom}>
-
-            {item?.lastSalePrice > 0 && (
-              <div className={styles.alignRight}>
-                {!loading && <div className={styles.label2}>Last Price</div>}
-                {loading || fetching ? (
-                  <Skeleton width={80} height={20} />
-                ) : (
-                  <div className={cx(styles.label2, styles.price2)}>
-                    <img
-                      src={
-                        getTokenByAddress(item?.lastSalePricePaymentToken)?.icon
-                      }
-                    />
-                    {formatNumber(item.lastSalePrice)}
-                  </div>
-                )}
-              </div>
-            )}
-            {loading || fetching ? (
-              <Skeleton width={80} height={20} />
-            ) : (
-              <div className={styles.label}>
-                {item.items
-                  ? `${item.items.length} item${
-                      item.items.length !== 1 ? 's' : ''
-                    }`
-                  : `${formatNumber(
-                      item?.holderSupply || item?.supply || 1
-                    )} of ${formatNumber(item?.supply || 1)}`}
-              </div>
-            )}
-          </div> */}
-        </div>
-      </>
-    );
-  };
-
-  return (
-    <div style={style} className={styles.root} onClick={onCreate}>
-      <div className={styles.card}>
-        {create ? (
-          <div className={styles.createBtn}>
-            <div className={styles.createIcon}>
-              <img src={iconPlus} />
-            </div>
-            <div className={styles.createLabel}>Create Bundle</div>
-          </div>
-        ) : item ? (
-          <Link
-            to={
-              item.items
-                ? `/bundle/${item._id}`
-                : `/explore/${item.contractAddress}/${item.tokenID}`
-            }
-            className={styles.link}
-          >
-            {renderContent()}
-          </Link>
-        ) : (
-          renderContent()
-        )}
-      </div>
-      {item?.tokenType === 1155 && (
-        <>
-          <div className={styles.card} />
-          <div className={styles.card} />
-        </>
-      )}
+            </div> */}
+          {/* {item?.tokenType === 1155 && (
+            <>
+              <div className={styles.card} />
+              <div className={styles.card} />
+            </>
+          )} */}
+          </>)}
+      
     </div>
   );
 };

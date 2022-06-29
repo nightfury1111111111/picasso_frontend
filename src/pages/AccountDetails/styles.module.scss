@@ -1,11 +1,12 @@
 .container {
   width: 100%;
-  height: 100vh;
   overflow-y: auto;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   position: relative;
+  justify-content: center;
+  align-items: center;
 }
 
 .profile {
@@ -20,7 +21,6 @@
   width: 100%;
   height: 250px;
   position: relative;
-  margin-bottom: -120px;
   border-radius: 10px;
 }
 
@@ -84,7 +84,7 @@
 .buttonsWrapper {
   position: absolute;
   z-index: 99999;
-  top: 282px;
+  bottom: 32px;
   right: 32px;
   display: flex;
   align-items: center;
@@ -116,6 +116,9 @@
   margin-left: 30px;
   display: flex;
   z-index: 100;
+  position: relative;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .avatarWrapper {
@@ -125,7 +128,8 @@
   border: 6px solid #fff;
   z-index: 1;
   overflow: hidden;
-  position: relative;
+  position: absolute;
+  bottom:10px;
 }
 
 .followAvatar {
@@ -152,13 +156,13 @@
   // margin-top: 26px;
   display: flex;
   align-items: center;
-  margin: 0 25px;
+  margin-left: 170px;
 }
 
 .username {
   font-size: 32px;
   font-weight: 300;
-  color: #fff;
+  color: black;
 }
 
 .followBtn {
@@ -213,6 +217,7 @@
 
 .bottomWrapper {
   // margin-top: 6px;
+  margin-left: 5px;
   display: flex;
   align-items: center;
 }
@@ -282,7 +287,7 @@
 .address {
   font-size: 14px;
   font-weight: 700;
-  color: white;
+  color: black;
 }
 
 .copyIcon {
@@ -352,7 +357,7 @@
 }
 
 .bioHeader {
-  width: calc(100% - 60px);
+  width: 100%;
   background: #ededed;
   padding: 20px 30px;
   font-size: 18px;
@@ -612,6 +617,7 @@
   padding: 0 180px 40px 180px;
   display: flex;
   flex-direction: column;
+  margin-top: 50px;
 }
 
 @media only screen and (max-width: 768px) {

@@ -22,7 +22,7 @@ const NFTsGrid = ({
   const n = numPerRow || 6;
   const className = cx(styles.nft, styles[`num${n}`]);
   return (
-    <>
+    <div className={styles.container}>
       {showCreate && (
         <div className={className}>
           <Card create onCreate={onCreate} />
@@ -63,7 +63,7 @@ const NFTsGrid = ({
           </div>
         </>
       )}
-    </>
+    </div>
   );
 };
 

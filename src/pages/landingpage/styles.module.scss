@@ -153,6 +153,14 @@
   color: #a2a2ad;
 }
 
+p {
+  font-size: 14px;
+}
+
+.alignLeft {
+  text-align: left;
+}
+
 .cardName {
   font-weight: 700;
   font-size: 16px;
@@ -195,9 +203,11 @@
 
 .aboutCards {
   // margin-top: 96px;
-  max-width: 1170px;
+  max-width: 1440px;
   // padding-bottom: 80px;
   display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .aboutCard {
@@ -269,7 +279,7 @@
 
 .categories {
   // margin-top: 65px;
-  max-width: 1170px;
+  max-width: 1440px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -403,10 +413,10 @@
 
 .sectionHeader {
   margin-bottom: 40px;
-  max-width: 1170px;
+  max-width: 1440px;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   position: relative;
   align-items: center;
 }

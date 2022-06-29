@@ -6,7 +6,7 @@ const initialState = {
   statusHasOffers: false,
   statusOnAuction: false,
   collections: [],
-  category: null,
+  category: 7,
   groupType: 'all',
   sortBy: 'viewed',
 };

@@ -59,7 +59,7 @@ export const Categories = [
     label: 'Domain Names',
   },
   {
-    id: null,
+    id: 7,
     icon: iconAll,
     label: 'ALL Category',
   },
