@@ -21,6 +21,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 100px;
 }
 
 .collapsed {
@@ -184,8 +185,4 @@
     overflow-y: visible;
   }
 
-  .exploreAll {
-    padding-right: 0;
-    overflow-y: visible;
-  }
 }

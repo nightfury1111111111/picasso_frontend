@@ -178,6 +178,10 @@ export const useApi = () => {
     return data;
   };
 
+  const fetchAllAccounts = async () => {
+    const res = await axios.get(`${apiUrl}/account/allaccountinfo`);
+    return res.data;
+  };
   const fetchCollections = async () => {
     const res = await axios.get(`${apiUrl}/info/getcollections`);
     return res.data;
@@ -263,6 +267,7 @@ export const useApi = () => {
     cancelToken
   ) => {
     const data = { from, count, type };
+    if(category===7) category = null;
     if (collections.length > 0) {
       data.collectionAddresses = collections;
     }
@@ -285,8 +290,31 @@ export const useApi = () => {
       },
       cancelToken,
     });
+    console.log('resData: ', data);
     return res.data;
   };
+
+  const fetchAllTokens = async () => {
+    const res = await axios({
+      method: 'get',
+      url: `${apiUrl}/nftitems/getAllnfts`,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    return res.data;
+  }
+
+  const fetchAllCollections = async () => {
+    const res = await axios({
+      method: 'get',
+      url: `${apiUrl}/erc721/getAllERC721Contracts`,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    return res.data;
+  }
 
   const getItemsLiked = async (items, authToken, cancelToken) => {
     const data = { items: JSON.stringify(items) };
@@ -885,6 +913,7 @@ export const useApi = () => {
     updateAccountDetails,
     updateBanner,
     get1155Info,
+    fetchAllAccounts,
     getTokenHolders,
     fetchCollections,
     fetchCollection,
@@ -893,6 +922,8 @@ export const useApi = () => {
     rejectCollection,
     fetchMintableCollections,
     fetchTokens,
+    fetchAllTokens,
+    fetchAllCollections,
     getItemsLiked,
     getBundleDetails,
     increaseBundleViewCount,

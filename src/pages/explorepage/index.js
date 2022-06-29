@@ -12,6 +12,7 @@ import ExploreFilterHeader from './Body/FilterHeader';
 import NFTsGrid from 'components/NFTsGrid';
 import Header from 'components/header';
 import { useApi } from 'api';
+import BidModal from 'components/BidModal';
 import CollectionsActions from 'actions/collections.actions';
 import TokensActions from 'actions/tokens.actions';
 import HeaderActions from 'actions/header.actions';
@@ -28,7 +29,7 @@ const PageHeaderText = {
 };
 
 const ExploreAllPage = () => {
-  const { fetchCollections, fetchTokens, getItemsLiked } = useApi();
+  const { fetchCollections, fetchTokens, getItemsLiked, fetchAllAccounts } = useApi();
 
   const dispatch = useDispatch();
 
@@ -78,11 +79,14 @@ const ExploreAllPage = () => {
   const updateCollections = async () => {
     try {
       dispatch(CollectionsActions.fetchStart());
-      const res = await fetchCollections();
+      const [res, accounts] = await Promise.all([fetchCollections(),fetchAllAccounts()]);
       if (res.status === 'success') {
         const verified = [];
         const unverified = [];
         res.data.map(item => {
+          console.log('owner: ',item);
+          const index = accounts.data.findIndex((element)=>element.address===item.owner);
+          if(index>=0) item.owner = accounts.data[index].alias;
           if (item.isVerified) verified.push(item);
           else unverified.push(item);
         });
@@ -111,7 +115,6 @@ const ExploreAllPage = () => {
 
       let start;
       let _count = fetchCount;
-      console.log(dir, start, fetchCount);
       if (dir !== 0) {
         _count -= tokens.length % numPerRow;
         start = Math.max(dir < 0 ? from - _count : to, 0);
@@ -281,11 +284,10 @@ const ExploreAllPage = () => {
       updateItems();
     }
   }, [tokens, authToken]);
-
   return (
     <>
       <Header border />
-      <PageHeader text={PageHeaderText} />
+      {/* <PageHeader text={PageHeaderText} /> */}
       <div className={styles.nftContainer}>
         <div
           ref={conRef}

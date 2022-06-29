@@ -5,15 +5,52 @@
   height: 100%;
   position: relative;
   // background-color: #fff;
-  border-radius: 10px;
+  border-radius: 20px;
+  width: 330px;
+  padding: 20px;
+  box-shadow: 0px 3px 16px rgb(47 83 109 / 12%);
+  margin: 0;
+}
+
+.info {
+  span {
+    font-size: 13px;
+    color: #7a798a;
+  }
+}
+.actionButton {
+  padding: 10px 28px 11px;
+  border: 2px solid #5142fc;
+  color: #5142fc;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor:pointer;
+  display: flex;
+  align-items: center;
+}
+.history {
+  font-size: 16px;
+  font-weight: 700;
+  color: #7a798a;
+  display: flex;
+  align-items: center;
+}
+
+.history:hover {
+  color: #5142fc;
+}
+.actionButton:hover {
+  border: 2px solid white;
+  color: white;
+  background-color: #5142fc;
 }
 
 .collectionAvatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
-  margin-right: 10px;
-  border: 4px solid white;
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  margin-right: 12px;
 }
 
 .priceWrapper {
@@ -25,37 +62,10 @@
 }
 
 .card {
-  min-height: 300px;
-  flex-grow: 1;
+  height: 300px;
+  width: 100%;
   cursor: pointer;
-  transition: transform ease 0.1s;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  background: rgba(0, 0, 0, 0.07);
-  border-radius: 10px;
-
-  &:nth-child(n + 2) {
-    position: absolute;
-    height: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: -1;
-  }
-
-  &:nth-child(2) {
-    width: 93%;
-    top: 4px;
-  }
-
-  &:nth-child(3) {
-    width: 96%;
-    top: 1px;
-  }
-
-  &:hover {
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
-  }
+  border-radius: 20px;
 }
 
 .cardHeader {
@@ -82,6 +92,30 @@
 .favLabel {
   font-size: 16px;
   line-height: 20px;
+}
+
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.flexRow {
+  display: flex;
+}
+
+.netLogo {
+  width: 49px;
+  height: 24px;
+  font-weight: bold;
+  font-size: 12px;
+  color: white;
+  background-color: #5142fc;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .createBtn {
@@ -201,12 +235,7 @@
 }
 
 .mediaBox {
-  position: relative;
-  padding-bottom: calc(100% - 16px);
-  border-bottom: 1px solid #eaeaf1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
+  border-radius: 20px;
 }
 
 .clockWrapper {
@@ -216,6 +245,22 @@
   position: absolute;
   top: 250px;
   z-index: 99999;
+}
+.liked {
+  position: absolute;
+  top: 13px;
+  right: 11px;
+  background-color: #14141f;
+  cursor: pointer;
+  border: none;
+  padding: 2px 11px;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
 }
 
 .mediaPanel {
@@ -265,6 +310,7 @@
   background-size: contain;
   object-fit: contain;
   border: 0;
+  border-radius: 20px;
 }
 
 .dots {

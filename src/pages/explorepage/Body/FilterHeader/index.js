@@ -30,6 +30,8 @@ const ExploreFilterHeader = ({ loading, categoryList }) => {
   const { groupType, sortBy, collections, category } = useSelector(
     state => state.Filter
   );
+  const data = useSelector(state=>state);
+  console.log('data: ',data);
 
   const selectedCollections = () => {
     const res = new Array(collections.length).fill(null);
@@ -44,7 +46,6 @@ const ExploreFilterHeader = ({ loading, categoryList }) => {
 
   const handleCategoryChange = e => {
     const newCategory = e.target.value;
-    console.log(newCategory);
     dispatch(FilterActions.updateCategoryFilter(newCategory));
   };
 

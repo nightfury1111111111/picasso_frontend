@@ -123,7 +123,7 @@ const AccountDetails = () => {
   const [fetchInterval, setFetchInterval] = useState(null);
   const [likeCancelSource, setLikeCancelSource] = useState(null);
   const [prevNumPerRow, setPrevNumPerRow] = useState(null);
-  // const [isEditShow, setIsEditShow] = useState(false);
+  const [isEditShow, setIsEditShow] = useState(false);
   const prevAuthToken = usePrevious(authToken);
 
   const numPerRow = Math.floor(width / 240);
@@ -687,10 +687,18 @@ const AccountDetails = () => {
   return (
     <div className={styles.container}>
       <Header border />
-      <PageHeader text={PageHeaderText} />
+      {/* <PageHeader text={PageHeaderText} /> */}
       <div className={styles.contentWrapper}>
         <div className={styles.profile} style={{ paddingTop: '70px' }}>
-          <div className={styles.banner}>
+          <div 
+            className={styles.banner}
+            onMouseOver={() => {
+                  setIsEditShow(true);
+                }}
+                onMouseLeave={() => {
+                  setIsEditShow(false);
+                }}
+          >
             {loading ? (
               <Skeleton width="100%" height={200} />
             ) : bannerHash || user.bannerHash ? (
@@ -703,19 +711,13 @@ const AccountDetails = () => {
               <img
                 src={`/assets/images/profile/cover.jpg`}
                 className={styles.bannerImg}
-                // onMouseOver={() => {
-                //   setIsEditShow(true);
-                // }}
-                // onMouseLeave={() => {
-                //   setIsEditShow(false);
-                // }}
               />
             )}
             {isMe && (
               <div
                 className={styles.editBanner}
                 onClick={selectBanner}
-                // style={{ visibility: isEditShow ? 'visible' : 'hidden' }}
+                style={{ visibility: isEditShow ? 'visible' : 'hidden' }}
               >
                 <input
                   ref={fileInput}
@@ -734,8 +736,7 @@ const AccountDetails = () => {
                 </div>
               </div>
             )}
-          </div>
-          <div className={styles.buttonsWrapper}>
+                      <div className={styles.buttonsWrapper}>
             {isMe && (
               <div className={styles.settings} onClick={openAccountSettings}>
                 <img src={iconSettings} className={styles.settingsIcon} />
@@ -747,6 +748,7 @@ const AccountDetails = () => {
             >
               <img src={iconShare} className={styles.settingsIcon} />
             </div> */}
+          </div>
           </div>
           <div className={styles.wrapper}>
             <div className={styles.avatarWrapper}>
