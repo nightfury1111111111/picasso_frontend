@@ -47,6 +47,18 @@ export const useApi = () => {
     return null;
   };
 
+  const getActivityInfo = async () => {
+    const { data } = await axios({
+      method: 'get',
+      url: `${apiUrl}/info/getActivityInfo`,
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (data.status == 'success') {
+      return data.data;
+    }
+    return false;
+  };
+
   const getIsModerator = async address => {
     const { data } = await axios({
       method: 'get',
@@ -883,5 +895,6 @@ export const useApi = () => {
     updateNotificationSettings,
     addUnlockableContent,
     retrieveUnlockableContent,
+    getActivityInfo,
   };
 };

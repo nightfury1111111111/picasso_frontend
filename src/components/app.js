@@ -14,6 +14,7 @@ import { ChainId } from '@sushiswap/sdk';
 
 import ProtectedRoute from './ProtectedRoute';
 import AccountModal from './AccountModal';
+import Activity from '../pages/Activity';
 import WFTMModal from './WFTMModal';
 import NotFound from './NotFound';
 import PaintBoard from './PaintBoard';
@@ -104,6 +105,7 @@ const App = () => {
             path="/collection/create"
             component={() => <CollectionCreate isRegister={false} />}
           />
+          <Route path="/activity" component={() => <Activity />} />
           <ProtectedRoute
             path="/collection/register"
             component={() => <CollectionCreate isRegister />}

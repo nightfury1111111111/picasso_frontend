@@ -1,6 +1,15 @@
-.clockWrapper {
+.firstClockWrapper {
+  // width: fit-content;
   padding: 10px 20px;
   background-color: #5138ee;
   color: white;
   border-radius: 99px;
+}
+
+.secondClockWrapper {
+  margin-top: 20px;
+  width: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }

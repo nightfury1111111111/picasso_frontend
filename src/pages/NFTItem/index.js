@@ -86,6 +86,8 @@ import HeaderActions from 'actions/header.actions';
 import useTokens from 'hooks/useTokens';
 import usePrevious from 'hooks/usePrevious';
 
+import Clock from 'components/Clock';
+
 import webIcon from 'assets/svgs/web.svg';
 import discordIcon from 'assets/svgs/discord.svg';
 import telegramIcon from 'assets/svgs/telegram.svg';
@@ -2998,7 +3000,7 @@ const NFTItem = () => {
                               ) : (
                                 <Identicon
                                   account={owner}
-                                  size={32}
+                                  size={60}
                                   className={styles.avatar}
                                 />
                               )}
@@ -3327,7 +3329,7 @@ const NFTItem = () => {
                   </div>
                 </div>
               )}
-              <div className={styles.itemInfo}>{renderItemInfo()}</div>
+              {/* <div className={styles.itemInfo}>{renderItemInfo()}</div> */}
               {/* <div className={styles.itemInfoCont}>
               {info?.properties && (
                 <Panel title="Properties" icon={LabelIcon}>
@@ -3343,8 +3345,8 @@ const NFTItem = () => {
             </div> */}
             </div>
             <div className={styles.itemMain}>
-              <div className={styles.itemInfoWrapper}>{renderItemInfo()}</div>
-              {info?.properties && (
+              <div className={styles.itemInfo}>{renderItemInfo()}</div>
+              {/* {info?.properties && (
                 <div className={cx(styles.panelWrapper, styles.infoPanel)}>
                   <Panel title="Properties">
                     <div className={styles.panelBody}>
@@ -3372,6 +3374,9 @@ const NFTItem = () => {
                 <div className={cx(styles.panelWrapper, styles.infoPanel)}>
                   {renderRoyaltyPanel()}
                 </div>
+              )} */}
+              {auction && auction?.current && auction?.current?.endTime && (
+                <Clock endTime={auction.current.endTime} type={2} />
               )}
               {(winner || auction.current?.resulted === false) && (
                 <div
