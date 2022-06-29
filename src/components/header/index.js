@@ -235,6 +235,11 @@ const Header = () => {
     handleMenuClose();
   };
 
+  const goToActivity = () => {
+    history.push(`/activity`);
+    handleMenuClose();
+  };
+
   const goToMyProfile = () => {
     history.push(`/account/${account}`);
     handleMenuClose();
@@ -348,6 +353,10 @@ const Header = () => {
         <div className={styles.menuItem} onClick={goToExplore}>
           {/* <img src={iconAdd} className={styles.menuIcon} /> */}
           Explore
+        </div>
+        <div className={styles.menuItem} onClick={goToActivity}>
+          {/* <img src={iconAdd} className={styles.menuIcon} /> */}
+          Activity
         </div>
         <div className={styles.menuItem} onClick={goToCreateNft}>
           {/* <img src={iconAdd} className={styles.menuIcon} /> */}
@@ -586,6 +595,13 @@ const Header = () => {
             Explore
           </NavLink>
           <NavLink
+            to="/activity"
+            className={cx(styles.menuLink, styles.link, styles.mobileView)}
+            activeClassName={styles.active}
+          >
+            Activity
+          </NavLink>
+          <NavLink
             to="/create"
             className={cx(styles.menuLink, styles.link, styles.mobileView)}
             activeClassName={styles.active}
@@ -603,6 +619,13 @@ const Header = () => {
           style={{ color: 'black' }}
         >
           Explore
+        </NavLink>
+        <NavLink
+          to="/activity"
+          className={cx(styles.menuLink, styles.link)}
+          activeClassName={styles.active}
+        >
+          Activity
         </NavLink>
         <NavLink
           to="/create"

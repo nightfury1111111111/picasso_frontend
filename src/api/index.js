@@ -47,6 +47,18 @@ export const useApi = () => {
     return null;
   };
 
+  const getActivityInfo = async () => {
+    const { data } = await axios({
+      method: 'get',
+      url: `${apiUrl}/info/getActivityInfo`,
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (data.status == 'success') {
+      return data.data;
+    }
+    return false;
+  };
+
   const getIsModerator = async address => {
     const { data } = await axios({
       method: 'get',
@@ -403,6 +415,14 @@ export const useApi = () => {
     const res = await axios({
       method: 'get',
       url: `${apiUrl}/info/getAccountActivity/${address}`,
+    });
+    return res.data;
+  };
+
+  const getCollectionCreator = async address => {
+    const res = await axios({
+      method: 'get',
+      url: `${apiUrl}/collection/getCreator/${address}`,
     });
     return res.data;
   };
@@ -886,6 +906,7 @@ export const useApi = () => {
     getTransferHistory,
     getAccountActivity,
     getActivityFromOthers,
+    getCollectionCreator,
     getMyOffers,
     addMod,
     removeMod,
@@ -914,5 +935,6 @@ export const useApi = () => {
     updateNotificationSettings,
     addUnlockableContent,
     retrieveUnlockableContent,
+    getActivityInfo,
   };
 };

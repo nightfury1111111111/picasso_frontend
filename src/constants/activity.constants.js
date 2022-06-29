@@ -1,0 +1,7 @@
+const ActivityConstants = {
+  UPDATE_ACTIVITY: 'UPDATE_ACTIVITY',
+  FETCH_ACTIVITY: 'FETCH_ACTIVITY',
+  FETCH_ACTIVITY_FAILED: 'FETCH_ACTIVITY_FAILED',
+};
+
+export default ActivityConstants;

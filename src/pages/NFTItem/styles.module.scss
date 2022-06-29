@@ -67,7 +67,7 @@
 
 .itemSummary {
   flex: 1 1 0;
-  max-width: 500px;
+  // max-width: 500px;
 }
 
 .itemMain {
@@ -76,7 +76,6 @@
   overflow: hidden;
   height: fit-content;
   border-radius: 10px;
-  background-color: #ededed;
   padding: 20px;
 }
 
@@ -210,7 +209,7 @@
 }
 
 .itemInfo {
-  display: none;
+  // display: none;
   position: relative;
   overflow: hidden;
 }
@@ -226,6 +225,7 @@
   font-size: 16px;
   font-weight: 400;
   color: #1969ff;
+  margin-top: 16px;
   margin-right: 110px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -237,7 +237,6 @@
   font-size: 32px;
   line-height: 32px;
   color: #3d3d3d;
-  margin-top: 16px;
   margin-right: 110px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -281,7 +280,7 @@
   height: fit-content;
   min-height: 100px;
   margin-top: 20px;
-  padding: 20px;
+  padding-top: 20px;
 }
 
 .activeTab {
@@ -348,7 +347,7 @@
 }
 
 .liking {
-  color: #007bff;
+  color: #888;
 }
 
 .favIcon {
@@ -799,6 +798,7 @@
 .bestBuy {
   padding: 14px 0px 20px 0;
   margin: 20px 0;
+  padding-left: 10px;
   border-radius: 10px;
   border: 1px solid #eaeaf1;
   box-sizing: border-box;

@@ -33,6 +33,7 @@
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "css-loader": "2.1.1",
     "customize-cra": "^1.0.0",
+    "date-fns": "^2.28.0",
     "dotenv": "6.2.0",
     "dotenv-expand": "4.2.0",
     "email-deep-validator": "^3.3.0",

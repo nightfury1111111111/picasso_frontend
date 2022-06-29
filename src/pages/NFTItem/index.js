@@ -86,6 +86,8 @@ import HeaderActions from 'actions/header.actions';
 import useTokens from 'hooks/useTokens';
 import usePrevious from 'hooks/usePrevious';
 
+import Clock from 'components/Clock';
+
 import webIcon from 'assets/svgs/web.svg';
 import discordIcon from 'assets/svgs/discord.svg';
 import telegramIcon from 'assets/svgs/telegram.svg';
@@ -135,6 +137,7 @@ const NFTItem = () => {
     fetchCollection,
     fetchCollections,
     getUserAccountDetails,
+    getCollectionCreator,
     get1155Info,
     getTokenHolders,
     getBundleLikes,
@@ -299,6 +302,8 @@ const NFTItem = () => {
 
   const { authToken } = useSelector(state => state.ConnectWallet);
   const prevAuthToken = usePrevious(authToken);
+
+  const { getCreator } = useSalesContract();
 
   const isLoggedIn = () => {
     return (
@@ -483,6 +488,10 @@ const NFTItem = () => {
       if (data.image) {
         data.image = getRandomIPFS(data.image);
       }
+
+      const creator = await getCreator(address, tokenID);
+      const creatorData = await getCollectionCreator().data;
+      console.log('creator', creator, creatorData);
 
       setInfo(data);
     } catch (err) {
@@ -2482,6 +2491,49 @@ const NFTItem = () => {
           <img src={shareIcon} className={styles.itemMenuIcon} />
         </div>
       </div> */}
+      <div className={styles.itemName}>
+        {(bundleID ? bundleInfo?.name : info?.name) || ''}
+      </div>
+      <div style={{ display: 'flex', marginTop: '15px' }}>
+        <div className={styles.itemViews}>
+          <FontAwesomeIcon icon={faEye} color="#A2A2AD" />
+          &nbsp;
+          {isNaN(views) ? (
+            <Skeleton width={80} height={20} />
+          ) : (
+            `${formatNumber(views)}`
+          )}
+        </div>
+        <div
+          className={cx(
+            styles.itemViews,
+            styles.clickable,
+            isLike && styles.liking
+          )}
+        >
+          {isNaN(liked) || likeFetching ? (
+            <Skeleton width={80} height={20} />
+          ) : (
+            <>
+              {isLike ? (
+                <FavoriteIcon
+                  className={styles.favIcon}
+                  onClick={toggleFavorite}
+                />
+              ) : (
+                <FavoriteBorderIcon
+                  className={styles.favIcon}
+                  onClick={toggleFavorite}
+                />
+              )}
+              &nbsp;
+              <span onClick={liked ? showLikeUsers : null}>
+                {formatNumber(liked || 0)}
+              </span>
+            </>
+          )}
+        </div>
+      </div>
       <div
         className={styles.itemCategory}
         style={{ cursor: 'pointer' }}
@@ -2495,9 +2547,6 @@ const NFTItem = () => {
       >
         <span style={{ color: 'black' }}>Collection:</span>{' '}
         {collection?.collectionName || collection?.name || ''}
-      </div>
-      <div className={styles.itemName}>
-        {(bundleID ? bundleInfo?.name : info?.name) || ''}
       </div>
       {info?.description && (
         <div className={styles.itemDescription}>{info.description}</div>
@@ -2913,421 +2962,7 @@ const NFTItem = () => {
                   </div>
                 )}
               </div>
-              <div className={styles.tabBar}>
-                <div
-                  className={cx(styles.tabItem, tab == 0 && styles.activeTab)}
-                  onClick={() => {
-                    setTab(0);
-                  }}
-                >
-                  Details
-                </div>
-                <div
-                  className={cx(styles.tabItem, tab == 1 && styles.activeTab)}
-                  onClick={() => {
-                    setTab(1);
-                  }}
-                >
-                  Collection
-                </div>
-                <div
-                  className={cx(styles.tabItem, tab == 2 && styles.activeTab)}
-                  onClick={() => {
-                    setTab(2);
-                  }}
-                >
-                  History
-                </div>
-              </div>
-              {tab == 0 && (
-                <div className={styles.tabContent}>
-                  {info?.description && (
-                    <div className={styles.itemDescription}>
-                      {info.description}
-                    </div>
-                  )}
-                  {hasUnlockable && (
-                    <div className={styles.bestBuy}>
-                      <div
-                        className={styles.unlockableLabel}
-                      >{`This item has unlockable content.${
-                        !isMine ? ' Only owners can see the content.' : ''
-                      }`}</div>
-                      {isMine ? (
-                        unlockableContent ? (
-                          <textarea
-                            className={styles.unlockableContent}
-                            value={unlockableContent}
-                            readOnly
-                          />
-                        ) : (
-                          <div
-                            className={cx(
-                              styles.revealBtn,
-                              revealing && styles.disabled
-                            )}
-                            onClick={handleRevealContent}
-                          >
-                            {revealing ? (
-                              <ClipLoader color="#FFF" size={16} />
-                            ) : (
-                              `Reveal Content`
-                            )}
-                          </div>
-                        )
-                      ) : null}
-                    </div>
-                  )}
-                  <div className={styles.itemStats}>
-                    {(ownerInfoLoading ||
-                      tokenOwnerLoading ||
-                      owner ||
-                      tokenInfo) && (
-                      <div className={styles.itemOwner}>
-                        {ownerInfoLoading || tokenOwnerLoading ? (
-                          <Skeleton width={150} height={20} />
-                        ) : tokenType.current === 721 || bundleID ? (
-                          <>
-                            Owner&nbsp;
-                            <div className={styles.ownerAvatar}>
-                              {ownerInfo?.imageHash ? (
-                                <img
-                                  src={`https://cloudflare-ipfs.com/ipfs/${ownerInfo.imageHash}`}
-                                  className={styles.avatar}
-                                />
-                              ) : (
-                                <Identicon
-                                  account={owner}
-                                  size={32}
-                                  className={styles.avatar}
-                                />
-                              )}
-                            </div>
-                            <Link
-                              to={`/account/${owner}`}
-                              className={styles.ownerName}
-                            >
-                              {isMine
-                                ? 'Me'
-                                : ownerInfo?.alias || shortenAddress(owner)}
-                            </Link>
-                          </>
-                        ) : tokenInfo ? (
-                          <>
-                            <div
-                              className={cx(styles.itemViews, styles.clickable)}
-                              onClick={() => setOwnersModalVisible(true)}
-                            >
-                              <PeopleIcon style={styles.itemIcon} />
-                              &nbsp;{formatNumber(holders.length)}
-                              &nbsp;owner{holders.length > 1 && 's'}
-                            </div>
-                            <div className={styles.itemViews}>
-                              <ViewModuleIcon style={styles.itemIcon} />
-                              &nbsp;{formatNumber(tokenInfo.totalSupply)} total
-                            </div>
-                          </>
-                        ) : null}
-                      </div>
-                    )}
-                    <div style={{ display: 'flex' }}>
-                      <div className={styles.itemViews}>
-                        <FontAwesomeIcon icon={faEye} color="#A2A2AD" />
-                        &nbsp;
-                        {isNaN(views) ? (
-                          <Skeleton width={80} height={20} />
-                        ) : (
-                          `${formatNumber(views)} view${views !== 1 ? 's' : ''}`
-                        )}
-                      </div>
-                      <div
-                        className={cx(
-                          styles.itemViews,
-                          styles.clickable,
-                          isLike && styles.liking
-                        )}
-                      >
-                        {isNaN(liked) || likeFetching ? (
-                          <Skeleton width={80} height={20} />
-                        ) : (
-                          <>
-                            {isLike ? (
-                              <FavoriteIcon
-                                className={styles.favIcon}
-                                onClick={toggleFavorite}
-                              />
-                            ) : (
-                              <FavoriteBorderIcon
-                                className={styles.favIcon}
-                                onClick={toggleFavorite}
-                              />
-                            )}
-                            &nbsp;
-                            <span onClick={liked ? showLikeUsers : null}>
-                              {formatNumber(liked || 0)} favorite
-                              {liked !== 1 ? 's' : ''}
-                            </span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      width: '100%',
-                      marginTop: '10px',
-                      display: 'flex',
-                      flexDirection: 'row',
-                    }}
-                  >
-                    <div style={{ width: '35%' }}>Contract Address :</div>
-                    <a
-                      href={`${explorerUrl}/token/${address}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.panelValue}
-                    >
-                      {shortenAddress(address)}
-                    </a>
-                  </div>
-                  <div
-                    style={{
-                      width: '100%',
-                      marginTop: '10px',
-                      display: 'flex',
-                      flexDirection: 'row',
-                    }}
-                  >
-                    <div style={{ width: '35%' }}>Blockchain :</div>
-                    <div>Fantom Opera</div>
-                  </div>
-                  <div
-                    style={{
-                      width: '100%',
-                      marginTop: '10px',
-                      display: 'flex',
-                      flexDirection: 'row',
-                    }}
-                  >
-                    <div style={{ width: '35%' }}>Chain ID :</div>
-                    <div>250</div>
-                  </div>
-                </div>
-              )}
-              {tab == 1 && (
-                <div className={styles.tabContent}>
-                  <div className={styles.panelBody}>
-                    <div className={styles.collectionDescription}>
-                      {collection?.description || 'Unverified Collection'}
-                    </div>
-
-                    <div className={styles.socialLinks}>
-                      {collection?.siteUrl?.length > 0 && (
-                        <a
-                          href={collection?.siteUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.socialLink}
-                        >
-                          <img src={webIcon} />
-                        </a>
-                      )}
-                      {collection?.twitterHandle?.length > 0 && (
-                        <a
-                          href={collection?.twitterHandle}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.socialLink}
-                        >
-                          <img src={twitterIcon} />
-                        </a>
-                      )}
-                      {collection?.mediumHandle?.length > 0 && (
-                        <a
-                          href={collection?.mediumHandle}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.socialLink}
-                        >
-                          <img src={mediumIcon} />
-                        </a>
-                      )}
-                      {collection?.telegram?.length > 0 && (
-                        <a
-                          href={collection?.telegram}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.socialLink}
-                        >
-                          <img src={telegramIcon} />
-                        </a>
-                      )}
-                      {collection?.discord?.length > 0 && (
-                        <a
-                          href={collection?.discord}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.socialLink}
-                        >
-                          <img src={discordIcon} />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-              {tab == 2 && (
-                <div className={styles.tabContent}>
-                  <div className={styles.tradeHistoryWrapper}>
-                    <div className={styles.tradeHistoryHeader}>
-                      <div className={styles.tradeHistoryTitle}>
-                        {filters[filter]}
-                      </div>
-                      {!bundleID && (
-                        <div className={styles.filter} onClick={handleMenuOpen}>
-                          <img src={filterIcon} className={styles.filterIcon} />
-                        </div>
-                      )}
-                    </div>
-                    <div className={styles.histories}>
-                      <div className={cx(styles.history, styles.heading)}>
-                        {filter === 0 && (
-                          <div className={styles.historyPrice}>Price</div>
-                        )}
-                        {tokenType.current === 1155 && (
-                          <div className={styles.quantity}>Quantity</div>
-                        )}
-                        <div className={styles.from}>From</div>
-                        <div className={styles.to}>To</div>
-                        <div className={styles.saleDate}>Date</div>
-                      </div>
-                      {(historyLoading
-                        ? [null, null, null]
-                        : filter === 0
-                        ? tradeHistory.current
-                        : transferHistory.current
-                      ).map((history, idx) => {
-                        const saleDate = history
-                          ? new Date(history.createdAt)
-                          : null;
-                        return (
-                          <div className={styles.history} key={idx}>
-                            {filter === 0 && (
-                              <div className={styles.historyPrice}>
-                                {history ? (
-                                  <>
-                                    <img
-                                      src={history.token?.icon}
-                                      className={styles.tokenIcon}
-                                    />
-                                    {formatNumber(history.price)}
-                                    &nbsp;( $
-                                    {formatNumber(
-                                      history.priceInUSD.toFixed(3)
-                                    )}{' '}
-                                    )
-                                  </>
-                                ) : (
-                                  <Skeleton width={100} height={20} />
-                                )}
-                              </div>
-                            )}
-                            {tokenType.current === 1155 && (
-                              <div className={styles.quantity}>
-                                {history ? (
-                                  formatNumber(history.value)
-                                ) : (
-                                  <Skeleton width={100} height={20} />
-                                )}
-                              </div>
-                            )}
-                            <div className={styles.from}>
-                              {history ? (
-                                <Link to={`/account/${history.from}`}>
-                                  <div className={styles.userAvatarWrapper}>
-                                    {history.fromImage ? (
-                                      <img
-                                        src={`https://cloudflare-ipfs.com/ipfs/${history.fromImage}`}
-                                        className={styles.userAvatar}
-                                      />
-                                    ) : (
-                                      <Identicon
-                                        account={history.from}
-                                        size={24}
-                                        className={styles.userAvatar}
-                                      />
-                                    )}
-                                  </div>
-                                  {history.fromAlias ||
-                                    history.from?.substr(0, 6)}
-                                </Link>
-                              ) : (
-                                <Skeleton width={180} height={20} />
-                              )}
-                            </div>
-                            <div className={styles.to}>
-                              {history ? (
-                                <Link to={`/account/${history.to}`}>
-                                  <div className={styles.userAvatarWrapper}>
-                                    {history.toImage ? (
-                                      <img
-                                        src={`https://cloudflare-ipfs.com/ipfs/${history.toImage}`}
-                                        className={styles.userAvatar}
-                                      />
-                                    ) : (
-                                      <Identicon
-                                        account={history.to}
-                                        size={24}
-                                        className={styles.userAvatar}
-                                      />
-                                    )}
-                                  </div>
-                                  {history.toAlias || history.to?.substr(0, 6)}
-                                </Link>
-                              ) : (
-                                <Skeleton width={180} height={20} />
-                              )}
-                            </div>
-                            <div className={styles.saleDate}>
-                              {saleDate ? (
-                                formatDate(saleDate)
-                              ) : (
-                                <Skeleton width={150} height={20} />
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    {/* {!bundleID && (
-                  <div className={styles.panelWrapper}>
-                    <Panel
-                      title="More from this collection"
-                      icon={ViewModuleIcon}
-                      responsive
-                    >
-                      <div className={styles.panelBody}>
-                        {loading ? (
-                          <div className={styles.loadingIndicator}>
-                            <ClipLoader color="#007BFF" size={16} />
-                          </div>
-                        ) : (
-                          <div className={styles.itemsList}>
-                            {moreItems.current.map((item, idx) => (
-                              <div key={idx} className={styles.moreItem}>
-                                <NFTCard item={item} />
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </Panel>
-                  </div>
-                )} */}
-                  </div>
-                </div>
-              )}
-              <div className={styles.itemInfo}>{renderItemInfo()}</div>
+              {/* <div className={styles.itemInfo}>{renderItemInfo()}</div> */}
               {/* <div className={styles.itemInfoCont}>
               {info?.properties && (
                 <Panel title="Properties" icon={LabelIcon}>
@@ -3343,8 +2978,8 @@ const NFTItem = () => {
             </div> */}
             </div>
             <div className={styles.itemMain}>
-              <div className={styles.itemInfoWrapper}>{renderItemInfo()}</div>
-              {info?.properties && (
+              <div className={styles.itemInfo}>{renderItemInfo()}</div>
+              {/* {info?.properties && (
                 <div className={cx(styles.panelWrapper, styles.infoPanel)}>
                   <Panel title="Properties">
                     <div className={styles.panelBody}>
@@ -3372,6 +3007,9 @@ const NFTItem = () => {
                 <div className={cx(styles.panelWrapper, styles.infoPanel)}>
                   {renderRoyaltyPanel()}
                 </div>
+              )} */}
+              {auction && auction?.current && auction?.current?.endTime && (
+                <Clock endTime={auction.current.endTime} type={2} />
               )}
               {(winner || auction.current?.resulted === false) && (
                 <div
@@ -3976,6 +3614,379 @@ const NFTItem = () => {
                         )}
                       </TxButton>
                     )}
+                </div>
+              )}
+              <div className={styles.tabBar}>
+                <div
+                  className={cx(styles.tabItem, tab == 0 && styles.activeTab)}
+                  onClick={() => {
+                    setTab(0);
+                  }}
+                >
+                  Details
+                </div>
+                <div
+                  className={cx(styles.tabItem, tab == 1 && styles.activeTab)}
+                  onClick={() => {
+                    setTab(1);
+                  }}
+                >
+                  Collection
+                </div>
+                <div
+                  className={cx(styles.tabItem, tab == 2 && styles.activeTab)}
+                  onClick={() => {
+                    setTab(2);
+                  }}
+                >
+                  History
+                </div>
+              </div>
+              {tab == 0 && (
+                <div className={styles.tabContent}>
+                  {info?.description && (
+                    <div className={styles.itemDescription}>
+                      {info.description}
+                    </div>
+                  )}
+                  {hasUnlockable && (
+                    <div className={styles.bestBuy}>
+                      <div
+                        className={styles.unlockableLabel}
+                      >{`This item has unlockable content.${
+                        !isMine ? ' Only owners can see the content.' : ''
+                      }`}</div>
+                      {isMine ? (
+                        unlockableContent ? (
+                          <textarea
+                            className={styles.unlockableContent}
+                            value={unlockableContent}
+                            readOnly
+                          />
+                        ) : (
+                          <div
+                            className={cx(
+                              styles.revealBtn,
+                              revealing && styles.disabled
+                            )}
+                            onClick={handleRevealContent}
+                          >
+                            {revealing ? (
+                              <ClipLoader color="#FFF" size={16} />
+                            ) : (
+                              `Reveal Content`
+                            )}
+                          </div>
+                        )
+                      ) : null}
+                    </div>
+                  )}
+                  <div className={styles.itemStats}>
+                    {(ownerInfoLoading ||
+                      tokenOwnerLoading ||
+                      owner ||
+                      tokenInfo) && (
+                      <div className={styles.itemOwner}>
+                        {ownerInfoLoading || tokenOwnerLoading ? (
+                          <Skeleton width={150} height={20} />
+                        ) : tokenType.current === 721 || bundleID ? (
+                          <>
+                            Owner&nbsp;
+                            <div className={styles.ownerAvatar}>
+                              {ownerInfo?.imageHash ? (
+                                <img
+                                  src={`https://cloudflare-ipfs.com/ipfs/${ownerInfo.imageHash}`}
+                                  className={styles.avatar}
+                                />
+                              ) : (
+                                <Identicon
+                                  account={owner}
+                                  size={60}
+                                  className={styles.avatar}
+                                />
+                              )}
+                            </div>
+                            <Link
+                              to={`/account/${owner}`}
+                              className={styles.ownerName}
+                            >
+                              {isMine
+                                ? 'Me'
+                                : ownerInfo?.alias || shortenAddress(owner)}
+                            </Link>
+                          </>
+                        ) : tokenInfo ? (
+                          <>
+                            <div
+                              className={cx(styles.itemViews, styles.clickable)}
+                              onClick={() => setOwnersModalVisible(true)}
+                            >
+                              <PeopleIcon style={styles.itemIcon} />
+                              &nbsp;{formatNumber(holders.length)}
+                              &nbsp;owner{holders.length > 1 && 's'}
+                            </div>
+                            <div className={styles.itemViews}>
+                              <ViewModuleIcon style={styles.itemIcon} />
+                              &nbsp;{formatNumber(tokenInfo.totalSupply)} total
+                            </div>
+                          </>
+                        ) : null}
+                      </div>
+                    )}
+                  </div>
+                  <div
+                    style={{
+                      width: '100%',
+                      marginTop: '10px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <div style={{ width: '35%' }}>Contract Address :</div>
+                    <a
+                      href={`${explorerUrl}/token/${address}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.panelValue}
+                    >
+                      {shortenAddress(address)}
+                    </a>
+                  </div>
+                  <div
+                    style={{
+                      width: '100%',
+                      marginTop: '10px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <div style={{ width: '35%' }}>Blockchain :</div>
+                    <div>Fantom Opera</div>
+                  </div>
+                  <div
+                    style={{
+                      width: '100%',
+                      marginTop: '10px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <div style={{ width: '35%' }}>Chain ID :</div>
+                    <div>250</div>
+                  </div>
+                </div>
+              )}
+              {tab == 1 && (
+                <div className={styles.tabContent}>
+                  <div className={styles.panelBody}>
+                    <div className={styles.collectionDescription}>
+                      {collection?.description || 'Unverified Collection'}
+                    </div>
+
+                    <div className={styles.socialLinks}>
+                      {collection?.siteUrl?.length > 0 && (
+                        <a
+                          href={collection?.siteUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.socialLink}
+                        >
+                          <img src={webIcon} />
+                        </a>
+                      )}
+                      {collection?.twitterHandle?.length > 0 && (
+                        <a
+                          href={collection?.twitterHandle}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.socialLink}
+                        >
+                          <img src={twitterIcon} />
+                        </a>
+                      )}
+                      {collection?.mediumHandle?.length > 0 && (
+                        <a
+                          href={collection?.mediumHandle}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.socialLink}
+                        >
+                          <img src={mediumIcon} />
+                        </a>
+                      )}
+                      {collection?.telegram?.length > 0 && (
+                        <a
+                          href={collection?.telegram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.socialLink}
+                        >
+                          <img src={telegramIcon} />
+                        </a>
+                      )}
+                      {collection?.discord?.length > 0 && (
+                        <a
+                          href={collection?.discord}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.socialLink}
+                        >
+                          <img src={discordIcon} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+              {tab == 2 && (
+                <div className={styles.tabContent}>
+                  <div className={styles.tradeHistoryWrapper}>
+                    <div className={styles.tradeHistoryHeader}>
+                      <div className={styles.tradeHistoryTitle}>
+                        {filters[filter]}
+                      </div>
+                      {!bundleID && (
+                        <div className={styles.filter} onClick={handleMenuOpen}>
+                          <img src={filterIcon} className={styles.filterIcon} />
+                        </div>
+                      )}
+                    </div>
+                    <div className={styles.histories}>
+                      <div className={cx(styles.history, styles.heading)}>
+                        {filter === 0 && (
+                          <div className={styles.historyPrice}>Price</div>
+                        )}
+                        {tokenType.current === 1155 && (
+                          <div className={styles.quantity}>Quantity</div>
+                        )}
+                        <div className={styles.from}>From</div>
+                        <div className={styles.to}>To</div>
+                        <div className={styles.saleDate}>Date</div>
+                      </div>
+                      {(historyLoading
+                        ? [null, null, null]
+                        : filter === 0
+                        ? tradeHistory.current
+                        : transferHistory.current
+                      ).map((history, idx) => {
+                        const saleDate = history
+                          ? new Date(history.createdAt)
+                          : null;
+                        return (
+                          <div className={styles.history} key={idx}>
+                            {filter === 0 && (
+                              <div className={styles.historyPrice}>
+                                {history ? (
+                                  <>
+                                    <img
+                                      src={history.token?.icon}
+                                      className={styles.tokenIcon}
+                                    />
+                                    {formatNumber(history.price)}
+                                    &nbsp;( $
+                                    {formatNumber(
+                                      history.priceInUSD.toFixed(3)
+                                    )}{' '}
+                                    )
+                                  </>
+                                ) : (
+                                  <Skeleton width={100} height={20} />
+                                )}
+                              </div>
+                            )}
+                            {tokenType.current === 1155 && (
+                              <div className={styles.quantity}>
+                                {history ? (
+                                  formatNumber(history.value)
+                                ) : (
+                                  <Skeleton width={100} height={20} />
+                                )}
+                              </div>
+                            )}
+                            <div className={styles.from}>
+                              {history ? (
+                                <Link to={`/account/${history.from}`}>
+                                  <div className={styles.userAvatarWrapper}>
+                                    {history.fromImage ? (
+                                      <img
+                                        src={`https://cloudflare-ipfs.com/ipfs/${history.fromImage}`}
+                                        className={styles.userAvatar}
+                                      />
+                                    ) : (
+                                      <Identicon
+                                        account={history.from}
+                                        size={24}
+                                        className={styles.userAvatar}
+                                      />
+                                    )}
+                                  </div>
+                                  {history.fromAlias ||
+                                    history.from?.substr(0, 6)}
+                                </Link>
+                              ) : (
+                                <Skeleton width={180} height={20} />
+                              )}
+                            </div>
+                            <div className={styles.to}>
+                              {history ? (
+                                <Link to={`/account/${history.to}`}>
+                                  <div className={styles.userAvatarWrapper}>
+                                    {history.toImage ? (
+                                      <img
+                                        src={`https://cloudflare-ipfs.com/ipfs/${history.toImage}`}
+                                        className={styles.userAvatar}
+                                      />
+                                    ) : (
+                                      <Identicon
+                                        account={history.to}
+                                        size={24}
+                                        className={styles.userAvatar}
+                                      />
+                                    )}
+                                  </div>
+                                  {history.toAlias || history.to?.substr(0, 6)}
+                                </Link>
+                              ) : (
+                                <Skeleton width={180} height={20} />
+                              )}
+                            </div>
+                            <div className={styles.saleDate}>
+                              {saleDate ? (
+                                formatDate(saleDate)
+                              ) : (
+                                <Skeleton width={150} height={20} />
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    {/* {!bundleID && (
+                  <div className={styles.panelWrapper}>
+                    <Panel
+                      title="More from this collection"
+                      icon={ViewModuleIcon}
+                      responsive
+                    >
+                      <div className={styles.panelBody}>
+                        {loading ? (
+                          <div className={styles.loadingIndicator}>
+                            <ClipLoader color="#007BFF" size={16} />
+                          </div>
+                        ) : (
+                          <div className={styles.itemsList}>
+                            {moreItems.current.map((item, idx) => (
+                              <div key={idx} className={styles.moreItem}>
+                                <NFTCard item={item} />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </Panel>
+                  </div>
+                )} */}
+                  </div>
                 </div>
               )}
             </div>

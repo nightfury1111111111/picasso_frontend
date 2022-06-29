@@ -162,6 +162,12 @@ export const useSalesContract = () => {
     );
   };
 
+  const getCreator = async (nftAddress, tokenId) => {
+    const contract = await getSalesContract();
+
+    return await contract.minters(nftAddress, tokenId);
+  };
+
   const getCollectionRoyalty = async nftAddress => {
     const contract = await getSalesContract();
     return await contract.collectionRoyalties(nftAddress);
@@ -178,6 +184,7 @@ export const useSalesContract = () => {
     cancelOffer,
     acceptOffer,
     registerRoyalty,
+    getCreator,
     getCollectionRoyalty,
   };
 };

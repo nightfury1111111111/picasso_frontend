@@ -241,7 +241,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
           {auctionActive && (
             // formatDuration(auction.endTime)
             <>
-              <Clock endTime={auction.endTime} />
+              <Clock endTime={auction.endTime} type={1} />
             </>
           )}
         </div>
