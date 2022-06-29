@@ -59,6 +59,17 @@ export const useApi = () => {
     return false;
   };
 
+  const getNftActivity = async address => {
+    const { data } = await axios({
+      method: 'get',
+      url: `${apiUrl}/info/getNftActivity/${address}`,
+    });
+    if (data.status == 'success') {
+      return data.data;
+    }
+    return false;
+  };
+
   const getIsModerator = async address => {
     const { data } = await axios({
       method: 'get',
@@ -447,6 +458,23 @@ export const useApi = () => {
       },
     });
     return res.data;
+  };
+
+  const getCreatorAndOwnerInfo = async (creator, owner) => {
+    const data = { creator: creator.toLowerCase(), owner: owner.toLowerCase() };
+    try {
+      const res = await axios({
+        method: 'post',
+        url: `${apiUrl}/collection/getCreatorAndOwnerInfo`,
+        data: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return res.data;
+    } catch (error) {
+      console.error('axiosError: ', error);
+    }
   };
 
   const banCollection = async (
@@ -881,6 +909,7 @@ export const useApi = () => {
     removeMod,
     banCollection,
     unbanCollection,
+    getCreatorAndOwnerInfo,
     banItems,
     banUser,
     unbanUser,
@@ -889,6 +918,7 @@ export const useApi = () => {
     createBundle,
     deleteBundle,
     getFollowing,
+    getNftActivity,
     followUser,
     getFollowers,
     getFollowings,

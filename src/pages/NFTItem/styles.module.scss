@@ -3,7 +3,7 @@
   width: 100%;
   // height: 100vh;
   overflow-y: auto;
-  padding-top: 100px;
+  padding-top: 160px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -16,8 +16,9 @@
   box-sizing: border-box;
   // padding-right: 40px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .nftInfo {
@@ -26,22 +27,37 @@
   padding: 20px;
 }
 
+.auctionStatus {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.clockWrapper {
+  width: 220px;
+  padding: 15px 20px;
+  background-color: #ededed;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
 .headerButton {
-  min-width: 168px;
+  width: 100%;
   height: 48px;
   padding: 0 15px;
   box-sizing: border-box;
-  border-radius: 8px;
+  border-radius: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #007bff;
+  background-color: mediumblue;
   color: #fff;
   cursor: pointer;
   font-weight: 700;
   font-size: 18px;
   user-select: none;
-  margin-right: 16px;
+  margin-bottom: 16px;
 
   &:hover {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
@@ -142,7 +158,7 @@
   }
 
   &.active {
-    border-color: #007bff;
+    border-color: mediumblue;
 
     img {
       border-radius: 0px;
@@ -259,7 +275,7 @@
 .tabBar {
   width: 100%;
   height: 50px;
-  background-color: #ededed;
+  border-bottom: 1px solid #ededed;
   margin-top: 20px;
   display: flex;
   flex-direction: row;
@@ -268,15 +284,19 @@
 }
 
 .tabItem {
-  margin-left: 20px;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
   cursor: pointer;
   &:hover {
     color: #2479fa;
+    border-bottom: 2px solid mediumblue;
   }
 }
 
 .tabContent {
-  width: calc(100% - 40px);
+  width: 100%;
   height: fit-content;
   min-height: 100px;
   margin-top: 20px;
@@ -285,6 +305,7 @@
 
 .activeTab {
   color: #2479fa;
+  border-bottom: 2px solid mediumblue;
 }
 
 .itemStats {
@@ -332,10 +353,32 @@
   color: #2479fa;
 }
 
+.userContainer {
+  padding: 10px;
+  width: 240px;
+  background-color: #ededed;
+  border-radius: 15px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 15px;
+}
+
+.userWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
 .itemViews {
   margin-left: 20px;
   display: flex;
   align-items: center;
+  background-color: #ededed;
+  border-radius: 30px;
+  padding: 5px 15px;
 
   &:first-child {
     margin-left: 0;
@@ -353,7 +396,7 @@
 .favIcon {
   width: 16px !important;
   &:hover {
-    color: #007bff;
+    color: mediumblue;
   }
 }
 
@@ -428,7 +471,7 @@
 
 .bundleItemCategory {
   font-size: 18px;
-  color: #007bff;
+  color: mediumblue;
 }
 
 .bundleItemCategory,
@@ -481,6 +524,13 @@
   flex: 2;
 }
 
+.userImage {
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
 .owner a,
 .from a,
 .to a {
@@ -490,9 +540,9 @@
 }
 
 .userAvatarWrapper {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  border-radius: 15px;
   overflow: hidden;
   position: relative;
   margin-right: 6px;
@@ -555,10 +605,11 @@
 }
 
 .bids {
-  padding: 20px 16px;
+  // padding: 20px 16px;
 }
 
 .result {
+  margin-bottom: 20px;
   font-size: 20px;
   font-weight: bold;
   display: flex;
@@ -583,7 +634,7 @@
 .withdrawBid {
   min-width: 120px;
   width: fit-content;
-  height: 40px;
+  height: 48px;
   padding: 0 15px;
   box-sizing: border-box;
   border-radius: 4px;
@@ -592,7 +643,7 @@
   justify-content: center;
   cursor: pointer;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 1px;
   user-select: none;
   margin-top: 15px;
@@ -603,14 +654,17 @@
 }
 
 .placeBid {
-  background-color: #007bff;
+  width: 100%;
+  border-radius: 80px;
+  background-color: mediumblue;
   color: #fff;
 }
 
 .withdrawBid {
-  background-color: #fff;
-  color: #007bff;
-  border: 1px solid #007bff;
+  background-color: mediumblue;
+  color: #fff;
+  border-radius: 80px;
+  width: 100%;
 }
 
 // .tradeHistoryWrapper {
@@ -647,10 +701,11 @@
 
 .history {
   // min-width: 600px;
+  margin-bottom: 5px;
   height: 58px;
   display: flex;
   align-items: center;
-  padding: 0 14px;
+  padding: 10px 14px;
   font-size: 14px;
   font-weight: 400;
   color: #121223;
@@ -680,6 +735,7 @@
   display: flex;
   align-items: center;
   flex: 2;
+  flex-direction: row-reverse;
 }
 
 .saleDate {
@@ -770,8 +826,6 @@
 .panelWrapper {
   min-width: 550px;
   margin: 20px 0;
-  border-radius: 10px;
-  border: 1px solid #eaeaf1;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -796,11 +850,8 @@
 }
 
 .bestBuy {
-  padding: 14px 0px 20px 0;
-  margin: 20px 0;
-  padding-left: 10px;
-  border-radius: 10px;
-  border: 1px solid #eaeaf1;
+  padding: 14px 0px 0 0;
+  margin-top: 20px;
   box-sizing: border-box;
 }
 
@@ -811,7 +862,6 @@
 }
 
 .currentPriceWrapper {
-  margin-top: 18px;
   display: flex;
   align-items: center;
 }
@@ -841,12 +891,23 @@
   color: #a2a2ad;
 }
 
+.statusInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 220px;
+  border-radius: 16px;
+  background: #ededed;
+  padding: 10px 20px;
+}
+
 .revealBtn,
 .buyNow {
-  margin-top: 20px;
-  width: 168px;
+  margin-top: 30px;
+  width: 100%;
   height: 48px;
-  border-radius: 10px;
+  border-radius: 60px;
   background-color: #2479fa;
   font-weight: 700;
   font-size: 16px;
