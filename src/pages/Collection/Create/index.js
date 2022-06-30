@@ -507,7 +507,7 @@ const CollectionCreate = ({ isRegister }) => {
   return (
     <div className={styles.container}>
       <Header border />
-      <PageHeader text={isRegister ? PageHeaderText2 : PageHeaderText1} />
+      {/* <PageHeader text={isRegister ? PageHeaderText2 : PageHeaderText1} /> */}
       <div className={styles.collectionCont}>
         <div className={styles.inner}>
           <div className={styles.title}>
