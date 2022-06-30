@@ -597,7 +597,7 @@ const Header = () => {
         {isSearchbarShown && renderSearchBox()}
         <div className={styles.secondmenu}>
           <NavLink
-            to="/"
+            to="/index"
             className={cx(styles.menuLink, styles.link, styles.mobileView)}
             activeClassName={styles.active}
           >
@@ -629,7 +629,7 @@ const Header = () => {
       <div className={styles.menu}>
         {isSearchbarShown && renderSearchBox()}
         <NavLink
-          to="/"
+          to="/index"
           className={cx(styles.menuLink, styles.link)}
           activeClassName={styles.active}
           style={{ color: 'black' }}

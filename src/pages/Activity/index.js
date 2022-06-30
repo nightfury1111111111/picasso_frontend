@@ -28,6 +28,7 @@ const AccountDetails = () => {
 
   const { fetching, activity } = useSelector(state => state.Activity);
 
+  console.log('Activity rendre');
   useEffect(() => {
     setIsLoading(true);
     dispatch(ActivityActions.fetchStart());

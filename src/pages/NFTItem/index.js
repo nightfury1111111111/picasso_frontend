@@ -212,7 +212,7 @@ const NFTItem = () => {
     false
   );
 
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(2);
 
   const [previewIndex, setPreviewIndex] = useState(0);
   const [minBid, setMinBid] = useState(0);
@@ -2717,11 +2717,15 @@ const NFTItem = () => {
           <div className={styles.statusInfo}>
             <div className={styles.currentPriceLabel}>Price</div>
             <div className={styles.currentPriceWrapper}>
-              <div className={styles.tokenLogo}>
+              {/* <div className={styles.tokenLogo}>
                 <img src={bestListing.token?.icon} />
-              </div>
+              </div> */}
               <div className={styles.currentPrice}>
                 {formatNumber(bestListing.price)}
+              </div>
+              <div style={{ marginLeft: '4px', fontSize: '18px' }}>
+                {bestListing?.paymentToken?.toLowerCase() ==
+                  '0xf1277d1ed8ad466beddf92ef448a132661956621' && 'FTM'}
               </div>
               {/* <div className={styles.currentPriceUSD}>
               (
@@ -3090,12 +3094,18 @@ const NFTItem = () => {
                   {bid ? (
                     <div className={cx(styles.bidtitle, styles.clockWrapper)}>
                       Current Bid :&nbsp;
-                      <div>
-                        <img
+                      <div style={{ display: 'flex', flexDirecton: 'row' }}>
+                        {/* <img
                           src={auction.current.token?.icon}
                           className={styles.tokenIcon}
-                        />
+                        /> */}
                         {formatNumber(bid.bid)}
+                        {console.log(bid)}
+                        <div style={{ marginLeft: '6px' }}>
+                          {auction.current?.payToken?.toLowerCase() ==
+                            '0xf1277d1ed8ad466beddf92ef448a132661956621' &&
+                            'FTM'}
+                        </div>
                         {/* {bid.bid < auction.current.reservePrice
                             ? ' -- Reserve price not met'
                             : ''} */}
@@ -3153,11 +3163,21 @@ const NFTItem = () => {
                                 : shortenAddress(winner)}
                             </Link>
                             &nbsp;(
-                            <img
+                            {/* <img
                               src={winningToken?.icon}
                               className={styles.tokenIcon}
-                            />
-                            {formatNumber(winningBid)})
+                            /> */}
+                            <div
+                              style={{ display: 'flex', flexDirection: 'row' }}
+                            >
+                              {formatNumber(winningBid)}
+                              <div style={{ marginLeft: '6px' }}>
+                                {auction.current?.payToken?.toLowerCase() ==
+                                  '0xf1277d1ed8ad466beddf92ef448a132661956621' &&
+                                  'FTM'}
+                              </div>
+                            </div>
+                            )
                           </>
                         ) : (
                           'Auction has concluded'
@@ -3170,11 +3190,16 @@ const NFTItem = () => {
                       <div>
                         <div className={styles.bidtitle}>
                           Reserve Price :&nbsp;
-                          <img
+                          {/* <img
                             src={auction.current.token?.icon}
                             className={styles.tokenIcon}
-                          />
+                          /> */}
                           {formatNumber(auction.current.reservePrice)}
+                          <div style={{ marginLeft: '6px' }}>
+                            {auction.current?.payToken?.toLowerCase() ==
+                              '0xf1277d1ed8ad466beddf92ef448a132661956621' &&
+                              'FTM'}
+                          </div>
                         </div>
                       </div>
                     ) : (
@@ -3479,14 +3504,19 @@ const NFTItem = () => {
                                 </Link>
                               </div>
                               <div className={styles.price}>
-                                <img
+                                {/* <img
                                   src={offer.token?.icon}
                                   className={styles.tokenIcon}
-                                />
+                                /> */}
                                 {formatNumber(
                                   offer.pricePerItem || offer.price
                                 )}
-                                &nbsp;(
+                                <div style={{ marginLeft: '6px' }}>
+                                  {offer?.paymentToken?.toLowerCase() ==
+                                    '0xf1277d1ed8ad466beddf92ef448a132661956621' &&
+                                    'FTM'}
+                                </div>
+                                {/* &nbsp;(
                                 {prices[offer.token.address] !== undefined ? (
                                   `$${(
                                     (offer.pricePerItem || offer.price) *
@@ -3495,7 +3525,7 @@ const NFTItem = () => {
                                 ) : (
                                   <Skeleton width={60} height={24} />
                                 )}
-                                )
+                                ) */}
                               </div>
                               {tokenInfo?.totalSupply > 1 && (
                                 <div className={styles.quantity}>
@@ -3712,21 +3742,21 @@ const NFTItem = () => {
               )}
               <div className={styles.tabBar}>
                 <div
-                  className={cx(styles.tabItem, tab == 0 && styles.activeTab)}
-                  onClick={() => {
-                    setTab(0);
-                  }}
-                >
-                  Info
-                </div>
-                <div
                   className={cx(styles.tabItem, tab == 2 && styles.activeTab)}
                   onClick={() => {
                     // fetchNftActivity();
                     setTab(2);
                   }}
                 >
-                  History
+                  Bid History
+                </div>
+                <div
+                  className={cx(styles.tabItem, tab == 0 && styles.activeTab)}
+                  onClick={() => {
+                    setTab(0);
+                  }}
+                >
+                  Info
                 </div>
                 <div
                   className={cx(styles.tabItem, tab == 1 && styles.activeTab)}
@@ -3932,14 +3962,14 @@ const NFTItem = () => {
                 <div className={styles.tabContent}>
                   <div className={styles.tradeHistoryWrapper}>
                     <div className={styles.tradeHistoryHeader}>
-                      <div className={styles.tradeHistoryTitle}>
+                      {/* <div className={styles.tradeHistoryTitle}>
                         {filters[filter]}
                       </div>
                       {!bundleID && (
                         <div className={styles.filter} onClick={handleMenuOpen}>
                           <img src={filterIcon} className={styles.filterIcon} />
                         </div>
-                      )}
+                      )} */}
                     </div>
                     <div className={styles.histories}>
                       {/* <div className={cx(styles.history, styles.heading)}>
@@ -3990,7 +4020,8 @@ const NFTItem = () => {
                                     <Link to={`/account/${history.from}`}>
                                       <div>
                                         {history.fromAlias ||
-                                          history.from?.substr(0, 6)}
+                                          history.from?.substr(0, 6)}{' '}
+                                        (Place a bid)
                                       </div>
                                     </Link>
                                     <div className={styles.saleDate}>
@@ -4033,10 +4064,16 @@ const NFTItem = () => {
                               <div className={styles.historyPrice}>
                                 {history ? (
                                   <>
-                                    <img
+                                    {/* <img
                                       src={history.token?.icon}
                                       className={styles.tokenIcon}
-                                    />
+                                      style={{ marginLeft: '6px' }}
+                                    /> */}
+                                    <div style={{ marginLeft: '6px' }}>
+                                      {history?.paymentToken?.toLowerCase() ==
+                                        '0xf1277d1ed8ad466beddf92ef448a132661956621' &&
+                                        'FTM'}
+                                    </div>
                                     {formatNumber(history.price)}
                                     {/* &nbsp;( $
                                     {formatNumber(
