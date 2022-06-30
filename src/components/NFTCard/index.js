@@ -345,7 +345,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
             )}
           </div>
           <div className={styles.flexBetween}>
-            <h5>{item.name}</h5>
+            <h5>{`"${item.name}"`}</h5>
             <div className={styles.netLogo}>FTM</div>
           </div>
           <div className={styles.flexBetween}>
@@ -371,7 +371,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
                   auctionActive
                     ? auction.reservePrice
                     : item.price.toFixed(2)
-                )}
+                )}&nbsp;FTM
               </h6>
             </div>
           </div>

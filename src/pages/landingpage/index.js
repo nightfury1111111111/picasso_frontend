@@ -203,6 +203,7 @@ const LandingPage = () => {
             >
               Today&apos; Pick
             </div>
+            <div className={styles.more}><Link to="/explore">EXPLORE MORE</Link></div>
           </div>
           <div className={styles.aboutCards}>
             {
@@ -225,6 +226,7 @@ const LandingPage = () => {
             >
               Popular Collection
             </div>
+            <div className={styles.more}><Link to="/explore">EXPLORE MORE</Link></div>
           </div>
           <div className={styles.aboutCards}>
             {

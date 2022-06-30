@@ -208,6 +208,7 @@ p {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  flex-wrap: wrap;
   align-items: center;
 }
 
@@ -412,12 +413,29 @@ p {
   font-weight: 700;
 }
 
+.more {
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 40px;
+}
+
+.more:hover {
+  background: linear-gradient(to right, #E250E5,#4B50E6,#E250E5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: rainbow 2s ease-in-out infinite;
+  transition: color .2s ease-in-out;
+  color: white;
+}
+
 .sectionHeader {
   margin-bottom: 40px;
   max-width: 1440px;
   width: 100%;
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   position: relative;
   align-items: center;
 }

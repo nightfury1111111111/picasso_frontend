@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { getRandomIPFS } from 'utils';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import CheckIcon from '@material-ui/icons/Check';
 import styles from './styles.module.scss';
 
 const PopularCollectionItem = props => (
@@ -15,7 +16,7 @@ const PopularCollectionItem = props => (
                                 <div className="sc-author-box style-2">
                                     <div className="author-avatar">
                                         <img src={`${getRandomIPFS('', true)}${props.item.collectionImg}`} alt="" className="avatar" />
-                                        <div className="badge"><i className="ripple"></i></div>
+                                        <div className="badge"><CheckIcon /></div>
                                     </div>
                                 </div>
                                 <div className="content">
