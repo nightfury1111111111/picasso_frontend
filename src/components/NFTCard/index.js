@@ -375,7 +375,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
               </h6>
             </div>
           </div>
-          <div className={styles.flexBetween}>
+         {auctionActive&&<div className={styles.flexBetween}>
             <Link to={
                   item.items
                     ? `/bundle/${item._id}`
@@ -394,7 +394,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
                 <SyncIcon style={{marginRight:"10px", fontSize: "20px"}}/> View History
               </div>
             </Link>
-          </div>
+          </div>}
           {/* <div className={styles.content}>
           {loading || fetching ? (
             <Skeleton width={100} height={20} />
