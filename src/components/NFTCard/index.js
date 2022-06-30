@@ -364,7 +364,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
                 <h6>{item.alias?item.alias:isAddress(item.owner)?shortenAddress(item.owner):item.owner}</h6>
               </div>
             </div>
-            <div className={styles.info} >
+            <div className={styles.info} style={{textAlign:"right"}} >
               <span>Current Bid</span>
               <h6>
                 {formatNumber(
