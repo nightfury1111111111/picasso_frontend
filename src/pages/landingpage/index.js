@@ -153,7 +153,7 @@ const LandingPage = () => {
                     <img src={props.item.icon} alt="" />
                 </div>                                                                             
             </div>
-            <h3 className={styles.alignLeft}><Link to="/wallet-connect">{props.item.title}</Link></h3>
+            <h3 className={styles.alignLeft}>{props.item.title}</h3>
             <p className={styles.alignLeft}>{props.item.description}</p>
         </div>
     </div>
@@ -201,13 +201,15 @@ const LandingPage = () => {
                 fontSize: "36px",
               }}
             >
-              Create And Sell Your NFTs
+              Today&apos; Pick
             </div>
           </div>
           <div className={styles.aboutCards}>
-            {cards.map((item, key) =>
-              <CreateItem key={key} item={item} />
-            )}
+            {
+              tokenWithOwner.splice(0,4).map((item,index) => (
+                <NFTItem key={index} item={item} />
+              ))
+            }
           </div>
         </div>
       </div>
@@ -243,15 +245,13 @@ const LandingPage = () => {
                 fontSize: "36px",
               }}
             >
-              Today&apos; Pick
+              Create And Sell Your NFTs
             </div>
           </div>
           <div className={styles.aboutCards}>
-            {
-              tokenWithOwner.splice(0,4).map((item,index) => (
-                <NFTItem key={index} item={item} />
-              ))
-            }
+            {cards.map((item, key) =>
+              <CreateItem key={key} item={item} />
+            )}
           </div>
         </div>
       </div>
