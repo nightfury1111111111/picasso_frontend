@@ -334,7 +334,7 @@
 }
 
 .bio {
-  width: calc(100% - 60px);
+  // width: calc(100% - 60px);
   background: #ededed;
   min-height: 100px;
   // max-width: 700px;
@@ -609,7 +609,7 @@
 }
 
 .contentWrapper {
-  // width: calc(100% - 360px);
+  width: 100%;
   padding: 0 180px 40px 180px;
   display: flex;
   flex-direction: column;
@@ -639,7 +639,7 @@
     // margin-top: 26px;
     display: flex;
     align-items: center;
-    margin:00px 0 0 0px;
+    margin: 00px 0 0 0px;
   }
   .tabVar {
     // width: calc(100% - 20px);
