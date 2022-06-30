@@ -383,7 +383,7 @@ const PaintBoard = () => {
   return (
     <div className={styles.container}>
       <Header border />
-      <PageHeader text={PageHeaderText} />
+      {/* <PageHeader text={PageHeaderText} /> */}
       <div className={styles.bodyContainer}>
         <div className={styles.body}>
           <div className={styles.board}>

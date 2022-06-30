@@ -230,6 +230,11 @@ const Header = () => {
     handleMenuClose();
   };
 
+  const goToHome = () => {
+    history.push(`/`);
+    handleMenuClose();
+  };
+
   const goToExplore = () => {
     history.push(`/explore`);
     handleMenuClose();
@@ -350,6 +355,10 @@ const Header = () => {
         Notification Settings
       </div> */}
       <div className={styles.mobileMenu}>
+        <div className={styles.menuItem} onClick={goToHome}>
+          {/* <img src={iconAdd} className={styles.menuIcon} /> */}
+          Home
+        </div>
         <div className={styles.menuItem} onClick={goToExplore}>
           {/* <img src={iconAdd} className={styles.menuIcon} /> */}
           Explore
@@ -588,6 +597,13 @@ const Header = () => {
         {isSearchbarShown && renderSearchBox()}
         <div className={styles.secondmenu}>
           <NavLink
+            to="/"
+            className={cx(styles.menuLink, styles.link, styles.mobileView)}
+            activeClassName={styles.active}
+          >
+            Home
+          </NavLink>
+          <NavLink
             to="/explore"
             className={cx(styles.menuLink, styles.link, styles.mobileView)}
             activeClassName={styles.active}
@@ -612,6 +628,14 @@ const Header = () => {
       </div>
       <div className={styles.menu}>
         {isSearchbarShown && renderSearchBox()}
+        <NavLink
+          to="/"
+          className={cx(styles.menuLink, styles.link)}
+          activeClassName={styles.active}
+          style={{ color: 'black' }}
+        >
+          Home
+        </NavLink>
         <NavLink
           to="/explore"
           className={cx(styles.menuLink, styles.link)}

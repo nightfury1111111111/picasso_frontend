@@ -12,7 +12,7 @@
 }
 .header {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 .title {
   h1 {
@@ -51,7 +51,7 @@
   color: white;
   background-color: #14141f;
   cursor: pointer;
-  border:none;
+  border: none;
   padding: 1px 11px;
   border-radius: 8px;
   position: absolute;

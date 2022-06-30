@@ -129,7 +129,7 @@
   z-index: 1;
   overflow: hidden;
   position: absolute;
-  bottom:10px;
+  bottom: 10px;
 }
 
 .followAvatar {
@@ -334,7 +334,7 @@
 }
 
 .bio {
-  width: calc(100% - 60px);
+  // width: calc(100% - 60px);
   background: #ededed;
   min-height: 100px;
   // max-width: 700px;
@@ -346,7 +346,7 @@
 
 .content {
   width: 100%;
-  max-height: calc(100vh - 80px);
+  // max-height: calc(100vh - 80px);
   box-sizing: border-box;
   border: 1px solid #eaeaf1;
   display: flex;
@@ -639,7 +639,7 @@
     // margin-top: 26px;
     display: flex;
     align-items: center;
-    margin:00px 0 0 0px;
+    margin: 00px 0 0 0px;
   }
   .tabVar {
     // width: calc(100% - 20px);
