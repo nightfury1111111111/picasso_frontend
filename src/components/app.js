@@ -96,16 +96,17 @@ const App = () => {
       <Router>
         <Switch>
           <Route exact path="/" component={LandingPage} />
+          <Route exact path="/index" component={LandingPage} />
           <Route exact path="/explore" component={ExplorePage} />
           <Route path="/explore/:addr/:id" component={NFTItem} />
           <ProtectedRoute exact path="/create" component={PaintBoard} />
+          <Route path="/activity" component={Activity} />
           {/* <Route path="/bundle/:bundleID" component={NFTItem} /> */}
           <Route path="/account/:uid" component={AccountDetails} />
           <ProtectedRoute
             path="/collection/create"
             component={() => <CollectionCreate isRegister={false} />}
           />
-          <Route path="/activity" component={() => <Activity />} />
           <ProtectedRoute
             path="/collection/register"
             component={() => <CollectionCreate isRegister />}

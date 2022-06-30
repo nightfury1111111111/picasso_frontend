@@ -29,7 +29,12 @@ const PageHeaderText = {
 };
 
 const ExploreAllPage = () => {
-  const { fetchCollections, fetchTokens, getItemsLiked, fetchAllAccounts } = useApi();
+  const {
+    fetchCollections,
+    fetchTokens,
+    getItemsLiked,
+    fetchAllAccounts,
+  } = useApi();
 
   const dispatch = useDispatch();
 
@@ -79,14 +84,19 @@ const ExploreAllPage = () => {
   const updateCollections = async () => {
     try {
       dispatch(CollectionsActions.fetchStart());
-      const [res, accounts] = await Promise.all([fetchCollections(),fetchAllAccounts()]);
+      const [res, accounts] = await Promise.all([
+        fetchCollections(),
+        fetchAllAccounts(),
+      ]);
       if (res.status === 'success') {
         const verified = [];
         const unverified = [];
         res.data.map(item => {
-          console.log('owner: ',item);
-          const index = accounts.data.findIndex((element)=>element.address===item.owner);
-          if(index>=0) item.owner = accounts.data[index].alias;
+          console.log('owner: ', item);
+          const index = accounts.data.findIndex(
+            element => element.address === item.owner
+          );
+          if (index >= 0) item.owner = accounts.data[index].alias;
           if (item.isVerified) verified.push(item);
           else unverified.push(item);
         });
@@ -219,6 +229,8 @@ const ExploreAllPage = () => {
     chainId,
     numPerRow,
   ]);
+
+  console.log('Exploer render');
 
   const updateItems = async () => {
     try {
