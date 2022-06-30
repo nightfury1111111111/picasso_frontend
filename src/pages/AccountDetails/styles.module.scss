@@ -210,11 +210,6 @@
   padding: 25px;
 }
 
-.activeTab {
-  // background: mediumblue;
-  // color: white;
-}
-
 .bottomWrapper {
   // margin-top: 6px;
   margin-left: 5px;
@@ -271,6 +266,7 @@
   background: #ededed;
   align-items: flex-end;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .addressWrapper {
@@ -397,7 +393,7 @@
 .contentBody {
   flex-grow: 1;
   // height: -moz-fit-content;
-  height: fit-content;
+  // height: fit-content;
   box-sizing: border-box;
   // min-height: 50vh;
   max-height: 100%;
@@ -636,13 +632,21 @@
       margin-right: 0;
     }
   }
-
+  .avatarWrapper {
+    position: relative;
+  }
+  .usernameWrapper {
+    // margin-top: 26px;
+    display: flex;
+    align-items: center;
+    margin:00px 0 0 0px;
+  }
   .tabVar {
-    width: calc(100% - 20px);
+    // width: calc(100% - 20px);
     padding: 0 10px;
     height: 190px;
     padding-bottom: 20px;
-    margin-top: -110px;
+    margin-top: 0px;
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
@@ -669,7 +673,9 @@
   .buttonsWrapper {
     flex-direction: column;
   }
-
+  .tabVar {
+    margin-top: 0px;
+  }
   .settings {
     margin-right: 0;
     margin-bottom: 16px;
@@ -684,6 +690,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: -140px;
   }
 
   .bio {

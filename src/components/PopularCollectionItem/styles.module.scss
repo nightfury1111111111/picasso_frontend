@@ -6,6 +6,11 @@
   padding: 15px;
   position: relative;
 }
+@media screen and (max-width: 480px) {
+  .container {
+    width: 100%;
+  }
+}
 .header {
   display: flex;
   justify-content: flex-start;
