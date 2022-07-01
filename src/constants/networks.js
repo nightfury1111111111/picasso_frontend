@@ -1,4 +1,4 @@
-import { ChainId } from '@sushiswap/sdk';
+import { ChainId } from 'constants/chainid';
 
 export const NETWORK_LABEL = {
   [ChainId.MAINNET]: 'Ethereum',
@@ -33,12 +33,12 @@ export const Contracts = {
     privateArtFactory: '0x736Eae40AdFf88570b92378c97a0D11b44E1C953', //FantomArtFactoryPrivate
   },
   [ChainId.FANTOM_TESTNET]: {
-    auction: '0x236fA806da9513AFf4f93Dd620651C848b656205',
-    sales: '0xa4C9a5c3F5AeF6c3d6C8438ab4729898A7239B0b',
-    bundleSales: '0x6fc52a1A76010334B56050283Ea281D9457Ab164',
-    factory: '0xfa20Ed48d82D76f66631E93ec4f72C7bA21E81aB', //FantomNFTFactory
-    privateFactory: '0xB7eC773954597f4fb9Ff5AAB16a5c8C05bbba477', //FantomNFTFactoryPrivate
-    artFactory: '0xeC2f1d8Eb6C3F99a4b03ba138b1127a6E080dD15', //FantomArtFactory
-    privateArtFactory: '0xaC225C2093De359DC425d192F65280Ae292E57AE', //FantomArtFactoryPrivate
+    auction: '0x04F677F85c908febe9105F6E2bE41343EF3cfc2e',
+    sales: '0xc964b0ebA0B32fe0F8fc9e46591Eee79fCDcF30b',
+    bundleSales: '0x901426885454C38e9C079A99f4E07203CB7AE339',
+    factory: '0xEd965428614957e74783a155a7C16a15F8Ac54BD', //FantomNFTFactory
+    privateFactory: '0x9eB151d7468b1b95d5528A52F4964a4b8c9D6628', //FantomNFTFactoryPrivate
+    artFactory: '0xA6d9FE6E3eD58d654EfB89648Eee4b3d42df217E', //FantomArtFactory
+    privateArtFactory: '0x41A02b88Ac3c5b3e0Fb5dB04662606f89346D660', //FantomArtFactoryPrivate
   },
 };

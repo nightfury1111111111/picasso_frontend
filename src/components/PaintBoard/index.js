@@ -8,7 +8,8 @@ import axios from 'axios';
 import { BigNumber, ethers } from 'ethers';
 import { useDropzone } from 'react-dropzone';
 import Skeleton from 'react-loading-skeleton';
-import { ChainId } from '@sushiswap/sdk';
+// import { ChainId } from 'constants/chainid';
+import { ChainId } from 'constants/chainid';
 import Select from 'react-dropdown-select';
 
 import CloseIcon from '@material-ui/icons/Close';
@@ -232,6 +233,7 @@ const PaintBoard = () => {
       return;
     }
     if (chainId !== ChainId.FANTOM && chainId !== ChainId.FANTOM_TESTNET) {
+      console.log(chainId, ChainId.FANTOM, ChainId.FANTOM_TESTNET);
       showToast('info', 'You are not connected to Fantom Opera Network');
       return;
     }

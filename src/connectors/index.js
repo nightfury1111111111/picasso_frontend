@@ -1,4 +1,4 @@
-import { ChainId } from '@sushiswap/sdk';
+import { ChainId } from 'constants/chainid';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 
@@ -14,7 +14,8 @@ const RPC = isMainnet
       [ChainId.FANTOM]: 'https://rpc.ftm.tools',
     }
   : {
-      [ChainId.FANTOM_TESTNET]: 'https://rpc.testnet.fantom.network',
+      [ChainId.FANTOM_TESTNET]:
+        'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
     };
 
 export const network = new NetworkConnector({
@@ -28,7 +29,7 @@ export const injected = new InjectedConnector({
         250, // fantom
       ]
     : [
-        4002, // fantom testnet
+        4, // fantom testnet
       ],
 });
 

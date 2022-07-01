@@ -11,7 +11,7 @@ export const useApi = () => {
   const apiUrl = isMainnet
     ? 'https://api.artion.io'
     : 'https://picassomarketplaceserver.herokuapp.com';
-  // :'http://localhost:5001';
+  // : 'http://localhost:5001';
   // : 'https://api.testnet.artion.io';
 
   // eslint-disable-next-line no-undef

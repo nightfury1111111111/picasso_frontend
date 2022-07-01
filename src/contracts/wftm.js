@@ -1,4 +1,4 @@
-import { ChainId } from '@sushiswap/sdk';
+import { ChainId } from 'constants/chainid';
 
 import { WFTM_ABI } from './abi';
 import { calculateGasMargin, getHigherGWEI } from 'utils';
@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 
 const WFTM_ADDRESS = {
   [ChainId.FANTOM]: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
-  [ChainId.FANTOM_TESTNET]: '0xf1277d1Ed8AD466beddF92ef448A132661956621',
+  [ChainId.FANTOM_TESTNET]: '0xc778417E063141139Fce010982780140Aa0cD5Ab',
 };
 
 // eslint-disable-next-line no-undef

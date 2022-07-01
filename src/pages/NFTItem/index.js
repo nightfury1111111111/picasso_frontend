@@ -25,7 +25,7 @@ import {
   CartesianGrid,
   Line,
 } from 'recharts';
-import { ChainId } from '@sushiswap/sdk';
+import { ChainId } from 'constants/chainid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { useWeb3React } from '@web3-react/core';
@@ -45,6 +45,7 @@ import {
   VerticalSplit as VerticalSplitIcon,
   Subject as SubjectIcon,
   Redeem as RedeemIcon,
+  ContactSupportOutlined,
 } from '@material-ui/icons';
 import toast from 'react-hot-toast';
 
@@ -503,6 +504,7 @@ const NFTItem = () => {
       } else creator = minter;
 
       const userInfo = await getCreatorAndOwnerInfo(creator, currentOwner);
+      console.log('userInfo', userInfo);
       data.creator = creator;
       data.owner = currentOwner;
       data.creatorInfo = userInfo.creator;
@@ -1803,6 +1805,7 @@ const NFTItem = () => {
       const _price = listing.price * listing.quantity;
       if (listing.token.address === '') {
         const price = ethers.utils.parseEther(_price.toString());
+        console.log(price, _price);
 
         const tx = await buyItemETH(
           address,
@@ -2065,6 +2068,7 @@ const NFTItem = () => {
     try {
       setAuctionStarting(true);
       setAuctionStartConfirming(true);
+      alert('ddddddddddddddddd');
 
       const price = ethers.utils.parseUnits(_price, token.decimals);
       const startTime = Math.floor(_startTime.getTime() / 1000);
@@ -2554,7 +2558,7 @@ const NFTItem = () => {
         </div>
       </div>
       <div className={styles.userWrapper}>
-        {info?.ownerInfo[0] ? (
+        {info?.ownerInfo[0] && info?.ownerInfo[0] ? (
           <div className={styles.userContainer}>
             <img
               src={`https://artion.mypinata.cloud/ipfs/${info?.ownerInfo[1]}`}
@@ -2724,7 +2728,7 @@ const NFTItem = () => {
               </div>
               <div style={{ marginLeft: '4px', fontSize: '18px' }}>
                 {bestListing?.paymentToken?.toLowerCase() ==
-                  '0xf1277d1ed8ad466beddf92ef448a132661956621' && 'FTM'}
+                  '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' && 'FTM'}
               </div>
               {/* <div className={styles.currentPriceUSD}>
               (
@@ -3102,7 +3106,7 @@ const NFTItem = () => {
                         {console.log(bid)}
                         <div style={{ marginLeft: '6px' }}>
                           {auction.current?.payToken?.toLowerCase() ==
-                            '0xf1277d1ed8ad466beddf92ef448a132661956621' &&
+                            '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
                             'FTM'}
                         </div>
                         {/* {bid.bid < auction.current.reservePrice
@@ -3172,7 +3176,7 @@ const NFTItem = () => {
                               {formatNumber(winningBid)}
                               <div style={{ marginLeft: '6px' }}>
                                 {auction.current?.payToken?.toLowerCase() ==
-                                  '0xf1277d1ed8ad466beddf92ef448a132661956621' &&
+                                  '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
                                   'FTM'}
                               </div>
                             </div>
@@ -3196,7 +3200,7 @@ const NFTItem = () => {
                           {formatNumber(auction.current.reservePrice)}
                           <div style={{ marginLeft: '6px' }}>
                             {auction.current?.payToken?.toLowerCase() ==
-                              '0xf1277d1ed8ad466beddf92ef448a132661956621' &&
+                              '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
                               'FTM'}
                           </div>
                         </div>
@@ -3512,7 +3516,7 @@ const NFTItem = () => {
                                 )}
                                 <div style={{ marginLeft: '6px' }}>
                                   {offer?.paymentToken?.toLowerCase() ==
-                                    '0xf1277d1ed8ad466beddf92ef448a132661956621' &&
+                                    '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
                                     'FTM'}
                                 </div>
                                 {/* &nbsp;(
@@ -4070,7 +4074,7 @@ const NFTItem = () => {
                                     /> */}
                                     <div style={{ marginLeft: '6px' }}>
                                       {history?.paymentToken?.toLowerCase() ==
-                                        '0xf1277d1ed8ad466beddf92ef448a132661956621' &&
+                                        '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
                                         'FTM'}
                                     </div>
                                     {formatNumber(history.price)}
