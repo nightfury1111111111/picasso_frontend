@@ -19,7 +19,8 @@ const NFTsGrid = ({
   onLike = () => {},
 }) => {
   const dispatch = useDispatch();
-  const n = numPerRow || 6;
+  // const n = numPerRow || 6;
+  const n = 4;
   const className = cx(styles.nft, styles[`num${n}`]);
   return (
     <div className={styles.container}>

@@ -2,6 +2,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  // display: grid;
+  // grid-template-columns: auto auto auto auto;
   width: 100%;
   box-sizing: border-box;
 }
@@ -41,11 +43,12 @@
 }
 
 .nft {
-  margin: 12px;
+  margin: 0px;
 }
 
 @media only screen and (max-width: 625px) {
   .container {
     justify-content: center;
+    display: flex;
   }
 }
