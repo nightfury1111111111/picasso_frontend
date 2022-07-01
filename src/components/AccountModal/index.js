@@ -36,9 +36,13 @@ const AccountModal = () => {
   const { authToken } = useSelector(state => state.ConnectWallet);
 
   useEffect(() => {
+    console.log('render detail page');
+  }, []);
+
+  useEffect(() => {
     if (accountModalVisible) {
       if (user.imageHash) {
-        setAvatar(`https://cloudflare-ipfs.com/ipfs/${user.imageHash}`);
+        setAvatar(`https://artion.mypinata.cloud/ipfs/${user.imageHash}`);
       } else {
         setAvatar(null);
       }
@@ -125,6 +129,7 @@ const AccountModal = () => {
       }
 
       if (!avatar || avatar.startsWith('https')) {
+        console.log('avatar', avatar);
         const res = await updateAccountDetails(
           alias,
           email,
@@ -148,6 +153,7 @@ const AccountModal = () => {
           const x = (w - size) / 2;
           const y = (h - size) / 2;
           clipImage(img, x, y, size, size, async data => {
+            console.log('avatarImage', data);
             const res = await updateAccountDetails(
               alias,
               email,

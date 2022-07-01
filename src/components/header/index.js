@@ -6,7 +6,7 @@ import { Menu } from '@material-ui/core';
 import { useWeb3React } from '@web3-react/core';
 import { ExpandMore, Search as SearchIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import StickyBox from 'react-sticky-box';
+// import StickyBox from 'react-sticky-box';
 import axios from 'axios';
 
 import WalletConnectActions from 'actions/walletconnect.actions';
@@ -505,7 +505,7 @@ const Header = () => {
                       {account.imageHash ? (
                         <img
                           className={styles.resultimg}
-                          src={`https://cloudflare-ipfs.com/ipfs/${account.imageHash}`}
+                          src={`https://artion.mypinata.cloud/ipfs/${account.imageHash}`}
                         />
                       ) : (
                         <Identicon
@@ -669,7 +669,7 @@ const Header = () => {
               <i className={cx('icofont-user', styles.userIcon)} />
             ) : user?.imageHash ? (
               <img
-                src={`https://cloudflare-ipfs.com/ipfs/${user?.imageHash}`}
+                src={`https://artion.mypinata.cloud/ipfs/${user?.imageHash}`}
                 width="24"
                 height="24"
                 className={styles.avatar}

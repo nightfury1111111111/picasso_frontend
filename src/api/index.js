@@ -11,6 +11,7 @@ export const useApi = () => {
   const apiUrl = isMainnet
     ? 'https://api.artion.io'
     : 'https://picassomarketplaceserver.herokuapp.com';
+  // :'http://localhost:5001';
   // : 'https://api.testnet.artion.io';
 
   // eslint-disable-next-line no-undef
@@ -267,7 +268,7 @@ export const useApi = () => {
     cancelToken
   ) => {
     const data = { from, count, type };
-    if(category===7) category = null;
+    if (category === 7) category = null;
     if (collections.length > 0) {
       data.collectionAddresses = collections;
     }
@@ -300,10 +301,10 @@ export const useApi = () => {
       url: `${apiUrl}/nftitems/getAllnfts`,
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     });
     return res.data;
-  }
+  };
 
   const fetchAllCollections = async () => {
     const res = await axios({
@@ -311,10 +312,10 @@ export const useApi = () => {
       url: `${apiUrl}/erc721/getAllERC721Contracts`,
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     });
     return res.data;
-  }
+  };
 
   const getItemsLiked = async (items, authToken, cancelToken) => {
     const data = { items: JSON.stringify(items) };

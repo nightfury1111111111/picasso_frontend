@@ -7,7 +7,6 @@ import React, {
   Suspense,
 } from 'react';
 import { useParams, Link, useHistory } from 'react-router-dom';
-import StickyBox from 'react-sticky-box';
 import { useDispatch, useSelector } from 'react-redux';
 import cx from 'classnames';
 import axios from 'axios';
@@ -2558,7 +2557,7 @@ const NFTItem = () => {
         {info?.ownerInfo[0] ? (
           <div className={styles.userContainer}>
             <img
-              src={`https://cloudflare-ipfs.com/ipfs/${info?.ownerInfo[1]}`}
+              src={`https://artion.mypinata.cloud/ipfs/${info?.ownerInfo[1]}`}
               className={styles.userImage}
             />
             <div style={{ marginLeft: '15px' }}>
@@ -2586,7 +2585,7 @@ const NFTItem = () => {
         {info?.creatorInfo[0] ? (
           <div className={styles.userContainer}>
             <img
-              src={`https://cloudflare-ipfs.com/ipfs/${info?.creatorInfo[1]}`}
+              src={`https://artion.mypinata.cloud/ipfs/${info?.creatorInfo[1]}`}
               className={styles.userImage}
             />
             <div style={{ marginLeft: '15px' }}>
@@ -2637,7 +2636,7 @@ const NFTItem = () => {
                 <div className={styles.ownerAvatar}>
                   {ownerInfo?.imageHash ? (
                     <img
-                      src={`https://cloudflare-ipfs.com/ipfs/${ownerInfo.imageHash}`}
+                      src={`https://artion.mypinata.cloud/ipfs/${ownerInfo.imageHash}`}
                       className={styles.avatar}
                     />
                   ) : (
@@ -2829,7 +2828,7 @@ const NFTItem = () => {
             <div className={styles.ownerAvatar}>
               {creatorInfo?.imageHash ? (
                 <img
-                  src={`https://cloudflare-ipfs.com/ipfs/${creatorInfo.imageHash}`}
+                  src={`https://artion.mypinata.cloud/ipfs/${creatorInfo.imageHash}`}
                   className={styles.avatar}
                 />
               ) : (
@@ -3349,7 +3348,7 @@ const NFTItem = () => {
                                   <div className={styles.userAvatarWrapper}>
                                     {ownerInfo?.imageHash ? (
                                       <img
-                                        src={`https://cloudflare-ipfs.com/ipfs/${ownerInfo.imageHash}`}
+                                        src={`https://artion.mypinata.cloud/ipfs/${ownerInfo.imageHash}`}
                                         className={styles.userAvatar}
                                       />
                                     ) : (
@@ -3405,7 +3404,7 @@ const NFTItem = () => {
                                 <div className={styles.userAvatarWrapper}>
                                   {listing.image ? (
                                     <img
-                                      src={`https://cloudflare-ipfs.com/ipfs/${listing.image}`}
+                                      src={`https://artion.mypinata.cloud/ipfs/${listing.image}`}
                                       className={styles.userAvatar}
                                     />
                                   ) : (
@@ -3489,7 +3488,7 @@ const NFTItem = () => {
                                   <div className={styles.userAvatarWrapper}>
                                     {offer.image ? (
                                       <img
-                                        src={`https://cloudflare-ipfs.com/ipfs/${offer.image}`}
+                                        src={`https://artion.mypinata.cloud/ipfs/${offer.image}`}
                                         className={styles.userAvatar}
                                       />
                                     ) : (
@@ -3815,7 +3814,7 @@ const NFTItem = () => {
                             <div className={styles.ownerAvatar}>
                               {ownerInfo?.imageHash ? (
                                 <img
-                                  src={`https://cloudflare-ipfs.com/ipfs/${ownerInfo.imageHash}`}
+                                  src={`https://artion.mypinata.cloud/ipfs/${ownerInfo.imageHash}`}
                                   className={styles.avatar}
                                 />
                               ) : (
@@ -4005,7 +4004,7 @@ const NFTItem = () => {
                                   <div className={styles.userAvatarWrapper}>
                                     {history.fromImage ? (
                                       <img
-                                        src={`https://cloudflare-ipfs.com/ipfs/${history.fromImage}`}
+                                        src={`https://artion.mypinata.cloud/ipfs/${history.fromImage}`}
                                         className={styles.userAvatar}
                                       />
                                     ) : (
@@ -4043,7 +4042,7 @@ const NFTItem = () => {
                                   <div className={styles.userAvatarWrapper}>
                                     {history.toImage ? (
                                       <img
-                                        src={`https://cloudflare-ipfs.com/ipfs/${history.toImage}`}
+                                        src={`https://artion.mypinata.cloud/ipfs/${history.toImage}`}
                                         className={styles.userAvatar}
                                       />
                                     ) : (

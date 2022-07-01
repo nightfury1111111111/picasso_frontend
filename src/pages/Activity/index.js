@@ -183,7 +183,7 @@ const AccountDetails = () => {
                               />
                             ) : (
                               <img
-                                src={`https://cloudflare-ipfs.com/ipfs/${activ.imageURL}`}
+                                src={`https://artion.mypinata.cloud/ipfs/${activ.imageURL}`}
                                 style={{
                                   width: '100%',
                                   height: '100%',

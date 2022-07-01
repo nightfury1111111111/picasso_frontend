@@ -537,6 +537,7 @@ const AccountDetails = () => {
       const reader = new FileReader();
 
       reader.onload = async function(e) {
+        console.log('banner', e.target.result);
         const { data } = await updateBanner(e.target.result, authToken);
         setBannerHash(data);
       };
@@ -690,20 +691,20 @@ const AccountDetails = () => {
       {/* <PageHeader text={PageHeaderText} /> */}
       <div className={styles.contentWrapper}>
         <div className={styles.profile} style={{ paddingTop: '70px' }}>
-          <div 
+          <div
             className={styles.banner}
             onMouseOver={() => {
-                  setIsEditShow(true);
-                }}
-                onMouseLeave={() => {
-                  setIsEditShow(false);
-                }}
+              setIsEditShow(true);
+            }}
+            onMouseLeave={() => {
+              setIsEditShow(false);
+            }}
           >
             {loading ? (
               <Skeleton width="100%" height={200} />
             ) : bannerHash || user.bannerHash ? (
               <img
-                src={`https://cloudflare-ipfs.com/ipfs/${bannerHash ||
+                src={`https://artion.mypinata.cloud/ipfs/${bannerHash ||
                   user.bannerHash}`}
                 className={styles.bannerImg}
               />
@@ -736,19 +737,19 @@ const AccountDetails = () => {
                 </div>
               </div>
             )}
-                      <div className={styles.buttonsWrapper}>
-            {isMe && (
-              <div className={styles.settings} onClick={openAccountSettings}>
-                <img src={iconSettings} className={styles.settingsIcon} />
-              </div>
-            )}
-            {/* <div
+            <div className={styles.buttonsWrapper}>
+              {isMe && (
+                <div className={styles.settings} onClick={openAccountSettings}>
+                  <img src={iconSettings} className={styles.settingsIcon} />
+                </div>
+              )}
+              {/* <div
               className={styles.settings}
               onClick={e => setAnchorEl(e.currentTarget)}
             >
               <img src={iconShare} className={styles.settingsIcon} />
             </div> */}
-          </div>
+            </div>
           </div>
           <div className={styles.wrapper}>
             <div className={styles.avatarWrapper}>
@@ -756,7 +757,7 @@ const AccountDetails = () => {
                 <Skeleton width={160} height={160} className={styles.avatar} />
               ) : user.imageHash ? (
                 <img
-                  src={`https://cloudflare-ipfs.com/ipfs/${user.imageHash}`}
+                  src={`https://artion.mypinata.cloud/ipfs/${user.imageHash}`}
                   className={styles.avatar}
                 />
               ) : (
@@ -1033,7 +1034,7 @@ const AccountDetails = () => {
                                 <div className={styles.ownerAvatarWrapper}>
                                   {activity.image ? (
                                     <img
-                                      src={`https://cloudflare-ipfs.com/ipfs/${activity.image}`}
+                                      src={`https://artion.mypinata.cloud/ipfs/${activity.image}`}
                                       className={styles.ownerAvatar}
                                     />
                                   ) : (
@@ -1104,7 +1105,7 @@ const AccountDetails = () => {
                           <div className={styles.ownerAvatarWrapper}>
                             {offer.image ? (
                               <img
-                                src={`https://cloudflare-ipfs.com/ipfs/${offer.image}`}
+                                src={`https://artion.mypinata.cloud/ipfs/${offer.image}`}
                                 className={styles.ownerAvatar}
                               />
                             ) : (
@@ -1168,7 +1169,7 @@ const AccountDetails = () => {
                             <Skeleton width={40} height={40} />
                           ) : user.imageHash ? (
                             <img
-                              src={`https://cloudflare-ipfs.com/ipfs/${user.imageHash}`}
+                              src={`https://artion.mypinata.cloud/ipfs/${user.imageHash}`}
                               width={80}
                               height={80}
                             />
@@ -1228,7 +1229,7 @@ const AccountDetails = () => {
                             <Skeleton width={40} height={40} />
                           ) : user.imageHash ? (
                             <img
-                              src={`https://cloudflare-ipfs.com/ipfs/${user.imageHash}`}
+                              src={`https://artion.mypinata.cloud/ipfs/${user.imageHash}`}
                               width={80}
                               height={80}
                             />
