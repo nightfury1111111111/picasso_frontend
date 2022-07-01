@@ -34,6 +34,15 @@ export const getHigherGWEI = async () => {
   return price;
 };
 
+export const getExactImageUrl = path => {
+  if (path.includes('ipfs://')) {
+    let uri = path.split('//')[1];
+    return `https://artion.mypinata.cloud/ipfs/${uri}`;
+  } else {
+    return path;
+  }
+};
+
 export const getRandomIPFS = (tokenURI, justURL = false) => {
   let random = Math.floor(Math.random() * IPFSUris.length);
 

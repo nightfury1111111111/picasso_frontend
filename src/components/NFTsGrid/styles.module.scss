@@ -17,8 +17,8 @@
   border-radius: 8px;
   font-weight: 700;
   font-size: 18px;
-  background-color: #1969FF;
-  color: #FFF;
+  background-color: #1969ff;
+  color: #fff;
   box-shadow: none;
   display: flex;
   align-items: center;
@@ -27,7 +27,7 @@
 }
 
 .link {
-  color: #1969FF;
+  color: #1969ff;
   cursor: pointer;
   padding: 0 5px;
 }
@@ -35,7 +35,7 @@
 .grid {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat( auto-fill, minmax(220px, 1fr) );
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   grid-gap: 24px;
   box-sizing: border-box;
   padding-bottom: 32px;
@@ -43,7 +43,7 @@
 }
 
 .nft {
-  margin: 0px;
+  margin: 12px 0;
 }
 
 @media only screen and (max-width: 625px) {

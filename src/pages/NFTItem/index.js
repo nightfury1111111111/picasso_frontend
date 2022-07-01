@@ -504,7 +504,6 @@ const NFTItem = () => {
       } else creator = minter;
 
       const userInfo = await getCreatorAndOwnerInfo(creator, currentOwner);
-      console.log('userInfo', userInfo);
       data.creator = creator;
       data.owner = currentOwner;
       data.creatorInfo = userInfo.creator;
@@ -2558,7 +2557,7 @@ const NFTItem = () => {
         </div>
       </div>
       <div className={styles.userWrapper}>
-        {info?.ownerInfo[0] && info?.ownerInfo[0] ? (
+        {info?.ownerInfo && info.ownerInfo[0] ? (
           <div className={styles.userContainer}>
             <img
               src={`https://artion.mypinata.cloud/ipfs/${info?.ownerInfo[1]}`}
@@ -2586,7 +2585,7 @@ const NFTItem = () => {
             </div>
           </div>
         )}
-        {info?.creatorInfo[0] ? (
+        {info?.creatorInfo && info?.creatorInfo[0] ? (
           <div className={styles.userContainer}>
             <img
               src={`https://artion.mypinata.cloud/ipfs/${info?.creatorInfo[1]}`}

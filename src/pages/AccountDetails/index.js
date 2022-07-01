@@ -560,7 +560,6 @@ const AccountDetails = () => {
     try {
       const { data } = await getFollowers(uid);
       followers.current = data;
-      console.log('sdfsdf', data);
     } catch {
       followers.current = [];
     }

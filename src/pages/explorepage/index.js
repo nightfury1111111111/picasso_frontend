@@ -68,17 +68,30 @@ const ExploreAllPage = () => {
   const prevAuthToken = usePrevious(authToken);
 
   const numPerRow = Math.floor(gridWidth / 240);
-  const fetchCount = numPerRow <= 3 ? 18 : numPerRow === 4 ? 16 : numPerRow * 3;
+  const fetchCount = 24;
+  // const fetchCount = numPerRow <= 3 ? 18 : numPerRow === 4 ? 16 : numPerRow * 3;
 
+  // const handleScroll = e => {
+  //   if (upFetching || downFetching) return;
+  //   console.log('llllllll', window.scrollY);
+  //   const obj = e.target;
+  //   console.log('scroll', obj.scrollHeight - obj.clientHeight - obj.scrollTop);
+  //   if (obj.scrollHeight - obj.clientHeight - obj.scrollTop < 100) {
+  //     fetchNFTs(1);
+  //   } else if (obj.scrollTop < 100 && from > 0) {
+  //     fetchNFTs(-1);
+  //   }
+  // };
   useEffect(() => {
     dispatch(HeaderActions.toggleSearchbar(true));
 
     if (fetchInterval) {
       clearInterval(fetchInterval);
     }
-
     updateCollections();
     setFetchInterval(setInterval(updateCollections, 1000 * 60 * 10));
+    // window.addEventListener('scroll', handleScroll);
+    // return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const updateCollections = async () => {
@@ -92,7 +105,6 @@ const ExploreAllPage = () => {
         const verified = [];
         const unverified = [];
         res.data.map(item => {
-          console.log('owner: ', item);
           const index = accounts.data.findIndex(
             element => element.address === item.owner
           );
@@ -149,7 +161,7 @@ const ExploreAllPage = () => {
         null,
         cancelTokenSource.token
       );
-
+      console.log('fetchToekns: ', data);
       let newTokens =
         dir > 0
           ? [...tokens, ...data.tokens]
@@ -198,17 +210,6 @@ const ExploreAllPage = () => {
       }
     } finally {
       setCancelSource(null);
-    }
-  };
-
-  const handleScroll = e => {
-    if (upFetching || downFetching) return;
-
-    const obj = e.target;
-    if (obj.scrollHeight - obj.clientHeight - obj.scrollTop < 100) {
-      fetchNFTs(1);
-    } else if (obj.scrollTop < 100 && from > 0) {
-      fetchNFTs(-1);
     }
   };
 
@@ -302,9 +303,9 @@ const ExploreAllPage = () => {
       {/* <PageHeader text={PageHeaderText} /> */}
       <div className={styles.nftContainer}>
         <div
-          ref={conRef}
+          // ref={conRef}
           className={styles.container}
-          onScroll={width <= 600 ? handleScroll : null}
+          // onScroll={width <= 600 ? handleScroll : null}
         >
           {/* <div className={cx(styles.sidebar, collapsed && styles.collapsed)}>
           <div className={styles.sidebarHeader}>
@@ -331,7 +332,7 @@ const ExploreAllPage = () => {
             <div
               ref={ref}
               className={styles.exploreAll}
-              onScroll={width > 600 ? handleScroll : null}
+              // onScroll={width > 600 ? handleScroll : null}
             >
               <NFTsGrid
                 items={tokens}
@@ -340,6 +341,24 @@ const ExploreAllPage = () => {
                 numPerRow={numPerRow}
                 category={category}
               />
+              <div className={styles.pagenationWrapper}>
+                <div
+                  className={styles.pageBtn}
+                  onClick={() => {
+                    fetchNFTs(-1);
+                  }}
+                >
+                  Prev
+                </div>
+                <div
+                  className={styles.pageBtn}
+                  onClick={() => {
+                    fetchNFTs(1);
+                  }}
+                >
+                  Next
+                </div>
+              </div>
             </div>
           </div>
         </div>
