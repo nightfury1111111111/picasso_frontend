@@ -27,6 +27,12 @@ export function shortenAddress(address, chars = 4) {
   return `${parsed.substring(0, chars + 2)}...${parsed.substring(42 - chars)}`;
 }
 
+export function shortenName(name) {
+  if (name && name.length > 12)
+    return name.slice(0, 6) + '...' + name.slice(-6);
+  else return name;
+}
+
 export const getHigherGWEI = async () => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const price = (await provider.getGasPrice()) * 2;
@@ -35,7 +41,7 @@ export const getHigherGWEI = async () => {
 };
 
 export const getExactImageUrl = path => {
-  if (path.includes('ipfs://')) {
+  if (path && path.includes('ipfs://')) {
     let uri = path.split('//')[1];
     return `https://artion.mypinata.cloud/ipfs/${uri}`;
   } else {
@@ -73,6 +79,12 @@ export const formatNumber = num => {
 
 export const formatCategory = category => {
   return Categories.find(item => item.id === category).label;
+};
+
+export const createAndRegisterError = error => {
+  if (error.response && error.response.data.status == 'failed')
+    return error.response.data.data;
+  else return 'Error';
 };
 
 export const formatError = error => {

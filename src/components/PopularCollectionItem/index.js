@@ -18,7 +18,6 @@ const PopularCollectionItem = props => (
               >
                 <div className="sc-author-box style-2">
                   <div className="author-avatar">
-                    {console.log('sdfdssfsdf', props.item.collectionImg)}
                     <img
                       src={`${getRandomIPFS('', true)}${
                         props.item.collectionImg
@@ -37,7 +36,6 @@ const PopularCollectionItem = props => (
                     <span>Created by</span>
                     <span style={{ color: 'black', marginLeft: '10px' }}>
                       {props.item.owner}
-                      {console.log('sdsdsdsd', props.item.owner)}
                     </span>
                   </div>
                 </div>

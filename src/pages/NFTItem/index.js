@@ -316,8 +316,20 @@ const NFTItem = () => {
     );
   };
 
+  const getDefaultTime = async () => {
+    await window.ethereum.enable();
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    provider.on('block', blockNum => {
+      provider.getBlock(blockNum).then(res => {
+        setNow(new Date(res.timestamp * 1000));
+      });
+    });
+  };
+
   useEffect(() => {
     dispatch(HeaderActions.toggleSearchbar(true));
+    getDefaultTime();
   }, []);
 
   const getPrices = async () => {
@@ -336,7 +348,6 @@ const NFTItem = () => {
         _prices[addr] = parseFloat(ethers.utils.formatUnits(price, 18));
       });
       setPrices(_prices);
-      console.log(prices);
     } catch (err) {
       console.log(err);
     }
@@ -441,8 +452,6 @@ const NFTItem = () => {
         ...offer,
         token: getTokenByAddress(offer.paymentToken),
       }));
-      console.log('listings', _listings);
-      console.log('offers', _offers);
 
       moreItems.current = nfts;
 
@@ -997,7 +1006,7 @@ const NFTItem = () => {
     if (eventMatches(nft, id)) {
       getAuctions().then(() => {
         setAuctionStartConfirming(false);
-        showToast('success', 'Auction started!');
+        // showToast('success', 'Auction started!');
       });
     }
   };
@@ -1804,7 +1813,6 @@ const NFTItem = () => {
       const _price = listing.price * listing.quantity;
       if (listing.token.address === '') {
         const price = ethers.utils.parseEther(_price.toString());
-        console.log(price, _price);
 
         const tx = await buyItemETH(
           address,
@@ -2067,7 +2075,6 @@ const NFTItem = () => {
     try {
       setAuctionStarting(true);
       setAuctionStartConfirming(true);
-      alert('ddddddddddddddddd');
 
       const price = ethers.utils.parseUnits(_price, token.decimals);
       const startTime = Math.floor(_startTime.getTime() / 1000);
@@ -3102,7 +3109,6 @@ const NFTItem = () => {
                           className={styles.tokenIcon}
                         /> */}
                         {formatNumber(bid.bid)}
-                        {console.log(bid)}
                         <div style={{ marginLeft: '6px' }}>
                           {auction.current?.payToken?.toLowerCase() ==
                             '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
@@ -3121,8 +3127,12 @@ const NFTItem = () => {
                   <div
                     className={styles.clockWrapper}
                     style={
-                      auction.current.endTime - Math.floor(Date.now() / 1000) <
-                      0
+                      auction.current.endTime -
+                        Math.floor(now.getTime() / 1000) <
+                        0 ||
+                      auction.current.startTime -
+                        Math.floor(now.getTime() / 1000) >
+                        0
                         ? { display: 'none' }
                         : { display: 'flex' }
                     }
@@ -3137,157 +3147,161 @@ const NFTItem = () => {
                   className={styles.panelWrapper}
                   style={{ paddingLeft: '-12px' }}
                 >
-                  {/* <Panel
+                  <Panel
                     title={
                       auctionStarted
                         ? auctionEnded
-                          ? 'Sale ended'
-                          : `Sale ends in ${formatDuration(
+                          ? 'Auction ended'
+                          : `Auction ends in ${formatDuration(
                               auction.current.endTime
                             )} (${new Date(
                               auction.current.endTime * 1000
                             ).toLocaleString()})`
-                        : `Sale starts in ${formatDuration(
+                        : `Auction starts in ${formatDuration(
                             auction.current.startTime
                           )}`
                     }
                     fixed
-                  > */}
-                  <div className={styles.bids}>
-                    {auctionEnded ? (
-                      <div className={styles.result}>
-                        {auction.current.resulted ? (
-                          <>
-                            {'Winner: '}
-                            <Link to={`/account/${winner}`}>
-                              {winner?.toLowerCase() === account?.toLowerCase()
-                                ? 'Me'
-                                : shortenAddress(winner)}
-                            </Link>
-                            &nbsp;(
-                            {/* <img
+                  >
+                    <div className={styles.bids}>
+                      {auctionEnded ? (
+                        <div className={styles.result}>
+                          {auction.current.resulted ? (
+                            <>
+                              {'Winner: '}
+                              <Link to={`/account/${winner}`}>
+                                {winner?.toLowerCase() ===
+                                account?.toLowerCase()
+                                  ? 'Me'
+                                  : shortenAddress(winner)}
+                              </Link>
+                              &nbsp;(
+                              {/* <img
                               src={winningToken?.icon}
                               className={styles.tokenIcon}
                             /> */}
-                            <div
-                              style={{ display: 'flex', flexDirection: 'row' }}
-                            >
-                              {formatNumber(winningBid)}
-                              <div style={{ marginLeft: '6px' }}>
-                                {auction.current?.payToken?.toLowerCase() ==
-                                  '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
-                                  'FTM'}
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                {formatNumber(winningBid)}
+                                <div style={{ marginLeft: '6px' }}>
+                                  {auction.current?.payToken?.toLowerCase() ==
+                                    '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
+                                    'FTM'}
+                                </div>
                               </div>
-                            </div>
-                            )
-                          </>
-                        ) : (
-                          'Auction has concluded'
-                        )}
-                      </div>
-                    ) : (
-                      ''
-                    )}
-                    {bid ? (
-                      <div>
-                        <div className={styles.bidtitle}>
-                          Reserve Price :&nbsp;
-                          {/* <img
+                              )
+                            </>
+                          ) : (
+                            'Auction has concluded'
+                          )}
+                        </div>
+                      ) : (
+                        ''
+                      )}
+                      {bid ? (
+                        <div>
+                          <div className={styles.bidtitle}>
+                            Reserve Price :&nbsp;
+                            {/* <img
                             src={auction.current.token?.icon}
                             className={styles.tokenIcon}
                           /> */}
-                          {formatNumber(auction.current.reservePrice)}
-                          <div style={{ marginLeft: '6px' }}>
-                            {auction.current?.payToken?.toLowerCase() ==
-                              '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
-                              'FTM'}
+                            {formatNumber(auction.current.reservePrice)}
+                            <div style={{ marginLeft: '6px' }}>
+                              {auction.current?.payToken?.toLowerCase() ==
+                                '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
+                                'FTM'}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-
-                    {!isMine &&
-                      auctionActive() &&
-                      bid?.bidder?.toLowerCase() === account?.toLowerCase() &&
-                      now.getTime() / 1000 >=
-                        auction?.current?.startTime + 5184000 && (
-                        <div
-                          className={cx(
-                            styles.withdrawBid,
-                            bidWithdrawing && styles.disabled
-                          )}
-                          onClick={() => handleWithdrawBid()}
-                        >
-                          {bidWithdrawing
-                            ? 'Withdrawing Bid...'
-                            : 'Withdraw Bid'}
-                        </div>
+                      ) : (
+                        <></>
                       )}
 
-                    {!isMine &&
-                      (!auctionActive() &&
-                      bid?.bidder?.toLowerCase() === account?.toLowerCase()
-                        ? now.getTime() / 1000 >=
-                            auction?.current?.endTime + 43200 && (
-                            <div
-                              className={cx(
-                                styles.withdrawBid,
-                                bidWithdrawing && styles.disabled
-                              )}
-                              onClick={() => handleWithdrawBid()}
-                            >
-                              {bidWithdrawing
-                                ? 'Withdrawing Bid...'
-                                : 'Withdraw Bid'}
-                            </div>
-                          )
-                        : // )
-                          !isMine &&
-                          bid?.bidder?.toLowerCase() !==
-                            account?.toLowerCase() &&
-                          auctionActive() && (
-                            <div
-                              className={cx(
-                                styles.placeBid,
-                                bidPlacing && styles.disabled
-                              )}
-                              onClick={() => setBidModalVisible(true)}
-                            >
-                              Place Bid
-                            </div>
-                          ))}
-                    {isMine && auctionEnded && !auction.current.resulted && (
-                      <div
-                        className={cx(
-                          styles.placeBid,
-                          resulting && styles.disabled
+                      {!isMine &&
+                        auctionActive() &&
+                        bid?.bidder?.toLowerCase() === account?.toLowerCase() &&
+                        now.getTime() / 1000 >=
+                          auction?.current?.startTime + 5184000 && (
+                          <div
+                            className={cx(
+                              styles.withdrawBid,
+                              bidWithdrawing && styles.disabled
+                            )}
+                            onClick={() => handleWithdrawBid()}
+                          >
+                            {bidWithdrawing
+                              ? 'Withdrawing Bid...'
+                              : 'Withdraw Bid'}
+                          </div>
                         )}
-                        onClick={
-                          bid === null ||
-                          bid?.bid < auction.current?.reservePrice
-                            ? cancelCurrentAuction
-                            : handleResultAuction
-                        }
-                        style={
-                          bid?.bid < auction.current.reservePrice
-                            ? { display: 'none' }
-                            : { display: 'block' }
-                        }
-                      >
-                        {auctionCancelConfirming ? (
-                          <ClipLoader color="#FFF" size={16} />
-                        ) : bid === null ||
-                          bid?.bid < auction.current.reservePrice ? (
-                          'Reserve Price not met. Cancel Auction'
-                        ) : (
-                          'Accept highest bid'
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  {/* </Panel> */}
+
+                      {!isMine &&
+                        (!auctionActive() &&
+                        bid?.bidder?.toLowerCase() === account?.toLowerCase()
+                          ? now.getTime() / 1000 >=
+                              auction?.current?.endTime + 43200 && (
+                              <div
+                                className={cx(
+                                  styles.withdrawBid,
+                                  bidWithdrawing && styles.disabled
+                                )}
+                                onClick={() => handleWithdrawBid()}
+                              >
+                                {bidWithdrawing
+                                  ? 'Withdrawing Bid...'
+                                  : 'Withdraw Bid'}
+                              </div>
+                            )
+                          : // )
+                            !isMine &&
+                            bid?.bidder?.toLowerCase() !==
+                              account?.toLowerCase() &&
+                            auctionActive() && (
+                              <div
+                                className={cx(
+                                  styles.placeBid,
+                                  bidPlacing && styles.disabled
+                                )}
+                                onClick={() => setBidModalVisible(true)}
+                              >
+                                Place Bid
+                              </div>
+                            ))}
+                      {isMine && auctionEnded && !auction.current.resulted && (
+                        <div
+                          className={cx(
+                            styles.placeBid,
+                            resulting && styles.disabled
+                          )}
+                          onClick={
+                            bid === null ||
+                            bid?.bid < auction.current?.reservePrice
+                              ? cancelCurrentAuction
+                              : handleResultAuction
+                          }
+                          style={
+                            bid?.bid < auction.current.reservePrice
+                              ? { display: 'none' }
+                              : { display: 'block' }
+                          }
+                        >
+                          {auctionCancelConfirming ? (
+                            <ClipLoader color="#FFF" size={16} />
+                          ) : bid === null ||
+                            bid?.bid < auction.current.reservePrice ? (
+                            'Reserve Price not met. Cancel Auction'
+                          ) : (
+                            'Accept highest bid'
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </Panel>
                 </div>
               )}
               {/* {!bundleID && (
@@ -3497,7 +3511,7 @@ const NFTItem = () => {
                                     ) : (
                                       <Identicon
                                         account={offer.creator}
-                                        size={24}
+                                        size={60}
                                         className={styles.userAvatar}
                                       />
                                     )}

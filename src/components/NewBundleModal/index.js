@@ -160,7 +160,6 @@ const NewBundleModal = ({ visible, onClose, onCreateSuccess = () => {} }) => {
 
   useEffect(() => {
     if (payTokens?.length) {
-      console.log(payTokens);
       const availableTokens = payTokens.map(option => ({
         ...option,
         label: option.symbol,

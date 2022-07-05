@@ -6,12 +6,12 @@ const isMainnet = process.env.REACT_APP_ENV === 'MAINNET';
 export const useApi = () => {
   const explorerUrl = isMainnet
     ? 'https://ftmscan.com'
-    : 'https://testnet.ftmscan.com';
+    : 'https://rinkeby.etherscan.io/';
 
   const apiUrl = isMainnet
     ? 'https://api.artion.io'
     : 'https://picassomarketplaceserver.herokuapp.com';
-  // : 'http://localhost:5001';
+  //  : 'http://localhost:5001';
   // : 'https://api.testnet.artion.io';
 
   // eslint-disable-next-line no-undef
@@ -291,7 +291,6 @@ export const useApi = () => {
       },
       cancelToken,
     });
-    console.log('resData: ', data);
     return res.data;
   };
 

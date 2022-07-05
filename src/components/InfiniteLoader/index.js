@@ -41,8 +41,6 @@ const FInfiniteLoader = () => {
     });
   };
 
-  if (ListContainer) console.log();
-
   const resizeLoaderOnScreenChange = width => {
     if (width >= 1200) return 5;
     else if (width >= 1000 && width < 1200) return 4;

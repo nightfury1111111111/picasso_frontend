@@ -73,9 +73,7 @@ const ExploreAllPage = () => {
 
   // const handleScroll = e => {
   //   if (upFetching || downFetching) return;
-  //   console.log('llllllll', window.scrollY);
   //   const obj = e.target;
-  //   console.log('scroll', obj.scrollHeight - obj.clientHeight - obj.scrollTop);
   //   if (obj.scrollHeight - obj.clientHeight - obj.scrollTop < 100) {
   //     fetchNFTs(1);
   //   } else if (obj.scrollTop < 100 && from > 0) {
@@ -161,7 +159,6 @@ const ExploreAllPage = () => {
         null,
         cancelTokenSource.token
       );
-      console.log('fetchToekns: ', data);
       let newTokens =
         dir > 0
           ? [...tokens, ...data.tokens]
@@ -230,8 +227,6 @@ const ExploreAllPage = () => {
     chainId,
     numPerRow,
   ]);
-
-  console.log('Exploer render');
 
   const updateItems = async () => {
     try {

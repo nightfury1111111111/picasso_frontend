@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   border-radius: 10px;
-  border: 1px solid #EAEAF1;
+  // border: 1px solid #EAEAF1;
 
   &.focused {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
@@ -50,13 +50,13 @@
 .usdPrice {
   min-width: 130px;
   height: 50px;
-  border-left: 1px solid #EAEAF1;
+  border-left: 1px solid #eaeaf1;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 500;
   font-size: 16px;
-  color: rgba(0, 0, 0, .4);
+  color: rgba(0, 0, 0, 0.4);
 }
 
 .select {
@@ -69,7 +69,7 @@
   box-sizing: border-box !important;
   font-size: 16px !important;
   padding-right: 12px !important;
-  background-color: #FAFAFB;
+  background-color: #fafafb;
   box-shadow: none !important;
 }
 
@@ -87,7 +87,7 @@
   padding: 5px 15px;
 
   &:hover {
-    background-color: #EAEAF1;
+    background-color: #eaeaf1;
   }
 }
 

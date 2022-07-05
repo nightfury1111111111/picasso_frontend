@@ -36,8 +36,10 @@
 }
 
 .bannerSection {
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
+  background-color: #4916bd;
 }
 
 .card {
@@ -420,13 +422,13 @@ p {
 }
 
 .more:hover {
-  background: linear-gradient(to right, #E250E5,#4B50E6,#E250E5);
+  background: linear-gradient(to right, #e250e5, #4b50e6, #e250e5);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   background-size: 200% 200%;
   animation: rainbow 2s ease-in-out infinite;
-  transition: color .2s ease-in-out;
+  transition: color 0.2s ease-in-out;
   color: white;
 }
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useWeb3React } from '@web3-react/core';
 import cx from 'classnames';
 import { ethers } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
@@ -21,7 +22,13 @@ import Clock from 'components/Clock';
 import Button from '@material-ui/core/Button';
 import SuspenseImg from 'components/SuspenseImg';
 import BootstrapTooltip from 'components/BootstrapTooltip';
-import { formatNumber, getRandomIPFS, shortenAddress, isAddress } from 'utils';
+import {
+  formatNumber,
+  getRandomIPFS,
+  shortenAddress,
+  shortenName,
+  isAddress,
+} from 'utils';
 import { useApi } from 'api';
 import { useAuctionContract } from 'contracts';
 import useTokens from 'hooks/useTokens';
@@ -53,6 +60,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
 
   const { collections } = useSelector(state => state.Collections);
   const { authToken } = useSelector(state => state.ConnectWallet);
+  const { account } = useWeb3React();
 
   const collection = collections.find(
     col => col.address === item?.contractAddress
@@ -90,7 +98,6 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
           ethers.utils.formatUnits(_auction.reservePrice, token.decimals)
         );
         _auction.token = token;
-        console.log(_auction);
         setAuction(_auction);
       }
     } catch (e) {
@@ -245,7 +252,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
             </>
           )}
         </div>
-        {item.items ? (
+        {item?.items ? (
           <>
             <Carousel
               className={styles.carousel}
@@ -293,18 +300,18 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
                 >
                   <SuspenseImg
                     src={
-                      item.thumbnailPath?.length > 10
-                        ? `${storageUrl}/image/${item.thumbnailPath}`
+                      item?.thumbnailPath?.length > 10
+                        ? `${storageUrl}/image/${item?.thumbnailPath}`
                         : item?.imageURL || info?.image
                     }
                     className={styles.media}
-                    alt={item.name}
+                    alt={item?.name}
                   />
                 </Suspense>
               ))}
             <div className={styles.liked} onClick={toggleFavorite}>
               {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}&nbsp;
-              {item.liked}
+              {item?.liked}
             </div>
           </div>
         )}
@@ -346,7 +353,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
             )}
           </div>
           <div className={styles.flexBetween}>
-            <h5>{`"${item.name}"`}</h5>
+            <h5>{`"${shortenName(item.name)}"`}</h5>
             <div className={styles.netLogo}>FTM</div>
           </div>
           <div className={styles.flexBetween}>
@@ -381,34 +388,39 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
               </h6>
             </div>
           </div>
-          {auctionActive && (
-            <div className={styles.flexBetween}>
-              <Link
-                to={
-                  item.items
-                    ? `/bundle/${item._id}`
-                    : `/explore/${item.contractAddress}/${item.tokenID}`
-                }
-              >
-                <div className={styles.actionButton}>
-                  <BusinessCenterIcon style={{ marginRight: '10px' }} /> Place
-                  Bid
-                </div>
-              </Link>
-              <Link
-                to={
-                  item.items
-                    ? `/bundle/${item._id}`
-                    : `/explore/${item.contractAddress}/${item.tokenID}`
-                }
-              >
-                <div className={styles.history}>
-                  <SyncIcon style={{ marginRight: '10px', fontSize: '20px' }} />{' '}
-                  View History
-                </div>
-              </Link>
-            </div>
-          )}
+          {auctionActive &&
+            (account != auction?.owner ? (
+              <div className={styles.flexBetween}>
+                <Link
+                  to={
+                    item.items
+                      ? `/bundle/${item._id}`
+                      : `/explore/${item.contractAddress}/${item.tokenID}`
+                  }
+                >
+                  <div className={styles.actionButton}>
+                    <BusinessCenterIcon style={{ marginRight: '10px' }} /> Place
+                    Bid
+                  </div>
+                </Link>
+                <Link
+                  to={
+                    item.items
+                      ? `/bundle/${item._id}`
+                      : `/explore/${item.contractAddress}/${item.tokenID}`
+                  }
+                >
+                  <div className={styles.history}>
+                    <SyncIcon
+                      style={{ marginRight: '10px', fontSize: '20px' }}
+                    />{' '}
+                    View History
+                  </div>
+                </Link>
+              </div>
+            ) : (
+              <div></div>
+            ))}
           {/* <div className={styles.content}>
           {loading || fetching ? (
             <Skeleton width={100} height={20} />

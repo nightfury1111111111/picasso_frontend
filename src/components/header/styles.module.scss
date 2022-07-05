@@ -25,9 +25,10 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   background-color: transparent;
   z-index: 10001;
-  position: absolute;
+  // position: absolute;
   background-color: white;
   // margin-bottom: 3px;
+  width: 100%;
 }
 
 .header_second {
@@ -45,6 +46,7 @@
   z-index: 10001;
   position: fixed;
   background: white;
+  width: 100%;
 }
 
 .left {

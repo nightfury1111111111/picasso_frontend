@@ -40,7 +40,6 @@ export default function Web3ReactManager({ children }) {
       clearTimeout(timeout);
     };
   }, []);
-  console.log(showLoader);
 
   // on page load, do nothing until we've tried to connect to the injected connector
   if (!triedEager) {

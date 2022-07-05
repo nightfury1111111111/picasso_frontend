@@ -669,6 +669,21 @@
   }
 }
 
+@media only screen and (max-width: 1600px) {
+  .tabName {
+    margin-left: 20px;
+
+    &:last-child {
+      margin-right: 30px;
+    }
+  }
+
+  .tabVar {
+    height: 190px;
+    justify-content: space-around;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .buttonsWrapper {
     flex-direction: column;

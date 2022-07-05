@@ -11,6 +11,7 @@ import Skeleton from 'react-loading-skeleton';
 // import { ChainId } from 'constants/chainid';
 import { ChainId } from 'constants/chainid';
 import Select from 'react-dropdown-select';
+import validUrl from 'valid-url';
 
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
@@ -233,10 +234,15 @@ const PaintBoard = () => {
       return;
     }
     if (chainId !== ChainId.FANTOM && chainId !== ChainId.FANTOM_TESTNET) {
-      console.log(chainId, ChainId.FANTOM, ChainId.FANTOM_TESTNET);
       showToast('info', 'You are not connected to Fantom Opera Network');
       return;
     }
+
+    if (xtra && !validUrl.isUri(xtra)) {
+      showToast('warning', 'You have to input a correct URL');
+      return;
+    }
+
     const balance = await WalletUtils.checkBalance(account);
 
     if (balance < fee) {
@@ -257,7 +263,6 @@ const PaintBoard = () => {
     setLastMintedTnxId('');
     // show stepper
     setIsMinting(true);
-    console.log('created from ', account);
     if (!validateMetadata()) {
       resetMintingStatus();
       return;
@@ -303,8 +308,6 @@ const PaintBoard = () => {
           Authorization: 'Bearer ' + authToken,
         },
       });
-
-      console.log('upload image result is ');
 
       const jsonHash = result.data.jsonHash;
 
@@ -353,16 +356,16 @@ const PaintBoard = () => {
         await royaltyTx.wait();
 
         // save unlockable content
-        if (hasUnlockableContent && unlockableContent.length > 0) {
-          await addUnlockableContent(
-            nft,
-            mintedTkId.toNumber(),
-            unlockableContent,
-            signature,
-            addr,
-            authToken
-          );
-        }
+        // if (hasUnlockableContent && unlockableContent.length > 0) {
+        //   await addUnlockableContent(
+        //     nft,
+        //     mintedTkId.toNumber(),
+        //     unlockableContent,
+        //     signature,
+        //     addr,
+        //     authToken
+        //   );
+        // }
 
         showToast('success', 'New NFT item minted!');
         removeImage();
@@ -433,7 +436,6 @@ const PaintBoard = () => {
                     disabled={isMinting}
                     values={selected}
                     onChange={([col]) => {
-                      console.log(collections);
                       setSelected([col]);
                       setNft(col.erc721Address);
                       setType(col.type);
@@ -573,7 +575,7 @@ const PaintBoard = () => {
                   </div> */}
                 </div>
 
-                <div className={styles.formGroup}>
+                {/* <div className={styles.formGroup}>
                   <p className={styles.formLabel}>
                     Unlockable Content&nbsp;
                     <PurpleSwitch
@@ -595,7 +597,7 @@ const PaintBoard = () => {
                       disabled={isMinting}
                     />
                   )}
-                </div>
+                </div> */}
               </div>
             </div>
 

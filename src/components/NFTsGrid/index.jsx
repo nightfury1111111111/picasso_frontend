@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 
 import Card from '../NFTCard';
@@ -18,9 +18,14 @@ const NFTsGrid = ({
   onCreate = () => {},
   onLike = () => {},
 }) => {
+  useEffect(() => {
+    return () => {
+      console.log('gridItems', items);
+    };
+  }, [items]);
   const dispatch = useDispatch();
   // const n = numPerRow || 6;
-  const n = 4;
+  const n = 6;
   const className = cx(styles.nft, styles[`num${n}`]);
   return (
     <div className={styles.container}>

@@ -14,6 +14,7 @@ import Footer from 'components/Footer';
 import { useApi } from 'api';
 import { fa } from 'faker/lib/locales';
 import { Maximize } from '@material-ui/icons';
+import { getExactImageUrl } from 'utils';
 
 const AccountDetails = () => {
   const [activities, setActivities] = useState([]);
@@ -28,7 +29,6 @@ const AccountDetails = () => {
 
   const { fetching, activity } = useSelector(state => state.Activity);
 
-  console.log('Activity rendre');
   useEffect(() => {
     setIsLoading(true);
     dispatch(ActivityActions.fetchStart());
@@ -145,10 +145,6 @@ const AccountDetails = () => {
     setValidActivities(activities.slice(0, 6 * (pageNum + 1)));
   }, [pageNum]);
 
-  // useEffect(() => {
-  //   console.log('sdfsdfsfdfds', maxPageNum);
-  // }, [maxPageNum]);
-
   return (
     <>
       <Header border />
@@ -183,7 +179,7 @@ const AccountDetails = () => {
                               />
                             ) : (
                               <img
-                                src={`https://artion.mypinata.cloud/ipfs/${activ.imageURL}`}
+                                src={getExactImageUrl(activ.imageURL)}
                                 style={{
                                   width: '100%',
                                   height: '100%',

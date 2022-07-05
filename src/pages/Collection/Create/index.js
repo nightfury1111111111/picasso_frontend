@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import cx from 'classnames';
 import axios from 'axios';
+import validUrl from 'valid-url';
 import { withStyles } from '@material-ui/core/styles';
 import { Menu, MenuItem } from '@material-ui/core';
 import Radio from '@material-ui/core/Radio';
@@ -39,7 +40,7 @@ import plusIcon from 'assets/svgs/plus.svg';
 import closeIcon from 'assets/svgs/close.svg';
 
 import styles from './styles.module.scss';
-import { formatError, isAddress } from 'utils';
+import { formatError, createAndRegisterError, isAddress } from 'utils';
 
 import PageHeader from '../../../components/PageHeader';
 
@@ -267,7 +268,36 @@ const CollectionCreate = ({ isRegister }) => {
     cb(canvas.toDataURL());
   };
 
+  // siteUrl,
+  // discord,
+  // twitterHandle,
+  // instagramHandle,
+  // mediumHandle,
+  // telegram,
+  const validExtraUrls = () => {
+    if (
+      (siteUrl && !validUrl.isUri(siteUrl)) ||
+      (discord && !validUrl.isUri(discord)) ||
+      (twitterHandle && !validUrl.isUri(twitterHandle)) ||
+      (instagramHandle && !validUrl.isUri(instagramHandle)) ||
+      (mediumHandle && !validUrl.isUri(mediumHandle)) ||
+      (telegram && !validUrl.isUri(telegram))
+    ) {
+      showToast('warning', 'You have to input a correct URL');
+      return false;
+    } else return true;
+  };
+
   const handleRegister = async () => {
+    if (description.length === 0) {
+      setDescriptionError("This field can't be blank");
+      return;
+    } else {
+      setDescriptionError(null);
+    }
+
+    if (!validExtraUrls()) return;
+
     if (creating) return;
 
     setCreating(true);
@@ -355,7 +385,7 @@ const CollectionCreate = ({ isRegister }) => {
 
           history.push('/explore');
         } catch (e) {
-          console.log('Error: ', e);
+          showToast('error', createAndRegisterError(e));
           setCreating(false);
         }
       });
@@ -364,9 +394,16 @@ const CollectionCreate = ({ isRegister }) => {
   };
 
   const handleCreate = async () => {
+    if (description.length === 0) {
+      setDescriptionError("This field can't be blank");
+      return;
+    } else {
+      setDescriptionError(null);
+    }
+    if (!validExtraUrls()) return;
+
     setDeploying(true);
     try {
-      console.log('here', isSingle, isPrivate);
       const tx = await createNFTContract(
         isSingle
           ? isPrivate
@@ -455,6 +492,11 @@ const CollectionCreate = ({ isRegister }) => {
                     Authorization: `Bearer ${authToken}`,
                   },
                 });
+                // if (createResult?.data?.status == 'failed') {
+                //   toast('warning', `${createResult?.data?.data}`);
+                //   // setCreating(false);
+                //   return;
+                // }
 
                 toast('success', 'Collection created successfully!');
 
@@ -462,6 +504,7 @@ const CollectionCreate = ({ isRegister }) => {
 
                 history.push('/explore');
               } catch (e) {
+                showToast('error', createAndRegisterError(e));
                 setCreating(false);
               }
             });

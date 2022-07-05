@@ -3,7 +3,7 @@
   width: 100%;
   // height: 100vh;
   overflow-y: auto;
-  padding-top: 160px;
+  padding-top: 50px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -100,7 +100,7 @@
   // margin: 40px 0;
   overflow: hidden;
   border-radius: 10px;
-  border: 1px solid #bbb;
+  // border: 1px solid #bbb;
 
   .media {
     position: relative;
@@ -199,8 +199,8 @@
 }
 
 .socialLink {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   padding: 4px;
   margin-right: 20px;
   border-radius: 4px;

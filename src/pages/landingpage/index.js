@@ -67,7 +67,6 @@ const LandingPage = () => {
     const p2 = fetchCollections();
     const p3 = fetchAllAccounts();
     const [tokens, collections, accounts] = await Promise.all([p1, p2, p3]);
-    console.log('allTokens: ', tokens);
     let forCollection = [];
     let pickToken = [];
     if (collections.status === 'success') {
@@ -89,7 +88,6 @@ const LandingPage = () => {
           img.push(token.imageURL);
         }
       });
-      console.log('accounts :', accounts);
       accounts.data.map(account => {
         if (account.address === collections.data[i].owner) {
           owner = account.alias || shortenAddress(account.address);
@@ -114,7 +112,7 @@ const LandingPage = () => {
     setTokenWithOwner(pickToken);
     setPopCollection(forCollection);
   };
-  // console.log('collections: ', popCollection, tokenWithOwner);
+
   useEffect(() => {
     dispatch(HeaderActions.toggleSearchbar(true));
     dispatch(FilterActions.updateCategoryFilter(null));
@@ -173,7 +171,7 @@ const LandingPage = () => {
       <Header />
       <section
         className={styles.bannerSection}
-        style={{ backgroundImage: "url('/assets/images/banner/bg-6.jpg')" }}
+        style={{ backgroundImage: "url('/assets/images/banner/01.gif')" }}
       >
         <div className={styles.body}>
           <div className={styles.main}>
@@ -218,7 +216,7 @@ const LandingPage = () => {
             </div>
           </div>
           <div className={styles.aboutCards}>
-            {tokenWithOwner.splice(0, 4).map((item, index) => (
+            {tokenWithOwner.slice(0, 4).map((item, index) => (
               <NFTItem key={index} item={item} />
             ))}
           </div>
@@ -243,9 +241,8 @@ const LandingPage = () => {
           <div className={styles.aboutCards}>
             {popCollection
               .sort((a, b) => b.liked - a.liked)
-              .splice(0, 3)
+              .slice(0, 3)
               .map((item, index) => {
-                console.log('kkkkkkkk', item);
                 return <PopularCollectionItem key={index} item={item} />;
               })}
           </div>

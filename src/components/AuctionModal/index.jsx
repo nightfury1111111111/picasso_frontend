@@ -12,6 +12,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
+import showToast from 'utils/toast';
 import BootstrapTooltip from 'components/BootstrapTooltip';
 import PriceInput from 'components/PriceInput';
 import { formatNumber } from 'utils';
@@ -38,11 +39,9 @@ const AuctionModal = ({
 
   const [now, setNow] = useState(new Date());
   const [reservePrice, setReservePrice] = useState('');
-  const [startTime, setStartTime] = useState(
-    new Date(new Date().getTime() + 2 * 60 * 1000)
-  );
+  const [startTime, setStartTime] = useState(new Date(0));
   const [endTime, setEndTime] = useState(
-    new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+    new Date(new Date().getTime() + 24 * 60 * 60 * 1000 + 3 * 60 * 1000)
   );
   const [focused, setFocused] = useState(false);
   const [minBidReserve, setMinBidReserve] = useState(false);
@@ -52,8 +51,24 @@ const AuctionModal = ({
   const [tokenPriceInterval, setTokenPriceInterval] = useState();
   const [inputError, setInputError] = useState(null);
 
+  const getDefaultTime = async () => {
+    await window.ethereum.enable();
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    provider.on('block', blockNum => {
+      provider.getBlock(blockNum).then(res => {
+        setNow(new Date(res.timestamp * 1000));
+        setStartTime(new Date(res.timestamp * 1000 + 60 * 1000));
+        setEndTime(
+          new Date(res.timestamp * 1000 + 24 * 60 * 60 * 1000 + 60 * 1000)
+        );
+      });
+    });
+  };
+
   useEffect(() => {
-    setInterval(() => setNow(new Date()), 1000);
+    // setInterval(() => setNow(new Date()), 1000);
+    getDefaultTime();
   }, []);
 
   // useEffect(() => {
@@ -64,7 +79,6 @@ const AuctionModal = ({
 
   useEffect(() => {
     if (tokens?.length) {
-      console.log(tokens);
       const availableTokens = tokens.map(option => ({
         ...option,
         label: option.symbol,
@@ -76,16 +90,8 @@ const AuctionModal = ({
 
   useEffect(() => {
     setReservePrice(auction?.reservePrice || '');
-    setStartTime(
-      auction?.startTime
-        ? new Date(auction.startTime * 1000)
-        : new Date(new Date().getTime() + 2 * 60 * 1000)
-    );
-    setEndTime(
-      auction?.endTime
-        ? new Date(auction.endTime * 1000)
-        : new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
-    );
+    auction?.startTime && setStartTime(new Date(auction.startTime * 1000));
+    auction?.endTime && setEndTime(new Date(auction.endTime * 1000));
   }, [visible, auction]);
 
   useEffect(() => {
@@ -128,7 +134,9 @@ const AuctionModal = ({
   const validateInput = (() => {
     if (reservePrice.length === 0 || parseFloat(reservePrice) == 0)
       return false;
-    if (!auctionStarted && startTime.getTime() < now.getTime()) return false;
+    if (!auctionStarted && startTime.getTime() < now.getTime()) {
+      return false;
+    }
     return (
       endTime.getTime() >= now.getTime() + 1000 * 60 * 5 &&
       endTime.getTime() >= startTime.getTime() + 1000 * 60 * 5
@@ -249,7 +257,15 @@ const AuctionModal = ({
             <Datetime
               value={startTime}
               className={'calendarAboveInput'}
-              onChange={val => setStartTime(val.toDate())}
+              onChange={val => {
+                setStartTime(val.toDate());
+                if (val.toDate() < now.getTime() + 1000 * 60) {
+                  showToast(
+                    'warning',
+                    'Start time must be one minutes later than now because transaction will take some time'
+                  );
+                }
+              }}
               inputProps={{
                 className: styles.formInput,
                 onKeyDown: e => e.preventDefault(),
@@ -276,7 +292,7 @@ const AuctionModal = ({
               }}
               closeOnSelect
               isValidDate={cur =>
-                cur.valueOf() > startTime.getTime() - 1000 * 60 * 60 * 23
+                cur.valueOf() > startTime.getTime() - 1000 * 60 * 60 * 24
               }
             />
           </div>

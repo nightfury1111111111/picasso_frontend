@@ -13,6 +13,7 @@ import ReactPlayer from 'react-player';
 import Loader from 'react-loader-spinner';
 import axios from 'axios';
 
+import { getExactImageUrl } from 'utils';
 import NFTsGrid from 'components/NFTsGrid';
 import Header from 'components/header';
 import Identicon from 'components/Identicon';
@@ -451,6 +452,7 @@ const AccountDetails = () => {
   };
 
   const goToTab = _tab => {
+    if (tab == _tab) return;
     tokens.current = [];
     bundles.current = [];
     likes.current = [];
@@ -537,7 +539,6 @@ const AccountDetails = () => {
       const reader = new FileReader();
 
       reader.onload = async function(e) {
-        console.log('banner', e.target.result);
         const { data } = await updateBanner(e.target.result, authToken);
         setBannerHash(data);
       };
@@ -578,19 +579,19 @@ const AccountDetails = () => {
   };
 
   const showFollowers = () => {
+    goToTab(7);
     if (loading || !user.followers || user.followers === 0) return;
 
     // setFollowersModalVisible(true);
     fetchFollowers();
-    goToTab(7);
   };
 
   const showFollowings = () => {
+    goToTab(8);
     if (loading || !user.followings || user.followings === 0) return;
 
     // setFollowingsModalVisible(true);
     fetchFollowings();
-    goToTab(8);
   };
 
   const followUser = async () => {
@@ -768,7 +769,7 @@ const AccountDetails = () => {
               {loading ? (
                 <Skeleton width={120} height={24} />
               ) : (
-                <div className={styles.username}>{user.alias || 'Unnamed'}</div>
+                <div className={styles.username}>{user.alias || ''}</div>
               )}
               {isMe ? null : loading ? (
                 <Skeleton width={80} height={26} style={{ marginLeft: 16 }} />
@@ -971,7 +972,7 @@ const AccountDetails = () => {
                               {renderMedia(
                                 activity.thumbnailPath.length > 10
                                   ? `${storageUrl}/image/${activity.thumbnailPath}`
-                                  : activity.imageURL
+                                  : getExactImageUrl(activity.imageURL)
                               )}
                             </div>
                           </Link>
@@ -1156,7 +1157,7 @@ const AccountDetails = () => {
               <>
                 <div className={styles.bioHeader}>Followers</div>
                 <div className={styles.followContent}>
-                  {followers.current.length &&
+                  {followers.current.length ? (
                     followers.current.map((user, idx) => (
                       <Link
                         to={`/account/${user?.address}`}
@@ -1209,14 +1210,17 @@ const AccountDetails = () => {
                           )}
                         </div>
                       </Link>
-                    ))}
+                    ))
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </>
             ) : tab == 8 ? (
               <>
                 <div className={styles.bioHeader}>Following</div>
                 <div className={styles.followContent}>
-                  {followings.current.length &&
+                  {followings.current.length ? (
                     followings.current.map((user, idx) => (
                       <Link
                         to={`/account/${user?.address}`}
@@ -1269,7 +1273,10 @@ const AccountDetails = () => {
                           )}
                         </div>
                       </Link>
-                    ))}
+                    ))
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </>
             ) : (

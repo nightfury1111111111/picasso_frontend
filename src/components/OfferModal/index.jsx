@@ -44,7 +44,6 @@ const OfferModal = ({
 
   useEffect(() => {
     if (tokens?.length) {
-      console.log(tokens);
       const availableTokens = tokens.map(option => ({
         ...option,
         label: option.symbol,
