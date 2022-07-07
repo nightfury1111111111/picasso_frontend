@@ -1,45 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import styles from './styles.module.scss';
 
-const ExploreCollections = ({ endTime, type }) => {
-  const [auctionTime, setAuctionTime] = useState(0);
+const Clock = ({ leftTime, type }) => {
   const [clockType, setClockType] = useState(1);
-  //   const [now, setNow] = useState(new Date());
+  const [timeElapsed, setTimeElapsed] = useState(0);
 
   useEffect(() => {
-    // setAuctionTime(endTime);
-    const timerObj = setInterval(() => {
-      setAuctionTime(endTime - Math.floor(Date.now() / 1000));
-      //   setAuctionTime(endTime - Math.floor(now.getTime() / 1000));
+    setTimeElapsed(leftTime);
+  }, [leftTime]);
+
+  useEffect(() => {
+    const timerObj = setTimeout(() => {
+      setTimeElapsed(timeElapsed - 1);
     }, 1000);
-    return () => clearInterval(timerObj);
-  }, [endTime]);
+    return () => clearTimeout(timerObj);
+  }, [timeElapsed]);
 
   useEffect(() => {
     setClockType(type);
   }, [type]);
 
-  if (auctionTime < 0) {
+  if (timeElapsed < 0) {
     return <></>;
   }
   if (clockType == 1) {
     return (
       <div className={styles.firstClockWrapper}>
-        {Math.floor(auctionTime / 86400)}D{' '}
-        {Math.floor((auctionTime % 86400) / 3600)}H{' '}
-        {Math.floor((auctionTime % 3600) / 60)}M {Math.floor(auctionTime % 60)}{' '}
+        {Math.floor(timeElapsed / 86400)}D{' '}
+        {Math.floor((timeElapsed % 86400) / 3600)}H{' '}
+        {Math.floor((timeElapsed % 3600) / 60)}M {Math.floor(timeElapsed % 60)}{' '}
         S
       </div>
     );
   } else {
     return (
       <div className={styles.secondClockWrapper}>
-        {Math.floor(auctionTime / 86400)}:{' '}
-        {Math.floor((auctionTime % 86400) / 3600)}:{' '}
-        {Math.floor((auctionTime % 3600) / 60)}: {Math.floor(auctionTime % 60)}{' '}
+        {Math.floor(timeElapsed / 86400)}:{' '}
+        {Math.floor((timeElapsed % 86400) / 3600)}:{' '}
+        {Math.floor((timeElapsed % 3600) / 60)}: {Math.floor(timeElapsed % 60)}{' '}
       </div>
     );
   }
 };
 
-export default ExploreCollections;
+export default Clock;

@@ -7,6 +7,7 @@ import Identicon from 'components/Identicon';
 import Modal from '../Modal';
 import styles from './styles.module.scss';
 
+import { picassoGateway } from 'constants/ipfs.constants';
 const Holder = ({ holder, children }) => {
   if (!holder) return <div className={styles.holder}>{children}</div>;
 
@@ -26,7 +27,7 @@ const OwnersModal = ({ visible, onClose, holders }) => {
             <div className={styles.avatarWrapper}>
               {holder.imageHash ? (
                 <img
-                  src={`https://artion.mypinata.cloud/ipfs/${holder.imageHash}`}
+                  src={`${picassoGateway}${holder.imageHash}`}
                   width={40}
                   height={40}
                 />

@@ -8,6 +8,7 @@ import Identicon from 'components/Identicon';
 import Modal from '../Modal';
 import styles from './styles.module.scss';
 
+import { picassoGateway } from 'constants/ipfs.constants';
 const User = ({ user, onClose, children }) => {
   if (!user) return <div className={styles.holder}>{children}</div>;
 
@@ -33,7 +34,7 @@ const LikesModal = ({ visible, onClose, users }) => {
                 <Skeleton width={40} height={40} />
               ) : user.imageHash ? (
                 <img
-                  src={`https://artion.mypinata.cloud/ipfs/${user.imageHash}`}
+                  src={`${picassoGateway}${user.imageHash}`}
                   width={40}
                   height={40}
                 />

@@ -12,6 +12,7 @@ import Header from 'components/header';
 import toast from 'utils/toast';
 import { useApi } from 'api';
 
+import { picassoGateway } from 'constants/ipfs.constants';
 import webIcon from 'assets/svgs/web.svg';
 import discordIcon from 'assets/svgs/discord.svg';
 import telegramIcon from 'assets/svgs/telegram.svg';
@@ -134,7 +135,7 @@ const CollectionCreate = () => {
               onClick={() => setIndex(idx)}
             >
               <img
-                src={`https://artion.mypinata.cloud/ipfs/${collection.logoImageHash}`}
+                src={`${picassoGateway}${collection.logoImageHash}`}
                 className={styles.collectionLogo}
               />
               <div className={styles.collectionName}>
@@ -152,7 +153,7 @@ const CollectionCreate = () => {
             <div className={styles.inputWrapper}>
               <div className={styles.logoUploadBox}>
                 <img
-                  src={`https://artion.mypinata.cloud/ipfs/${collections[index].logoImageHash}`}
+                  src={`${picassoGateway}${collections[index].logoImageHash}`}
                 />
               </div>
             </div>
@@ -231,7 +232,7 @@ const CollectionCreate = () => {
                     <img src={webIcon} className={styles.linkIcon} />
                   </div>
                   <div className={styles.inputPrefix}>
-                    https://{collections[index].siteUrl}
+                    {collections[index].siteUrl}
                   </div>
                 </div>
                 <div className={styles.linkItem}>
@@ -239,7 +240,7 @@ const CollectionCreate = () => {
                     <img src={discordIcon} className={styles.linkIcon} />
                   </div>
                   <div className={styles.inputPrefix}>
-                    https://discord.gg/{collections[index].discord}
+                    {collections[index].discord}
                   </div>
                 </div>
                 <div className={styles.linkItem}>
@@ -247,7 +248,7 @@ const CollectionCreate = () => {
                     <img src={twitterIcon} className={styles.linkIcon} />
                   </div>
                   <div className={styles.inputPrefix}>
-                    @{collections[index].twitterHandle}
+                    {collections[index].twitterHandle}
                   </div>
                 </div>
                 <div className={styles.linkItem}>
@@ -255,7 +256,7 @@ const CollectionCreate = () => {
                     <img src={instagramIcon} className={styles.linkIcon} />
                   </div>
                   <div className={styles.inputPrefix}>
-                    @{collections[index].instagramHandle}
+                    {collections[index].instagramHandle}
                   </div>
                 </div>
                 <div className={styles.linkItem}>
@@ -263,7 +264,7 @@ const CollectionCreate = () => {
                     <img src={mediumIcon} className={styles.linkIcon} />
                   </div>
                   <div className={styles.inputPrefix}>
-                    @{collections[index].mediumHandle}
+                    {collections[index].mediumHandle}
                   </div>
                 </div>
                 <div className={styles.linkItem}>
@@ -271,7 +272,7 @@ const CollectionCreate = () => {
                     <img src={telegramIcon} className={styles.linkIcon} />
                   </div>
                   <div className={styles.inputPrefix}>
-                    https://t.me/{collections[index].telegram}
+                    {collections[index].telegram}
                   </div>
                 </div>
               </div>

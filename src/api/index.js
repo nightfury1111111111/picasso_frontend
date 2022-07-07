@@ -294,6 +294,17 @@ export const useApi = () => {
     return res.data;
   };
 
+  const fetchTodayTokens = async () => {
+    const res = await axios({
+      method: 'get',
+      url: `${apiUrl}/nftitems/getTodayNfts`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return res.data;
+  };
+
   const fetchAllTokens = async () => {
     const res = await axios({
       method: 'get',
@@ -914,6 +925,7 @@ export const useApi = () => {
     updateBanner,
     get1155Info,
     fetchAllAccounts,
+    fetchTodayTokens,
     getTokenHolders,
     fetchCollections,
     fetchCollection,

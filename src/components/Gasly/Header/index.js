@@ -7,6 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 import { ExpandMore } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { picassoGateway } from 'constants/ipfs.constants';
 import WalletConnectActions from 'actions/walletconnect.actions';
 import AuthActions from 'actions/auth.actions';
 import { shortenAddress } from 'utils';
@@ -122,7 +123,7 @@ const Header = () => {
               <Skeleton className={styles.avatar} />
             ) : user?.imageHash ? (
               <img
-                src={`https://artion.mypinata.cloud/ipfs/${user?.imageHash}`}
+                src={`${picassoGateway}${user?.imageHash}`}
                 width="24"
                 height="24"
                 className={styles.avatar}

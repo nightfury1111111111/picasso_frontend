@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import StickyBox from 'react-sticky-box';
 import axios from 'axios';
 
+import { picassoGateway } from 'constants/ipfs.constants';
 import WalletConnectActions from 'actions/walletconnect.actions';
 import AuthActions from 'actions/auth.actions';
 import ModalActions from 'actions/modal.actions';
@@ -132,6 +133,10 @@ const Header = () => {
   };
 
   useEffect(() => {
+    console.log(tokens);
+  }, [tokens]);
+
+  useEffect(() => {
     resetResults();
   }, [isSearchbarShown]);
 
@@ -149,12 +154,13 @@ const Header = () => {
     }
 
     try {
-      const cancelTokenSource = axios.CancelToken.source();
-      setCancelSource(cancelTokenSource);
+      // const cancelTokenSource = axios.CancelToken.source();
+      // console.log('keyword', cancelTokenSource);
+      // setCancelSource(cancelTokenSource);
 
       const {
         data: {
-          data: { accounts, collections, tokens, bundles },
+          data, //: { accounts, collections, tokens, bundles },
         },
       } = await axios({
         method: 'post',
@@ -163,11 +169,10 @@ const Header = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        cancelToken: cancelTokenSource.token,
+        // cancelToken: cancelTokenSource.token,
       });
-
       Promise.all(
-        tokens.map(async token => {
+        data?.tokens.map(async token => {
           if (token.imageURL) {
             token.imageURL = getRandomIPFS(token.imageURL);
           }
@@ -185,14 +190,16 @@ const Header = () => {
         })
       );
 
-      setAccounts(accounts);
-      setCollections(collections);
+      console.log('keyword', word, data);
+      setAccounts(data.accounts || []);
+      setCollections(data.collections || []);
       setTokenDetailsLoading(true);
-      setTokens(tokens);
-      setBundles(bundles);
+      setTokens(data.tokens || []);
+      setBundles(data.bundles || []);
       setTokenDetailsLoading(false);
     } catch (err) {
-      console.log(err);
+      alert(0);
+      console.log('keyword', err);
     } finally {
       setCancelSource(null);
     }
@@ -206,6 +213,7 @@ const Header = () => {
     if (timer.current) {
       clearTimeout(timer.current);
     }
+    console.log('Search: ', word, timer.current);
 
     timer.current = setTimeout(() => search(word), 500);
   };
@@ -331,7 +339,7 @@ const Header = () => {
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      keepMounted
+      // keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
@@ -462,16 +470,18 @@ const Header = () => {
           />
           <SearchIcon className={styles.searchicon} />
         </div>
+        {/* {false && ( */}
         {searchBarActive && (
           <div className={styles.resultcont}>
-            {/* {collections.length > 0 && (
+            {collections.length > 0 && (
               <div className={styles.resultsection}>
                 <div className={styles.resultsectiontitle}>Collections</div>
                 <div className={styles.separator} />
                 <div className={styles.resultlist}>
                   {collections.map((collection, idx) => (
-                    <div
+                    <Link
                       key={idx}
+                      to={`/explore`}
                       className={styles.result}
                       onClick={() =>
                         handleSelectCollection(collection.erc721Address)
@@ -486,11 +496,11 @@ const Header = () => {
                       <div className={styles.resulttitle}>
                         {collection.collectionName}
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
-            )} */}
+            )}
             {accounts.length > 0 && (
               <div className={styles.resultsection}>
                 <div className={styles.resultsectiontitle}>Accounts</div>
@@ -505,7 +515,7 @@ const Header = () => {
                       {account.imageHash ? (
                         <img
                           className={styles.resultimg}
-                          src={`https://artion.mypinata.cloud/ipfs/${account.imageHash}`}
+                          src={`${picassoGateway}${account.imageHash}`}
                         />
                       ) : (
                         <Identicon
@@ -540,7 +550,7 @@ const Header = () => {
                             <img
                               src={`${storageUrl}/image/${tk.thumbnailPath}`}
                             />
-                          ) : tk.thumbnailPath === '.' ? (
+                          ) : tk.thumbnailPath === '-' ? (
                             <img src={tk.imageURL} />
                           ) : null)
                         )}
@@ -669,7 +679,7 @@ const Header = () => {
               <i className={cx('icofont-user', styles.userIcon)} />
             ) : user?.imageHash ? (
               <img
-                src={`https://artion.mypinata.cloud/ipfs/${user?.imageHash}`}
+                src={`${picassoGateway}${user?.imageHash}`}
                 width="24"
                 height="24"
                 className={styles.avatar}

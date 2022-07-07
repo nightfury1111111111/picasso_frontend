@@ -12,6 +12,7 @@ import Skeleton from 'react-loading-skeleton';
 import { ChainId } from 'constants/chainid';
 import Select from 'react-dropdown-select';
 import validUrl from 'valid-url';
+import { picassoGateway } from 'constants/ipfs.constants';
 
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
@@ -452,7 +453,7 @@ const PaintBoard = () => {
                         }}
                       >
                         <img
-                          src={`https://artion.mypinata.cloud/ipfs/${item.logoImageHash}`}
+                          src={`${picassoGateway}/${item.logoImageHash}`}
                           className={styles.collectionLogo}
                         />
                         <div className={styles.collectionName}>
@@ -464,7 +465,7 @@ const PaintBoard = () => {
                       values.length > 0 ? (
                         <div className={styles.collection}>
                           <img
-                            src={`https://artion.mypinata.cloud/ipfs/${values[0].logoImageHash}`}
+                            src={`${picassoGateway}${values[0].logoImageHash}`}
                             className={styles.collectionLogo}
                           />
                           <div className={styles.collectionName}>

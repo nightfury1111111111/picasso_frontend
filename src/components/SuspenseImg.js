@@ -32,7 +32,7 @@ const imgCache = {
 };
 
 const SuspenseImg = ({ src, ...rest }) => {
-  imgCache.read(src);
+  // imgCache.read(src);
 
   return <img alt="" src={src} {...rest} />;
 };

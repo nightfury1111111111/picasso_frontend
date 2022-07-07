@@ -5,6 +5,7 @@ import { Categories } from 'constants/filter.constants';
 import { IPFSUris } from 'constants/ipfs.constants';
 import MetamaskErrors from 'constants/errors';
 
+import { picassoGateway } from 'constants/ipfs.constants';
 export function isAddress(value) {
   try {
     return getAddress(value);
@@ -29,7 +30,7 @@ export function shortenAddress(address, chars = 4) {
 
 export function shortenName(name) {
   if (name && name.length > 12)
-    return name.slice(0, 6) + '...' + name.slice(-6);
+    return name.slice(0, 3) + '...' + name.slice(-3);
   else return name;
 }
 
@@ -43,7 +44,7 @@ export const getHigherGWEI = async () => {
 export const getExactImageUrl = path => {
   if (path && path.includes('ipfs://')) {
     let uri = path.split('//')[1];
-    return `https://artion.mypinata.cloud/ipfs/${uri}`;
+    return `${picassoGateway}${uri}`;
   } else {
     return path;
   }

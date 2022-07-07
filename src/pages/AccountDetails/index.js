@@ -13,6 +13,7 @@ import ReactPlayer from 'react-player';
 import Loader from 'react-loader-spinner';
 import axios from 'axios';
 
+import { picassoGateway } from 'constants/ipfs.constants';
 import { getExactImageUrl } from 'utils';
 import NFTsGrid from 'components/NFTsGrid';
 import Header from 'components/header';
@@ -704,8 +705,7 @@ const AccountDetails = () => {
               <Skeleton width="100%" height={200} />
             ) : bannerHash || user.bannerHash ? (
               <img
-                src={`https://artion.mypinata.cloud/ipfs/${bannerHash ||
-                  user.bannerHash}`}
+                src={`${picassoGateway}${bannerHash || user.bannerHash}`}
                 className={styles.bannerImg}
               />
             ) : (
@@ -757,7 +757,7 @@ const AccountDetails = () => {
                 <Skeleton width={160} height={160} className={styles.avatar} />
               ) : user.imageHash ? (
                 <img
-                  src={`https://artion.mypinata.cloud/ipfs/${user.imageHash}`}
+                  src={`${picassoGateway}${user.imageHash}`}
                   className={styles.avatar}
                 />
               ) : (
@@ -1034,7 +1034,7 @@ const AccountDetails = () => {
                                 <div className={styles.ownerAvatarWrapper}>
                                   {activity.image ? (
                                     <img
-                                      src={`https://artion.mypinata.cloud/ipfs/${activity.image}`}
+                                      src={`${picassoGateway}${activity.image}`}
                                       className={styles.ownerAvatar}
                                     />
                                   ) : (
@@ -1105,7 +1105,7 @@ const AccountDetails = () => {
                           <div className={styles.ownerAvatarWrapper}>
                             {offer.image ? (
                               <img
-                                src={`https://artion.mypinata.cloud/ipfs/${offer.image}`}
+                                src={`${picassoGateway}${offer.image}`}
                                 className={styles.ownerAvatar}
                               />
                             ) : (
@@ -1169,7 +1169,7 @@ const AccountDetails = () => {
                             <Skeleton width={40} height={40} />
                           ) : user.imageHash ? (
                             <img
-                              src={`https://artion.mypinata.cloud/ipfs/${user.imageHash}`}
+                              src={`${picassoGateway}${user.imageHash}`}
                               width={80}
                               height={80}
                             />
@@ -1232,7 +1232,7 @@ const AccountDetails = () => {
                             <Skeleton width={40} height={40} />
                           ) : user.imageHash ? (
                             <img
-                              src={`https://artion.mypinata.cloud/ipfs/${user.imageHash}`}
+                              src={`${picassoGateway}${user.imageHash}`}
                               width={80}
                               height={80}
                             />

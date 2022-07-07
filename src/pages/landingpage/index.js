@@ -109,13 +109,20 @@ const LandingPage = () => {
       });
       pickToken.push({ ...tokens.data[j], owner });
     }
+    pickToken.sort((a, b) => {
+      return b.liked - a.liked;
+    });
     setTokenWithOwner(pickToken);
     setPopCollection(forCollection);
   };
 
+  // useEffect(() => {
+  //   console.log('pop coll', popCollection);
+  // }, [popCollection]);
+
   useEffect(() => {
     dispatch(HeaderActions.toggleSearchbar(true));
-    dispatch(FilterActions.updateCategoryFilter(null));
+    // dispatch(FilterActions.updateCategoryFilter(null));
     fetchInfo();
   }, []);
 
@@ -171,12 +178,16 @@ const LandingPage = () => {
       <Header />
       <section
         className={styles.bannerSection}
-        style={{ backgroundImage: "url('/assets/images/banner/01.gif')" }}
+        // style={{ backgroundImage: "url('/assets/images/banner/01.gif')" }}
       >
+        <img
+          src="/assets/images/banner/01.gif"
+          className={styles.backgroundImg}
+        />
         <div className={styles.body}>
           <div className={styles.main}>
             <div className={styles.mainLeft}>
-              <div className={styles.title}>
+              {/* <div className={styles.title}>
                 <span style={{ color: 'mediumblue' }}>Discover</span> Collect
                 <br />
                 And Sell <span style={{ color: 'mediumblue' }}>NFT</span> Assets
@@ -184,7 +195,7 @@ const LandingPage = () => {
               <div className={styles.subtitle}>
                 Digital Marketplace For Crypto Collectibles And Non-Fungible
                 Tokens. Buy, Sell, And Discover Exclusive Digital Assets.
-              </div>
+              </div> */}
 
               <div style={{ display: 'flex' }}>
                 <Link to="/explore" className={styles.exploreButton}>

@@ -105,6 +105,23 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
     }
   };
 
+  const getDefaultTime = async () => {
+    await window.ethereum.enable();
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    let curBlockNum = await provider.getBlockNumber();
+    let block = await provider.getBlock(curBlockNum);
+    let curTime = block.timestamp;
+    console.log('curTime', curTime);
+    setNow(new Date(curTime * 1000));
+
+    // provider.on('block', blockNum => {
+    //   provider.getBlock(blockNum).then(res => {
+    //     setNow(new Date(res.timestamp * 1000));
+    //   });
+    // });
+  };
+
   useEffect(() => {
     async function fetchMyAPI() {
       if (item && !item.name) {
@@ -134,10 +151,20 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
   }, [item?.isLiked]);
 
   useEffect(() => {
-    setInterval(() => {
-      setNow(new Date());
-    }, 1000);
+    // setInterval(() => {
+    //   setNow(new Date());
+    // }, 1000);
+    getDefaultTime();
   }, []);
+
+  useEffect(() => {
+    console.log(now);
+    const timerObj = setTimeout(() => {
+      setNow(new Date(now.getTime() + 1000));
+    }, 1000);
+
+    return () => clearTimeout(timerObj);
+  }, [now]);
 
   const auctionStarted = now.getTime() / 1000 >= auction?.startTime;
 
@@ -248,11 +275,14 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
           {auctionActive && (
             // formatDuration(auction.endTime)
             <>
-              <Clock endTime={auction.endTime} type={1} />
+              <Clock
+                leftTime={auction.endTime - now.getTime() / 1000}
+                type={1}
+              />
             </>
           )}
         </div>
-        {item?.items ? (
+        {item.items ? (
           <>
             <Carousel
               className={styles.carousel}
@@ -301,7 +331,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
                   <SuspenseImg
                     src={
                       item?.thumbnailPath?.length > 10
-                        ? `${storageUrl}/image/${item?.thumbnailPath}`
+                        ? `${storageUrl}/image/${item.thumbnailPath}`
                         : item?.imageURL || info?.image
                     }
                     className={styles.media}
@@ -371,7 +401,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
                 <span>Owned By</span>
                 <h6>
                   {item.alias
-                    ? item.alias
+                    ? shortenName(item.alias)
                     : isAddress(item.owner)
                     ? shortenAddress(item.owner)
                     : item.owner}

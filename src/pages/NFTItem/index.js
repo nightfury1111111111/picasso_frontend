@@ -25,6 +25,7 @@ import {
   CartesianGrid,
   Line,
 } from 'recharts';
+import { picassoGateway } from 'constants/ipfs.constants';
 import { ChainId } from 'constants/chainid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
@@ -66,6 +67,7 @@ import {
   formatNumber,
   formatError,
   getRandomIPFS,
+  shortenName,
 } from 'utils';
 import { Contracts } from 'constants/networks';
 import showToast from 'utils/toast';
@@ -320,11 +322,17 @@ const NFTItem = () => {
     await window.ethereum.enable();
     const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-    provider.on('block', blockNum => {
-      provider.getBlock(blockNum).then(res => {
-        setNow(new Date(res.timestamp * 1000));
-      });
-    });
+    let curBlockNum = await provider.getBlockNumber();
+    let block = await provider.getBlock(curBlockNum);
+    let curTime = block.timestamp;
+    console.log('curTime', curTime);
+    setNow(new Date(curTime * 1000));
+
+    // provider.on('block', blockNum => {
+    //   provider.getBlock(blockNum).then(res => {
+    //     setNow(new Date(res.timestamp * 1000));
+    //   });
+    // });
   };
 
   useEffect(() => {
@@ -691,7 +699,7 @@ const NFTItem = () => {
       );
 
       setListingConfirming(false);
-      showToast('success', 'Item listed successfully!');
+      showToast('success', 'Item listed!');
     }
   };
 
@@ -708,7 +716,7 @@ const NFTItem = () => {
       });
 
       setListingConfirming(false);
-      showToast('success', 'Price updated successfully!');
+      showToast('success', 'Price updated!');
     }
   };
 
@@ -718,7 +726,7 @@ const NFTItem = () => {
         listing => listing.owner.toLowerCase() !== owner.toLowerCase()
       );
       setCancelListingConfirming(false);
-      showToast('success', 'Item unlisted successfully!');
+      showToast('success', 'Item unlisted!');
     }
   };
 
@@ -766,7 +774,7 @@ const NFTItem = () => {
           }
           newHolders.push(buyerInfo);
         }
-        if (newHolders[sellerIndex].supply === 0) {
+        if (newHolders[sellerIndex]?.supply === 0) {
           newHolders.splice(sellerIndex, 1);
         }
         setHolders(newHolders);
@@ -802,7 +810,10 @@ const NFTItem = () => {
       }
       tradeHistory.current = [newTradeHistory, ...tradeHistory.current];
 
-      showToast('success', 'You have bought the item!');
+      console.log(buyer, seller, account);
+      if (buyer == account) showToast('success', 'You have bought the item!');
+      if (seller == account) showToast('success', 'User have bought the item!');
+
       setBuyingItem(false);
     }
   };
@@ -836,19 +847,23 @@ const NFTItem = () => {
       }
       offers.current.push(newOffer);
       setOfferConfirming(false);
-      showToast('success', 'Offer placed successfully!');
+      showToast('success', 'Offer placed!');
     }
   };
 
   const offerCanceledHandler = (creator, nft, id) => {
     if (eventMatches(nft, id)) {
+      if (creator?.toLowerCase() == account?.toLowerCase()) {
+        showToast('success', 'You have withdrawn your offer!');
+      } else {
+        showToast('success', 'User have withdrawn offer!');
+      }
       const newOffers = offers.current.filter(
         offer => offer.creator?.toLowerCase() !== creator?.toLowerCase()
       );
       offers.current = newOffers;
       setOfferCanceling(false);
       setOfferConfirming(false);
-      showToast('success', 'You have withdrawn your offer!');
     }
   };
 
@@ -1016,7 +1031,7 @@ const NFTItem = () => {
       const endTime = parseFloat(_endTime.toString());
       if (auction.current) {
         setAuctionUpdateConfirming(false);
-        showToast('success', 'Auction end time updated successfully!');
+        showToast('success', 'Auction end time updated!');
         const newAuction = { ...auction.current, endTime };
         auction.current = newAuction;
       }
@@ -1028,7 +1043,7 @@ const NFTItem = () => {
       const startTime = parseFloat(_startTime.toString());
       if (auction.current) {
         setAuctionUpdateConfirming(false);
-        showToast('success', 'Auction start time updated successfully!');
+        showToast('success', 'Auction start time updated!');
         const newAuction = { ...auction.current, startTime };
         auction.current = newAuction;
       }
@@ -1043,7 +1058,7 @@ const NFTItem = () => {
     if (eventMatches(nft, id)) {
       if (auction.current) {
         setAuctionUpdateConfirming(false);
-        showToast('success', 'Auction reserve price updated successfully!');
+        showToast('success', 'Auction reserve price updated!');
         const price = ethers.utils.formatUnits(
           _price,
           auction.current.token.decimals
@@ -1201,9 +1216,9 @@ const NFTItem = () => {
       addBundleEventListeners();
     }
 
-    setInterval(() => {
-      setNow(new Date());
-    }, 1000);
+    // setInterval(() => {
+    //   setNow(new Date());
+    // }, 1000);
 
     return () => {
       if (address && tokenID) {
@@ -1215,6 +1230,15 @@ const NFTItem = () => {
       }
     };
   }, [chainId, holders]);
+
+  useEffect(() => {
+    console.log(now);
+    const timerObj = setTimeout(() => {
+      setNow(new Date(now.getTime() + 1000));
+    }, 1000);
+
+    return () => clearTimeout(timerObj);
+  }, [now]);
 
   useEffect(() => {
     setLiked(null);
@@ -1588,7 +1612,7 @@ const NFTItem = () => {
         const contract = await getERC721Contract(address);
         const tx = await contract.safeTransferFrom(account, to, tokenID);
         await tx.wait();
-        showToast('success', 'Item transferred successfully!');
+        showToast('success', 'Item transferred!');
         setOwner(to);
         setTransferModalVisible(false);
         getItemDetails();
@@ -1602,7 +1626,7 @@ const NFTItem = () => {
           '0x'
         );
         await tx.wait();
-        showToast('success', 'Item transferred successfully!');
+        showToast('success', 'Item transferred!');
 
         const newHolders = [...holders];
         let sender = -1,
@@ -1679,7 +1703,7 @@ const NFTItem = () => {
         );
         await tx.wait();
 
-        showToast('success', 'Bundle listed successfully!');
+        showToast('success', 'Bundle listed!');
       } else {
         const tx = await listItem(
           address,
@@ -1793,7 +1817,7 @@ const NFTItem = () => {
       if (bundleID) {
         await cancelBundleListing(bundleID);
         bundleListing.current = null;
-        showToast('success', 'Bundle unlisted successfully!');
+        showToast('success', 'Bundle unlisted!');
       } else {
         await cancelListing(address, tokenID);
       }
@@ -2057,7 +2081,7 @@ const NFTItem = () => {
         await tx.wait();
       }
 
-      offerCanceledHandler(account, address, ethers.BigNumber.from(tokenID));
+      // offerCanceledHandler(account, address, ethers.BigNumber.from(tokenID));
     } catch (error) {
       setOfferConfirming(false);
       showToast('error', formatError(error));
@@ -2230,7 +2254,7 @@ const NFTItem = () => {
       );
       await tx.wait();
 
-      showToast('success', 'Bid placed successfully!');
+      showToast('success', 'Bid placed!');
 
       setBidPlacing(false);
       setBidModalVisible(false);
@@ -2252,6 +2276,10 @@ const NFTItem = () => {
       showToast('error', formatError(error));
       setBidWithdrawing(false);
     }
+  };
+
+  const handleSelectCollection = addr => {
+    dispatch(FilterActions.updateCollectionsFilter([addr]));
   };
 
   const hasMyOffer = (() =>
@@ -2288,7 +2316,8 @@ const NFTItem = () => {
       const h = Math.ceil(diff / ONE_MIN);
       return `${h} Min${h > 1 ? 's' : ''}`;
     }
-    return `${diff} Second${diff > 1 ? 's' : ''}`;
+    // return `${diff} Second${diff > 1 ? 's' : ''}`;
+    return `0 minutes`;
   };
 
   const formatExpiration = deadline => {
@@ -2337,7 +2366,8 @@ const NFTItem = () => {
       idx++;
     }
     if (idx < listings.current.length) return listings.current[idx];
-    return null;
+    // return null;
+    return listings.current[listings.current.length - 1];
   })();
 
   const maxSupply = useCallback(() => {
@@ -2520,6 +2550,20 @@ const NFTItem = () => {
           <img src={shareIcon} className={styles.itemMenuIcon} />
         </div>
       </div> */}
+      <Link
+        to={`/explore`}
+        className={styles.bundleItem}
+        onClick={() => {
+          handleSelectCollection(collection?.erc721Address);
+        }}
+      >
+        <span>Collection : </span>
+        <div className={styles.bundleItemInfo}>
+          <div className={styles.bundleItemCategory}>
+            {collection?.collectionName || collection?.name}
+          </div>
+        </div>
+      </Link>
       <div className={styles.itemName}>
         {(bundleID ? bundleInfo?.name : info?.name) || ''}
       </div>
@@ -2567,7 +2611,7 @@ const NFTItem = () => {
         {info?.ownerInfo && info.ownerInfo[0] ? (
           <div className={styles.userContainer}>
             <img
-              src={`https://artion.mypinata.cloud/ipfs/${info?.ownerInfo[1]}`}
+              src={`${picassoGateway}${info?.ownerInfo[1]}`}
               className={styles.userImage}
             />
             <div style={{ marginLeft: '15px' }}>
@@ -2595,7 +2639,7 @@ const NFTItem = () => {
         {info?.creatorInfo && info?.creatorInfo[0] ? (
           <div className={styles.userContainer}>
             <img
-              src={`https://artion.mypinata.cloud/ipfs/${info?.creatorInfo[1]}`}
+              src={`${picassoGateway}${info?.creatorInfo[1]}`}
               className={styles.userImage}
             />
             <div style={{ marginLeft: '15px' }}>
@@ -2631,7 +2675,6 @@ const NFTItem = () => {
           </div>
         )}
       </div>
-
       {info?.description && (
         <div className={styles.itemDescription}>{info.description}</div>
       )}
@@ -2646,7 +2689,7 @@ const NFTItem = () => {
                 <div className={styles.ownerAvatar}>
                   {ownerInfo?.imageHash ? (
                     <img
-                      src={`https://artion.mypinata.cloud/ipfs/${ownerInfo.imageHash}`}
+                      src={`${picassoGateway}${ownerInfo.imageHash}`}
                       className={styles.avatar}
                     />
                   ) : (
@@ -2720,7 +2763,6 @@ const NFTItem = () => {
           </div>
         </div>
       </div> */}
-
       {bestListing && (
         <div className={styles.bestBuy}>
           <div className={styles.statusInfo}>
@@ -2734,7 +2776,8 @@ const NFTItem = () => {
               </div>
               <div style={{ marginLeft: '4px', fontSize: '18px' }}>
                 {bestListing?.paymentToken?.toLowerCase() ==
-                  '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' && 'FTM'}
+                  '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
+                  'FTM'}
               </div>
               {/* <div className={styles.currentPriceUSD}>
               (
@@ -2838,7 +2881,7 @@ const NFTItem = () => {
             <div className={styles.ownerAvatar}>
               {creatorInfo?.imageHash ? (
                 <img
-                  src={`https://artion.mypinata.cloud/ipfs/${creatorInfo.imageHash}`}
+                  src={`${picassoGateway}${creatorInfo.imageHash}`}
                   className={styles.avatar}
                 />
               ) : (
@@ -3101,7 +3144,7 @@ const NFTItem = () => {
               {auction && auction?.current && auction?.current?.endTime && (
                 <div className={styles.auctionStatus}>
                   {bid ? (
-                    <div className={cx(styles.bidtitle, styles.clockWrapper)}>
+                    <div className={styles.clockWrapper}>
                       Current Bid :&nbsp;
                       <div style={{ display: 'flex', flexDirecton: 'row' }}>
                         {/* <img
@@ -3111,7 +3154,7 @@ const NFTItem = () => {
                         {formatNumber(bid.bid)}
                         <div style={{ marginLeft: '6px' }}>
                           {auction.current?.payToken?.toLowerCase() ==
-                            '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
+                            '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
                             'FTM'}
                         </div>
                         {/* {bid.bid < auction.current.reservePrice
@@ -3120,9 +3163,7 @@ const NFTItem = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className={cx(styles.bidtitle, styles.clockWrapper)}>
-                      No bids yet
-                    </div>
+                    <div className={styles.clockWrapper}>No bids yet</div>
                   )}
                   <div
                     className={styles.clockWrapper}
@@ -3138,7 +3179,10 @@ const NFTItem = () => {
                     }
                   >
                     <div>Count down</div>
-                    <Clock endTime={auction.current.endTime} type={2} />
+                    <Clock
+                      leftTime={auction.current.endTime - now.getTime() / 1000}
+                      type={2}
+                    />
                   </div>
                 </div>
               )}
@@ -3189,7 +3233,7 @@ const NFTItem = () => {
                                 {formatNumber(winningBid)}
                                 <div style={{ marginLeft: '6px' }}>
                                   {auction.current?.payToken?.toLowerCase() ==
-                                    '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
+                                    '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
                                     'FTM'}
                                 </div>
                               </div>
@@ -3213,7 +3257,7 @@ const NFTItem = () => {
                             {formatNumber(auction.current.reservePrice)}
                             <div style={{ marginLeft: '6px' }}>
                               {auction.current?.payToken?.toLowerCase() ==
-                                '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
+                                '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
                                 'FTM'}
                             </div>
                           </div>
@@ -3272,7 +3316,7 @@ const NFTItem = () => {
                                 Place Bid
                               </div>
                             ))}
-                      {isMine && auctionEnded && !auction.current.resulted && (
+                      {/* {isMine && auctionEnded && !auction.current.resulted && (
                         <div
                           className={cx(
                             styles.placeBid,
@@ -3299,7 +3343,7 @@ const NFTItem = () => {
                             'Accept highest bid'
                           )}
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </Panel>
                 </div>
@@ -3365,7 +3409,7 @@ const NFTItem = () => {
                                   <div className={styles.userAvatarWrapper}>
                                     {ownerInfo?.imageHash ? (
                                       <img
-                                        src={`https://artion.mypinata.cloud/ipfs/${ownerInfo.imageHash}`}
+                                        src={`${picassoGateway}${ownerInfo.imageHash}`}
                                         className={styles.userAvatar}
                                       />
                                     ) : (
@@ -3421,7 +3465,7 @@ const NFTItem = () => {
                                 <div className={styles.userAvatarWrapper}>
                                   {listing.image ? (
                                     <img
-                                      src={`https://artion.mypinata.cloud/ipfs/${listing.image}`}
+                                      src={`${picassoGateway}${listing.image}`}
                                       className={styles.userAvatar}
                                     />
                                   ) : (
@@ -3505,7 +3549,7 @@ const NFTItem = () => {
                                   <div className={styles.userAvatarWrapper}>
                                     {offer.image ? (
                                       <img
-                                        src={`https://artion.mypinata.cloud/ipfs/${offer.image}`}
+                                        src={`${picassoGateway}${offer.image}`}
                                         className={styles.userAvatar}
                                       />
                                     ) : (
@@ -3516,7 +3560,7 @@ const NFTItem = () => {
                                       />
                                     )}
                                   </div>
-                                  {offer.alias || offer.creator?.substr(0, 6)}
+                                  {shortenName(offer.alias) || offer.creator}
                                 </Link>
                               </div>
                               <div className={styles.price}>
@@ -3529,7 +3573,7 @@ const NFTItem = () => {
                                 )}
                                 <div style={{ marginLeft: '6px' }}>
                                   {offer?.paymentToken?.toLowerCase() ==
-                                    '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
+                                    '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
                                     'FTM'}
                                 </div>
                                 {/* &nbsp;(
@@ -3831,7 +3875,7 @@ const NFTItem = () => {
                             <div className={styles.ownerAvatar}>
                               {ownerInfo?.imageHash ? (
                                 <img
-                                  src={`https://artion.mypinata.cloud/ipfs/${ownerInfo.imageHash}`}
+                                  src={`${picassoGateway}${ownerInfo.imageHash}`}
                                   className={styles.avatar}
                                 />
                               ) : (
@@ -4021,7 +4065,7 @@ const NFTItem = () => {
                                   <div className={styles.userAvatarWrapper}>
                                     {history.fromImage ? (
                                       <img
-                                        src={`https://artion.mypinata.cloud/ipfs/${history.fromImage}`}
+                                        src={`${picassoGateway}${history.fromImage}`}
                                         className={styles.userAvatar}
                                       />
                                     ) : (
@@ -4035,7 +4079,7 @@ const NFTItem = () => {
                                   <div>
                                     <Link to={`/account/${history.from}`}>
                                       <div>
-                                        {history.fromAlias ||
+                                        {shortenName(history.fromAlias) ||
                                           history.from?.substr(0, 6)}{' '}
                                         (Place a bid)
                                       </div>
@@ -4059,7 +4103,7 @@ const NFTItem = () => {
                                   <div className={styles.userAvatarWrapper}>
                                     {history.toImage ? (
                                       <img
-                                        src={`https://artion.mypinata.cloud/ipfs/${history.toImage}`}
+                                        src={`${picassoGateway}${history.toImage}`}
                                         className={styles.userAvatar}
                                       />
                                     ) : (
@@ -4087,7 +4131,7 @@ const NFTItem = () => {
                                     /> */}
                                     <div style={{ marginLeft: '6px' }}>
                                       {history?.paymentToken?.toLowerCase() ==
-                                        '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15' &&
+                                        '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
                                         'FTM'}
                                     </div>
                                     {formatNumber(history.price)}

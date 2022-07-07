@@ -148,6 +148,8 @@ const ExploreAllPage = () => {
 
       dispatch(TokensActions.startFetching(dir));
 
+      // alert(category);
+
       const { data } = await fetchTokens(
         start,
         _count,

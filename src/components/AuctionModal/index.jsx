@@ -40,9 +40,7 @@ const AuctionModal = ({
   const [now, setNow] = useState(new Date());
   const [reservePrice, setReservePrice] = useState('');
   const [startTime, setStartTime] = useState(new Date(0));
-  const [endTime, setEndTime] = useState(
-    new Date(new Date().getTime() + 24 * 60 * 60 * 1000 + 3 * 60 * 1000)
-  );
+  const [endTime, setEndTime] = useState(new Date(new Date(0)));
   const [focused, setFocused] = useState(false);
   const [minBidReserve, setMinBidReserve] = useState(false);
   const [options, setOptions] = useState([]);

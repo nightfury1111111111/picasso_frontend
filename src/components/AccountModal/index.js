@@ -10,6 +10,7 @@ import { ethers } from 'ethers';
 import ModalActions from 'actions/modal.actions';
 import AuthActions from 'actions/auth.actions';
 import { useApi } from 'api';
+import { picassoGateway } from 'constants/ipfs.constants';
 import toast from 'utils/toast';
 import { getSigner } from 'contracts';
 
@@ -38,7 +39,7 @@ const AccountModal = () => {
   useEffect(() => {
     if (accountModalVisible) {
       if (user.imageHash) {
-        setAvatar(`https://artion.mypinata.cloud/ipfs/${user.imageHash}`);
+        setAvatar(`${picassoGateway}${user.imageHash}`);
       } else {
         setAvatar(null);
       }

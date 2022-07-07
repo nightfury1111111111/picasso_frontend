@@ -25,10 +25,10 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   background-color: transparent;
   z-index: 10001;
-  // position: absolute;
   background-color: white;
   // margin-bottom: 3px;
   width: 100%;
+  position: fixed;
 }
 
 .header_second {
@@ -127,6 +127,7 @@
 
 .resultcont {
   padding: 0 14px;
+  z-index: 999999;
 }
 
 .resultsection {
