@@ -65,6 +65,44 @@ export const Categories = [
   },
 ];
 
+export const RealCategories = [
+  {
+    id: 0,
+    icon: iconArt,
+    label: 'Art',
+  },
+  {
+    id: 1,
+    icon: iconCollectibles,
+    label: 'Collectibles',
+  },
+  {
+    id: 2,
+    icon: iconSports,
+    label: 'Sports',
+  },
+  {
+    id: 3,
+    icon: iconUtility,
+    label: 'Utility',
+  },
+  {
+    id: 4,
+    icon: iconTrading,
+    label: 'Trading Cards',
+  },
+  {
+    id: 5,
+    icon: iconVirtual,
+    label: 'Virtual Worlds',
+  },
+  {
+    id: 6,
+    icon: iconDomain,
+    label: 'Domain Names',
+  },
+];
+
 export const SortByOptions = [
   {
     id: 'createdAt',

@@ -1,4 +1,5 @@
 .footerBottom {
+  width: 96%;
   height: 100px;
   display: flex;
   justify-content: center;
@@ -20,6 +21,13 @@
   background: #ededed;
 }
 
+.footerCont {
+  text-align: center;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
 .firstFooter {
   height: 110px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
@@ -38,7 +46,7 @@
   height: 42px;
   display: flex;
   width: 42px;
-  background-color: mediumblue;
+  background-color: darkblue;
   justify-content: center;
   align-items: center;
   margin-right: 20px;
@@ -70,7 +78,7 @@
   top: 0;
   width: 160px;
   height: 100%;
-  background-color: mediumblue;
+  background-color: darkblue;
   cursor: pointer;
   display: flex;
   align-items: center;

@@ -112,7 +112,6 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
     let curBlockNum = await provider.getBlockNumber();
     let block = await provider.getBlock(curBlockNum);
     let curTime = block.timestamp;
-    console.log('curTime', curTime);
     setNow(new Date(curTime * 1000));
 
     // provider.on('block', blockNum => {
@@ -158,7 +157,6 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
   }, []);
 
   useEffect(() => {
-    console.log(now);
     const timerObj = setTimeout(() => {
       setNow(new Date(now.getTime() + 1000));
     }, 1000);

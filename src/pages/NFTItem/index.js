@@ -325,7 +325,6 @@ const NFTItem = () => {
     let curBlockNum = await provider.getBlockNumber();
     let block = await provider.getBlock(curBlockNum);
     let curTime = block.timestamp;
-    console.log('curTime', curTime);
     setNow(new Date(curTime * 1000));
 
     // provider.on('block', blockNum => {
@@ -810,7 +809,6 @@ const NFTItem = () => {
       }
       tradeHistory.current = [newTradeHistory, ...tradeHistory.current];
 
-      console.log(buyer, seller, account);
       if (buyer == account) showToast('success', 'You have bought the item!');
       if (seller == account) showToast('success', 'User have bought the item!');
 
@@ -1232,7 +1230,6 @@ const NFTItem = () => {
   }, [chainId, holders]);
 
   useEffect(() => {
-    console.log(now);
     const timerObj = setTimeout(() => {
       setNow(new Date(now.getTime() + 1000));
     }, 1000);

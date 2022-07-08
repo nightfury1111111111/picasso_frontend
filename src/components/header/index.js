@@ -132,9 +132,9 @@ const Header = () => {
     setBundles([]);
   };
 
-  useEffect(() => {
-    console.log(tokens);
-  }, [tokens]);
+  // useEffect(() => {
+  //   console.log(tokens);
+  // }, [tokens]);
 
   useEffect(() => {
     resetResults();
@@ -155,7 +155,6 @@ const Header = () => {
 
     try {
       // const cancelTokenSource = axios.CancelToken.source();
-      // console.log('keyword', cancelTokenSource);
       // setCancelSource(cancelTokenSource);
 
       const {
@@ -190,7 +189,6 @@ const Header = () => {
         })
       );
 
-      console.log('keyword', word, data);
       setAccounts(data.accounts || []);
       setCollections(data.collections || []);
       setTokenDetailsLoading(true);
@@ -198,8 +196,7 @@ const Header = () => {
       setBundles(data.bundles || []);
       setTokenDetailsLoading(false);
     } catch (err) {
-      alert(0);
-      console.log('keyword', err);
+      console.log(err);
     } finally {
       setCancelSource(null);
     }
@@ -213,7 +210,6 @@ const Header = () => {
     if (timer.current) {
       clearTimeout(timer.current);
     }
-    console.log('Search: ', word, timer.current);
 
     timer.current = setTimeout(() => search(word), 500);
   };
@@ -717,7 +713,7 @@ const Header = () => {
               className="icofont-wallet"
               style={{
                 fontSize: '32px',
-                color: 'mediumblue',
+                color: 'darkblue',
                 marginRight: '10px',
               }}
             />

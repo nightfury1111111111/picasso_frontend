@@ -19,7 +19,8 @@ import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import showToast from 'utils/toast';
 
-import { Categories } from 'constants/filter.constants';
+import { ADMIN_ADDRESS } from 'constants/index';
+import { RealCategories } from 'constants/filter.constants';
 import HeaderActions from 'actions/header.actions';
 import Header from 'components/header';
 import BootstrapTooltip from 'components/BootstrapTooltip';
@@ -104,6 +105,7 @@ const CollectionCreate = ({ isRegister }) => {
   const [mediumHandle, setMediumHandle] = useState('');
   const [telegram, setTelegram] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
+  const [isOwner, setIsOwner] = useState(true);
   // const [isSingle, setIsSingle] = useState(true);
   const isSingle = true;
 
@@ -135,8 +137,15 @@ const CollectionCreate = ({ isRegister }) => {
     setTelegram('');
   }, [isRegister]);
 
-  const options = Categories.filter(cat => selected.indexOf(cat.id) === -1);
-  const selectedCategories = Categories.filter(
+  useEffect(() => {
+    if (!authToken) {
+      showToast('info', 'Connect your wallet first');
+      history.push(`/index`);
+    }
+  }, [authToken]);
+
+  const options = RealCategories.filter(cat => selected.indexOf(cat.id) === -1);
+  const selectedCategories = RealCategories.filter(
     cat => selected.indexOf(cat.id) > -1
   );
 
@@ -248,6 +257,12 @@ const CollectionCreate = ({ isRegister }) => {
     return true;
   })();
 
+  const isValid2 = (() => {
+    if (nameError) return false;
+    if (addressError) return false;
+    return true;
+  })();
+
   const clipImage = (image, clipX, clipY, clipWidth, clipHeight, cb) => {
     const CANVAS_SIZE = 128;
     const canvas = document.createElement('canvas');
@@ -286,6 +301,77 @@ const CollectionCreate = ({ isRegister }) => {
       showToast('warning', 'You have to input a correct URL');
       return false;
     } else return true;
+  };
+
+  const handleNonOwnerRegister = async () => {
+    if (creating) return;
+
+    setCreating(true);
+
+    try {
+      const { data: nonce } = await getNonce(account, authToken);
+
+      let signature;
+      let signatureAddress;
+
+      try {
+        const signer = await getSigner();
+        const msg = `Approve Signature on Picasso with nonce ${nonce}`;
+
+        signature = await signer.signMessage(msg);
+        signatureAddress = ethers.utils.verifyMessage(msg, signature);
+      } catch (err) {
+        toast(
+          'error',
+          'You need to sign the message to be able to register a collection.'
+        );
+        setCreating(false);
+        return;
+      }
+
+      const data = {
+        email: '',
+        erc721Address: address,
+        collectionName: name,
+        description: 'This collection is not registered by owner',
+        categories: '3',
+        logoImageHash: 'QmbfueDGhnTP9PW2Asirx5xe711D2rZd4b5AT3sdSzfmeU',
+        siteUrl,
+        discord,
+        twitterHandle,
+        instagramHandle,
+        mediumHandle,
+        telegram,
+        signature,
+        signatureAddress,
+        royalty: 0,
+        feeRecipient: ADMIN_ADDRESS,
+        isOwner,
+      };
+
+      await axios({
+        method: 'post',
+        url: `${apiUrl}/collection/collectiondetails`,
+        data: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      toast(
+        'success',
+        'Application submitted!',
+        'Your collection registration application is successfully submitted. You can see them within 5 minutes'
+      );
+
+      setCreating(false);
+
+      history.push('/explore');
+    } catch (e) {
+      showToast('error', createAndRegisterError(e));
+      setCreating(false);
+    }
   };
 
   const handleRegister = async () => {
@@ -363,6 +449,7 @@ const CollectionCreate = ({ isRegister }) => {
             signatureAddress,
             royalty,
             feeRecipient,
+            isOwner,
           };
 
           await axios({
@@ -375,11 +462,7 @@ const CollectionCreate = ({ isRegister }) => {
             },
           });
 
-          toast(
-            'success',
-            'Application submitted!',
-            'Your collection registration application is successfully submitted for review.\nOnce approved, you will get an email notification.'
-          );
+          toast('success', 'Application submitted!');
 
           setCreating(false);
 
@@ -567,46 +650,77 @@ const CollectionCreate = ({ isRegister }) => {
 
           <div className={styles.collectionContent}>
             <div className={styles.inputGroup}>
-              <div className={styles.inputTitle}>Image *</div>
-              <div className={styles.inputSubTitle}></div>
-              <div className={styles.inputWrapper}>
-                <div className={styles.logoUploadBox}>
-                  {logo ? (
-                    <>
-                      <img src={logo} />
-                      <div className={styles.removeOverlay}>
-                        <div
-                          className={styles.removeIcon}
-                          onClick={removeImage}
-                        >
-                          <img src={closeIcon} />
-                        </div>
-                      </div>
-                    </>
-                  ) : (
+              <div
+                className={cx(
+                  styles.inputTitle,
+                  !isOwner && styles.ownerHeader
+                )}
+              >
+                {isOwner && <div>Image *</div>}
+                {isRegister && (
+                  <div className={styles.ownerCheckWrapper}>
                     <div
-                      className={styles.uploadOverlay}
-                      onClick={() => inputRef.current?.click()}
+                      className={cx(
+                        styles.checkOwner,
+                        isOwner && styles.checkOwnerActive
+                      )}
+                      onClick={() => setIsOwner(true)}
                     >
-                      <input
-                        ref={inputRef}
-                        type="file"
-                        accept="image/*"
-                        hidden
-                        onChange={handleFileSelect}
-                      />
-                      <div className={styles.upload}>
-                        <div className={styles.uploadInner}>
-                          <img src={uploadIcon} />
+                      Owner
+                    </div>
+                    <div
+                      className={cx(
+                        styles.checkOwner,
+                        !isOwner && styles.checkOwnerActive
+                      )}
+                      onClick={() => setIsOwner(false)}
+                    >
+                      Not Owner
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className={styles.inputSubTitle}></div>
+              {isOwner && (
+                <div className={styles.inputWrapper}>
+                  <div className={styles.logoUploadBox}>
+                    {logo ? (
+                      <>
+                        <img src={logo} />
+                        <div className={styles.removeOverlay}>
+                          <div
+                            className={styles.removeIcon}
+                            onClick={removeImage}
+                          >
+                            <img src={closeIcon} />
+                          </div>
                         </div>
-                        <div className={styles.plusIcon}>
-                          <img src={plusIcon} />
+                      </>
+                    ) : (
+                      <div
+                        className={styles.uploadOverlay}
+                        onClick={() => inputRef.current?.click()}
+                      >
+                        <input
+                          ref={inputRef}
+                          type="file"
+                          accept="image/*"
+                          hidden
+                          onChange={handleFileSelect}
+                        />
+                        <div className={styles.upload}>
+                          <div className={styles.uploadInner}>
+                            <img src={uploadIcon} />
+                          </div>
+                          <div className={styles.plusIcon}>
+                            <img src={plusIcon} />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className={styles.collectionInfo}>
               <div className={styles.collectionInfoFirst}>
@@ -663,31 +777,33 @@ const CollectionCreate = ({ isRegister }) => {
                   </div>
                 )}
 
-                <div className={styles.inputGroup}>
-                  <div className={styles.inputTitle}>Description *</div>
-                  <div className={styles.inputWrapper}>
-                    <textarea
-                      className={cx(
-                        styles.input,
-                        styles.longInput,
-                        descriptionError && styles.hasError
+                {isOwner && (
+                  <div className={styles.inputGroup}>
+                    <div className={styles.inputTitle}>Description *</div>
+                    <div className={styles.inputWrapper}>
+                      <textarea
+                        className={cx(
+                          styles.input,
+                          styles.longInput,
+                          descriptionError && styles.hasError
+                        )}
+                        maxLength={200}
+                        placeholder="Provide your description for your collection"
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                        onBlur={validateDescription}
+                      />
+                      <div className={styles.lengthIndicator}>
+                        {description.length}/200
+                      </div>
+                      {descriptionError && (
+                        <div className={styles.error}>{descriptionError}</div>
                       )}
-                      maxLength={200}
-                      placeholder="Provide your description for your collection"
-                      value={description}
-                      onChange={e => setDescription(e.target.value)}
-                      onBlur={validateDescription}
-                    />
-                    <div className={styles.lengthIndicator}>
-                      {description.length}/200
                     </div>
-                    {descriptionError && (
-                      <div className={styles.error}>{descriptionError}</div>
-                    )}
                   </div>
-                </div>
+                )}
 
-                {isRegister && (
+                {isRegister && isOwner && (
                   <div className={styles.inputGroup}>
                     <div className={styles.inputTitle}>
                       Royalty *&nbsp;
@@ -713,7 +829,7 @@ const CollectionCreate = ({ isRegister }) => {
                     </div>
                   </div>
                 )}
-                {isRegister && (
+                {isRegister && isOwner && (
                   <div className={styles.inputGroup}>
                     <div className={styles.inputTitle}>
                       Fee Recipient *&nbsp;
@@ -771,8 +887,9 @@ const CollectionCreate = ({ isRegister }) => {
           </div>
         )} */}
 
-                <div className={styles.inputGroup}>
-                  {/*   <div className={styles.inputTitle}>Category</div>
+                {isOwner && (
+                  <div className={styles.inputGroup}>
+                    {/*   <div className={styles.inputTitle}>Category</div>
                   <div className={styles.inputSubTitle}>
                     Adding a category will help make your item discoverable on
                     Fantom.
@@ -787,62 +904,71 @@ const CollectionCreate = ({ isRegister }) => {
                       this
                     </a>
                   </div> */}
-                  <div className={cx(styles.inputWrapper, styles.categoryList)}>
                     <div
-                      className={cx(
-                        styles.categoryButton,
-                        selected.length === 3 && styles.disabled
-                      )}
-                      onClick={handleMenuOpen}
+                      className={cx(styles.inputWrapper, styles.categoryList)}
                     >
-                      Category
-                    </div>
-                    {selectedCategories.map((cat, idx) => (
                       <div
-                        className={styles.selectedCategory}
-                        key={idx}
-                        onClick={() => deselectCategory(cat.id)}
+                        className={cx(
+                          styles.categoryButton,
+                          selected.length === 3 && styles.disabled
+                        )}
+                        onClick={handleMenuOpen}
                       >
-                        <img src={cat.icon} className={styles.categoryIcon} />
-                        <span className={styles.categoryLabel}>
-                          {cat.label}
-                        </span>
-                        <CloseIcon className={styles.closeIcon} />
+                        Category
                       </div>
-                    ))}
+                      {selectedCategories.map((cat, idx) => (
+                        <div
+                          className={styles.selectedCategory}
+                          key={idx}
+                          onClick={() => deselectCategory(cat.id)}
+                        >
+                          <img src={cat.icon} className={styles.categoryIcon} />
+                          <span className={styles.categoryLabel}>
+                            {cat.label}
+                          </span>
+                          <CloseIcon className={styles.closeIcon} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className={styles.inputGroup}>
-                  <div className={styles.inputTitle}>
-                    Email *&nbsp;
-                    {/* <BootstrapTooltip
+                )}
+                {isOwner && (
+                  <div className={styles.inputGroup}>
+                    <div className={styles.inputTitle}>
+                      Email *&nbsp;
+                      {/* <BootstrapTooltip
                       title="We will use this email to notify you about your collection application. This will not be shared with others."
                       placement="top"
                     >
                       <HelpOutlineIcon />
                     </BootstrapTooltip> */}
-                  </div>
-                  <div className={styles.inputWrapper}>
-                    <input
-                      className={cx(
-                        styles.input,
-                        emailError && styles.hasError
+                    </div>
+                    <div className={styles.inputWrapper}>
+                      <input
+                        className={cx(
+                          styles.input,
+                          emailError && styles.hasError
+                        )}
+                        placeholder="Email Address"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        onBlur={validateEmail}
+                      />
+                      {emailError && (
+                        <div className={styles.error}>{emailError}</div>
                       )}
-                      placeholder="Email Address"
-                      value={email}
-                      onChange={e => setEmail(e.target.value)}
-                      onBlur={validateEmail}
-                    />
-                    {emailError && (
-                      <div className={styles.error}>{emailError}</div>
-                    )}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               <div className={styles.collectionInfoSecond}>
                 <div className={styles.inputGroup}>
-                  <div className={styles.inputTitle}>Links *</div>
+                  {isOwner ? (
+                    <div className={styles.inputTitle}>Links *</div>
+                  ) : (
+                    <div className={styles.inputTitle}>Collection *</div>
+                  )}
                   <div className={styles.inputWrapper}>
                     <div className={styles.linksWrapper}>
                       {isRegister && (
@@ -853,11 +979,18 @@ const CollectionCreate = ({ isRegister }) => {
                               addressError && styles.hasError
                             )}
                           >
-                            <div className={styles.linkIconWrapper}>
-                              <img src={nftIcon} className={styles.linkIcon} />
-                            </div>
+                            {isOwner && (
+                              <div className={styles.linkIconWrapper}>
+                                <img
+                                  src={nftIcon}
+                                  className={styles.linkIcon}
+                                />
+                              </div>
+                            )}
                             <input
-                              className={styles.linkInput}
+                              className={
+                                isOwner ? styles.linkInput : styles.input
+                              }
                               placeholder="Enter your collection's address"
                               value={address}
                               onChange={e => setAddress(e.target.value)}
@@ -869,75 +1002,91 @@ const CollectionCreate = ({ isRegister }) => {
                           )}
                         </>
                       )}
-                      <div className={styles.linkItem}>
-                        <div className={styles.linkIconWrapper}>
-                          <img src={webIcon} className={styles.linkIcon} />
+                      {isOwner && (
+                        <div>
+                          <div className={styles.linkItem}>
+                            <div className={styles.linkIconWrapper}>
+                              <img src={webIcon} className={styles.linkIcon} />
+                            </div>
+                            <input
+                              className={styles.linkInput}
+                              placeholder="Enter your website url"
+                              value={siteUrl}
+                              onChange={e => setSiteUrl(e.target.value)}
+                            />
+                          </div>
+                          <div className={styles.linkItem}>
+                            <div className={styles.linkIconWrapper}>
+                              <img
+                                src={discordIcon}
+                                className={styles.linkIcon}
+                              />
+                            </div>
+                            <input
+                              className={styles.linkInput}
+                              placeholder="Enter your Discord url"
+                              value={discord}
+                              onChange={e => setDiscord(e.target.value)}
+                            />
+                          </div>
+                          <div className={styles.linkItem}>
+                            <div className={styles.linkIconWrapper}>
+                              <img
+                                src={twitterIcon}
+                                className={styles.linkIcon}
+                              />
+                            </div>
+                            <input
+                              className={styles.linkInput}
+                              placeholder="Enter your Twitter profile link"
+                              value={twitterHandle}
+                              onChange={e => setTwitterHandle(e.target.value)}
+                            />
+                          </div>
+                          <div className={styles.linkItem}>
+                            <div className={styles.linkIconWrapper}>
+                              <img
+                                src={instagramIcon}
+                                className={styles.linkIcon}
+                              />
+                            </div>
+                            <input
+                              className={styles.linkInput}
+                              placeholder="Enter your Instagram profile link"
+                              value={instagramHandle}
+                              onChange={e => setInstagramHandle(e.target.value)}
+                            />
+                          </div>
+                          <div className={styles.linkItem}>
+                            <div className={styles.linkIconWrapper}>
+                              <img
+                                src={mediumIcon}
+                                className={styles.linkIcon}
+                              />
+                            </div>
+                            <input
+                              className={styles.linkInput}
+                              placeholder="Enter your Medium profile link"
+                              value={mediumHandle}
+                              onChange={e => setMediumHandle(e.target.value)}
+                            />
+                          </div>
+                          <div className={styles.linkItem}>
+                            <div className={styles.linkIconWrapper}>
+                              <img
+                                src={telegramIcon}
+                                className={styles.linkIcon}
+                              />
+                            </div>
+                            <input
+                              className={styles.linkInput}
+                              placeholder="Enter your Telegram profile link"
+                              value={telegram}
+                              onChange={e => setTelegram(e.target.value)}
+                            />
+                          </div>
                         </div>
-                        <input
-                          className={styles.linkInput}
-                          placeholder="Enter your website url"
-                          value={siteUrl}
-                          onChange={e => setSiteUrl(e.target.value)}
-                        />
-                      </div>
-                      <div className={styles.linkItem}>
-                        <div className={styles.linkIconWrapper}>
-                          <img src={discordIcon} className={styles.linkIcon} />
-                        </div>
-                        <input
-                          className={styles.linkInput}
-                          placeholder="Enter your Discord url"
-                          value={discord}
-                          onChange={e => setDiscord(e.target.value)}
-                        />
-                      </div>
-                      <div className={styles.linkItem}>
-                        <div className={styles.linkIconWrapper}>
-                          <img src={twitterIcon} className={styles.linkIcon} />
-                        </div>
-                        <input
-                          className={styles.linkInput}
-                          placeholder="Enter your Twitter profile link"
-                          value={twitterHandle}
-                          onChange={e => setTwitterHandle(e.target.value)}
-                        />
-                      </div>
-                      <div className={styles.linkItem}>
-                        <div className={styles.linkIconWrapper}>
-                          <img
-                            src={instagramIcon}
-                            className={styles.linkIcon}
-                          />
-                        </div>
-                        <input
-                          className={styles.linkInput}
-                          placeholder="Enter your Instagram profile link"
-                          value={instagramHandle}
-                          onChange={e => setInstagramHandle(e.target.value)}
-                        />
-                      </div>
-                      <div className={styles.linkItem}>
-                        <div className={styles.linkIconWrapper}>
-                          <img src={mediumIcon} className={styles.linkIcon} />
-                        </div>
-                        <input
-                          className={styles.linkInput}
-                          placeholder="Enter your Medium profile link"
-                          value={mediumHandle}
-                          onChange={e => setMediumHandle(e.target.value)}
-                        />
-                      </div>
-                      <div className={styles.linkItem}>
-                        <div className={styles.linkIconWrapper}>
-                          <img src={telegramIcon} className={styles.linkIcon} />
-                        </div>
-                        <input
-                          className={styles.linkInput}
-                          placeholder="Enter your Telegram profile link"
-                          value={telegram}
-                          onChange={e => setTelegram(e.target.value)}
-                        />
-                      </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -979,19 +1128,35 @@ const CollectionCreate = ({ isRegister }) => {
             </div>
             <div className={styles.buttonsWrapper}>
               {isRegister ? (
-                <div
-                  className={cx(
-                    styles.createButton,
-                    (creating || !isValid) && styles.disabled
-                  )}
-                  onClick={isValid ? handleRegister : null}
-                >
-                  {creating ? (
-                    <ClipLoader color="#FFF" size={16} />
-                  ) : (
-                    'Register'
-                  )}
-                </div>
+                isOwner ? (
+                  <div
+                    className={cx(
+                      styles.createButton,
+                      (creating || !isValid) && styles.disabled
+                    )}
+                    onClick={isValid ? handleRegister : null}
+                  >
+                    {creating ? (
+                      <ClipLoader color="#FFF" size={16} />
+                    ) : (
+                      'Register'
+                    )}
+                  </div>
+                ) : (
+                  <div
+                    className={cx(
+                      styles.createButton,
+                      (creating || !isValid2) && styles.disabled
+                    )}
+                    onClick={isValid2 ? handleNonOwnerRegister : null}
+                  >
+                    {creating ? (
+                      <ClipLoader color="#FFF" size={16} />
+                    ) : (
+                      'Register'
+                    )}
+                  </div>
+                )
               ) : (
                 <div
                   className={cx(

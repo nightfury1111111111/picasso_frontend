@@ -236,7 +236,7 @@
     left: 0;
     width: 100%;
     height: 2px;
-    background: mediumblue;
+    background: darkblue;
     transform: scale(0, 1);
     transform-origin: left;
     transition: transform 0.25s;
@@ -248,7 +248,7 @@
 
   &:hover,
   &.activeTab {
-    color: mediumblue;
+    color: darkblue;
 
     &::after {
       transform: scale(1, 1);
@@ -645,7 +645,6 @@
     // width: calc(100% - 20px);
     padding: 0 10px;
     height: 190px;
-    padding-bottom: 20px;
     margin-top: 0px;
     border-radius: 10px;
     display: flex;
@@ -691,9 +690,17 @@
   .tabVar {
     margin-top: 0px;
   }
+
+  .tabVar {
+    height: fit-content;
+  }
   .settings {
     margin-right: 0;
     margin-bottom: 16px;
+  }
+
+  .editBanner {
+    visibility: visible !important;
   }
 
   .bottomWrapper {

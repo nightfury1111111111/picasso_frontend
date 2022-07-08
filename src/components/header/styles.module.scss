@@ -58,6 +58,7 @@
 
 .logo {
   height: 50px;
+
   cursor: pointer;
 
   img {
@@ -65,7 +66,7 @@
   }
 
   font-weight: 700;
-  color: mediumblue;
+  color: darkblue;
   font-size: 35px;
   text-decoration: none;
 }
@@ -184,6 +185,7 @@
   width: 0;
   font-weight: 700;
   font-size: 16px;
+
   line-height: 16px;
   color: #3d3d3d;
   overflow: hidden;
@@ -217,7 +219,7 @@
 .menuLink {
   margin-right: 24px;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 18px;
   line-height: 18px;
   user-select: none;
@@ -225,7 +227,7 @@
   position: relative;
 
   &.active {
-    color: mediumblue !important;
+    color: darkblue !important;
   }
 
   &:last-child {
@@ -311,7 +313,7 @@
   height: 48px;
   padding: 0 23px !important;
   box-sizing: border-box;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 14px;
   line-height: 16px;
   color: #121223;
@@ -376,7 +378,7 @@
 
 .userIcon {
   font-size: 28px;
-  color: mediumblue;
+  color: darkblue;
   margin-right: 12px;
 }
 

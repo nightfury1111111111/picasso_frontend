@@ -35,6 +35,7 @@
 
 .clockWrapper {
   width: 240px;
+  margin-top: 10px;
   padding: 15px 20px;
   background-color: #ededed;
   font-size: 16px;
@@ -52,7 +53,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: mediumblue;
+  background-color: darkblue;
   color: #fff;
   cursor: pointer;
   font-weight: 700;
@@ -159,7 +160,7 @@
   }
 
   &.active {
-    border-color: mediumblue;
+    border-color: darkblue;
 
     img {
       border-radius: 0px;
@@ -293,7 +294,7 @@
   cursor: pointer;
   &:hover {
     color: #2479fa;
-    border-bottom: 2px solid mediumblue;
+    border-bottom: 2px solid darkblue;
   }
 }
 
@@ -308,7 +309,7 @@
 
 .activeTab {
   color: #2479fa;
-  border-bottom: 2px solid mediumblue;
+  border-bottom: 2px solid darkblue;
 }
 
 .itemStats {
@@ -358,6 +359,7 @@
 
 .userContainer {
   padding: 10px;
+  margin-top: 10px;
   width: 240px;
   background-color: #ededed;
   border-radius: 15px;
@@ -381,7 +383,8 @@
   align-items: center;
   background-color: #ededed;
   border-radius: 30px;
-  padding: 5px 15px;
+  padding: 5px 10px;
+  font-size: 14px;
 
   &:first-child {
     margin-left: 0;
@@ -399,7 +402,7 @@
 .favIcon {
   width: 16px !important;
   &:hover {
-    color: mediumblue;
+    color: darkblue;
   }
 }
 
@@ -474,7 +477,7 @@
 
 .bundleItemCategory {
   font-size: 18px;
-  color: mediumblue;
+  color: darkblue;
 }
 
 .bundleItemCategory,
@@ -512,7 +515,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: mediumblue;
+  background-color: darkblue;
   font-size: 16px;
   font-weight: 700;
   color: #fff;
@@ -595,7 +598,7 @@
   justify-content: center;
   border-radius: 8px;
   color: #fff;
-  background-color: mediumblue;
+  background-color: darkblue;
   font-weight: 700;
   font-size: 18px;
   cursor: pointer;
@@ -660,12 +663,12 @@
 .placeBid {
   width: 100%;
   border-radius: 80px;
-  background-color: mediumblue;
+  background-color: darkblue;
   color: #fff;
 }
 
 .withdrawBid {
-  background-color: mediumblue;
+  background-color: darkblue;
   color: #fff;
   border-radius: 80px;
   width: 100%;
@@ -912,7 +915,7 @@
   width: 100%;
   height: 48px;
   border-radius: 60px;
-  background-color: mediumblue;
+  background-color: darkblue;
   font-weight: 700;
   font-size: 16px;
   color: #fff;
@@ -1089,6 +1092,14 @@
 @media only screen and (max-width: 600px) {
   .topContainer {
     padding: 0 30px;
+  }
+
+  .auctionStatus {
+    flex-direction: column;
+  }
+
+  .userWrapper {
+    flex-direction: column;
   }
 
   .tradeHistoryWrapper {

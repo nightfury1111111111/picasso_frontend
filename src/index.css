@@ -18,8 +18,13 @@ body {
   /* width: 360px !important; */
 }
 
+@font-face {
+  font-family: genos;
+  src: url(./assets/Genos.ttf);
+}
+
 body * {
-  font-family: "Roboto", sans-serif;
+  font-family: monospace;
 }
 
 /* width */

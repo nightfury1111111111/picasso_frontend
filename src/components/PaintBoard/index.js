@@ -174,6 +174,9 @@ const PaintBoard = () => {
   useEffect(() => {
     if (authToken) {
       getCollections();
+    } else {
+      showToast('info', 'Connect your wallet first');
+      history.push(`/index`);
     }
   }, [authToken]);
 
@@ -391,6 +394,7 @@ const PaintBoard = () => {
       <Header border />
       {/* <PageHeader text={PageHeaderText} /> */}
       <div className={styles.bodyContainer}>
+        <div className={styles.title}>Collection</div>
         <div className={styles.body}>
           <div className={styles.board}>
             <div {...getRootProps({ className: styles.uploadCont })}>
@@ -453,7 +457,7 @@ const PaintBoard = () => {
                         }}
                       >
                         <img
-                          src={`${picassoGateway}/${item.logoImageHash}`}
+                          src={`${picassoGateway}${item.logoImageHash}`}
                           className={styles.collectionLogo}
                         />
                         <div className={styles.collectionName}>

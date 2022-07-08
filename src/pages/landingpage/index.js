@@ -116,10 +116,6 @@ const LandingPage = () => {
     setPopCollection(forCollection);
   };
 
-  // useEffect(() => {
-  //   console.log('pop coll', popCollection);
-  // }, [popCollection]);
-
   useEffect(() => {
     dispatch(HeaderActions.toggleSearchbar(true));
     // dispatch(FilterActions.updateCategoryFilter(null));
@@ -181,23 +177,23 @@ const LandingPage = () => {
         // style={{ backgroundImage: "url('/assets/images/banner/01.gif')" }}
       >
         <img
-          src="/assets/images/banner/01.gif"
+          src="/assets/images/banner/02.jpg"
           className={styles.backgroundImg}
         />
         <div className={styles.body}>
           <div className={styles.main}>
             <div className={styles.mainLeft}>
               {/* <div className={styles.title}>
-                <span style={{ color: 'mediumblue' }}>Discover</span> Collect
+                <span style={{ color: 'darkblue' }}>Discover</span> Collect
                 <br />
-                And Sell <span style={{ color: 'mediumblue' }}>NFT</span> Assets
+                And Sell <span style={{ color: 'darkblue' }}>NFT</span> Assets
               </div>
               <div className={styles.subtitle}>
                 Digital Marketplace For Crypto Collectibles And Non-Fungible
                 Tokens. Buy, Sell, And Discover Exclusive Digital Assets.
               </div> */}
 
-              <div style={{ display: 'flex' }}>
+              <div className={styles.btnGroup}>
                 <Link to="/explore" className={styles.exploreButton}>
                   Explore
                 </Link>
@@ -210,18 +206,10 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-      <div style={{ paddingTop: '120px', paddingBottom: '60px' }}>
+      <div className={styles.sectionWrapper}>
         <div className={styles.sectionHeaderContainer}>
           <div className={styles.sectionHeader}>
-            <div
-              style={{
-                zIndex: 1000,
-                paddingBottom: '17px',
-                fontSize: '36px',
-              }}
-            >
-              Today&apos; Pick
-            </div>
+            <div className={styles.headLine}>Today&apos; Pick</div>
             <div className={styles.more}>
               <Link to="/explore">EXPLORE MORE</Link>
             </div>
@@ -233,18 +221,10 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-      <div style={{ paddingTop: '120px', paddingBottom: '60px' }}>
+      <div className={styles.sectionWrapper}>
         <div className={styles.sectionHeaderContainer}>
           <div className={styles.sectionHeader}>
-            <div
-              style={{
-                zIndex: 1000,
-                paddingBottom: '17px',
-                fontSize: '36px',
-              }}
-            >
-              Popular Collection
-            </div>
+            <div className={styles.headLine}>Popular Collection</div>
             <div className={styles.more}>
               <Link to="/explore">EXPLORE MORE</Link>
             </div>
@@ -259,18 +239,10 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-      <div style={{ paddingTop: '120px', paddingBottom: '60px' }}>
+      <div className={styles.sectionWrapper}>
         <div className={styles.sectionHeaderContainer}>
           <div className={styles.sectionHeader}>
-            <div
-              style={{
-                zIndex: 1000,
-                paddingBottom: '17px',
-                fontSize: '36px',
-              }}
-            >
-              Create And Sell Your NFTs
-            </div>
+            <div className={styles.headLine}>Create And Sell Your NFTs</div>
           </div>
           <div className={styles.aboutCards}>
             {cards.map((item, key) => (

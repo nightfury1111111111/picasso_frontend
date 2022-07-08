@@ -24,6 +24,8 @@
   margin-top: 100px;
   width: 100%;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 
@@ -96,7 +98,7 @@
 }
 
 .browse {
-  color: mediumblue;
+  color: darkblue;
   cursor: pointer;
 }
 
@@ -166,12 +168,12 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
-  width: 320px;
+  width: 300px;
   height: 48px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 18px;
-  background-color: mediumblue;
+  background-color: darkblue;
   color: #fff;
   box-shadow: none;
   display: flex;
@@ -283,7 +285,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: mediumblue;
+  background-color: darkblue;
   border-radius: 10px;
   cursor: pointer;
   margin-bottom: 10px;
@@ -296,13 +298,26 @@
   border-radius: 8px;
   font-weight: 700;
   font-size: 18px;
-  border: 1px solid mediumblue;
-  color: mediumblue;
+  border: 1px solid darkblue;
+  color: darkblue;
   box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.title {
+  width: 80%;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 39px;
+  letter-spacing: -0.02em;
+  color: #121223;
+  border-radius: 10px;
+  background: darkblue;
+  color: white;
+  padding: 20px;
 }
 
 @media only screen and (max-width: 1150px) {
@@ -325,7 +340,12 @@
   // }
 
   .body {
+    width: 92%;
     padding: 40px 20px;
+  }
+
+  .title {
+    width: 92%;
   }
 
   .panelInputs {

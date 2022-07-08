@@ -1,0 +1,8 @@
+.MuiMenuItem-root {
+    font-size: 15px !important;
+    font-weight: bold !important;
+}
+
+.MuiSelect-select.MuiSelect-select {
+    font-weight: bold !important;
+}

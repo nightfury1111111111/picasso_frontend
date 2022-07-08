@@ -21,6 +21,7 @@ import usePrevious from 'hooks/usePrevious';
 
 import iconCollapse from 'assets/svgs/collapse.svg';
 
+import './style.css';
 import styles from './styles.module.scss';
 import PageHeader from '../../components/PageHeader';
 

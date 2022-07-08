@@ -18,11 +18,11 @@ const NFTsGrid = ({
   onCreate = () => {},
   onLike = () => {},
 }) => {
-  useEffect(() => {
-    return () => {
-      console.log('gridItems', items);
-    };
-  }, [items]);
+  // useEffect(() => {
+  //   return () => {
+  //     console.log('gridItems', items);
+  //   };
+  // }, [items]);
   const dispatch = useDispatch();
   // const n = numPerRow || 6;
   const n = 6;

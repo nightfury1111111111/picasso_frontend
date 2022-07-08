@@ -21,7 +21,8 @@
   letter-spacing: -0.02em;
   color: #121223;
   border-radius: 10px;
-  background: #ededed;
+  background: darkblue;
+  color: white;
   padding: 20px;
 }
 
@@ -42,7 +43,32 @@
   font-size: 16px;
   color: #121223;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+}
+
+.ownerHeader {
+  justify-content: flex-end;
+}
+
+.ownerCheckWrapper {
+  background-color: white;
+  padding: 3px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid darkblue;
+}
+
+.checkOwner {
+  padding: 0 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.checkOwnerActive {
+  background-color: darkblue;
+  color: white;
 }
 
 .inputSubTitle {
@@ -125,7 +151,7 @@
 }
 
 .collectionInfoSecond {
-  width: calc(50% - 50px);
+  width: 50%;
 }
 
 .hasError {
@@ -280,7 +306,7 @@
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
-  background: mediumblue;
+  background: darkblue;
   white-space: nowrap;
   font-weight: 700;
   opacity: 0.7;
@@ -404,7 +430,7 @@
   width: 168px;
   height: 48px;
   border-radius: 8px;
-  background-color: mediumblue !important;
+  background-color: darkblue !important;
   color: #fff;
   font-weight: 700;
   font-size: 18px;
