@@ -74,6 +74,7 @@
 .inner {
   width: 100%;
   max-width: 1280px;
+  min-height: 90vh;
 }
 
 .topContainer {
@@ -94,7 +95,7 @@
   overflow: hidden;
   height: fit-content;
   border-radius: 10px;
-  padding: 20px;
+  // padding: 20px;
 }
 
 .itemMedia {
@@ -408,7 +409,7 @@
 
 .panelBody {
   width: 100%;
-  padding: 24px;
+  // padding: 24px;
   box-sizing: border-box;
 }
 
@@ -903,7 +904,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 220px;
+  width: 240px;
   border-radius: 16px;
   background: #ededed;
   padding: 10px 20px;
@@ -1094,6 +1095,10 @@
     padding: 0 30px;
   }
 
+  .bundleItemInfo {
+    margin: 0;
+  }
+
   .auctionStatus {
     flex-direction: column;
   }
@@ -1103,7 +1108,11 @@
   }
 
   .tradeHistoryWrapper {
-    margin: 0 30px 30px;
+    margin: 0;
+  }
+
+  .history {
+    padding: 0;
   }
 
   .itemStats {

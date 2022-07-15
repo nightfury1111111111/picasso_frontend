@@ -17,3 +17,7 @@ th,
 td {
 	border: none !important;
 }
+
+.rdtDays {
+	font-size: 14px !important;
+}

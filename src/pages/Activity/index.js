@@ -148,6 +148,15 @@ const AccountDetails = () => {
   return (
     <>
       <Header border />
+      <section
+        className={styles.bannerSection}
+        // style={{ backgroundImage: "url('/assets/images/banner/01.gif')" }}
+      >
+        <img
+          src="/assets/images/banner/03.gif"
+          className={styles.backgroundImg}
+        />
+      </section>
       <div className={styles.container}>
         <div className={styles.activityWrapper}>
           <div className={styles.activityHeader}>Sitewide Activities</div>

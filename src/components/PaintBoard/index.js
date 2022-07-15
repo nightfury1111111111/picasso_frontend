@@ -352,6 +352,7 @@ const PaintBoard = () => {
           );
         }
 
+        console.log('sss', nft, mintedTkId.toNumber(), _royalty);
         const royaltyTx = await registerRoyalty(
           nft,
           mintedTkId.toNumber(),
@@ -381,6 +382,7 @@ const PaintBoard = () => {
           history.push(`/explore/${nft}/${mintedTkId.toNumber()}`);
         }, 1000 + Math.random() * 2000);
       } catch (error) {
+        console.log('error', error);
         showToast('error', formatError(error));
       }
     } catch (error) {
@@ -394,7 +396,7 @@ const PaintBoard = () => {
       <Header border />
       {/* <PageHeader text={PageHeaderText} /> */}
       <div className={styles.bodyContainer}>
-        <div className={styles.title}>Collection</div>
+        <div className={styles.title}>Create NFT</div>
         <div className={styles.body}>
           <div className={styles.board}>
             <div {...getRootProps({ className: styles.uploadCont })}>

@@ -347,6 +347,7 @@ const CollectionCreate = ({ isRegister }) => {
         royalty: 0,
         feeRecipient: ADMIN_ADDRESS,
         isOwner,
+        isRegister,
       };
 
       await axios({
@@ -450,6 +451,7 @@ const CollectionCreate = ({ isRegister }) => {
             royalty,
             feeRecipient,
             isOwner,
+            isRegister,
           };
 
           await axios({
@@ -537,6 +539,8 @@ const CollectionCreate = ({ isRegister }) => {
                   return;
                 }
 
+                console.log(name, address, logodata);
+
                 const formData = new FormData();
                 formData.append('collectionName', name);
                 formData.append('erc721Address', address);
@@ -565,6 +569,8 @@ const CollectionCreate = ({ isRegister }) => {
                   mediumHandle,
                   telegram,
                   signature,
+                  isRegister,
+                  isOwner: false,
                 };
                 await axios({
                   method: 'post',

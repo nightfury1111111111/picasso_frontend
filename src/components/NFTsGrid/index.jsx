@@ -18,17 +18,38 @@ const NFTsGrid = ({
   onCreate = () => {},
   onLike = () => {},
 }) => {
-  // useEffect(() => {
-  //   return () => {
-  //     console.log('gridItems', items);
-  //   };
-  // }, [items]);
+  const [n, setN] = useState(4);
+  const [smallItemNum, setSmallItemNum] = useState(false);
+  useEffect(() => {
+    if (window.innerWidth >= 2348) setN(5);
+    else if (window.innerWidth >= 1900) setN(4);
+    else if (window.innerWidth >= 1400) setN(3);
+    else if (window.innerWidth >= 935) setN(2);
+    else setN(1);
+  }, []);
+  useEffect(() => {
+    if (
+      (window.innerWidth >= 2348 && items.length < 5) ||
+      (window.innerWidth >= 1900 && items.length < 4) ||
+      (window.innerWidth >= 1400 && items.length < 3) ||
+      (window.innerWidth >= 935 && items.length < 2)
+    ) {
+      setSmallItemNum(true);
+    } else {
+      setSmallItemNum(false);
+    }
+  }, [items]);
   const dispatch = useDispatch();
   // const n = numPerRow || 6;
-  const n = 6;
   const className = cx(styles.nft, styles[`num${n}`]);
   return (
-    <div className={styles.container}>
+    <div
+      className={cx(
+        styles.container,
+        smallItemNum ? styles.smallNumCont : '',
+        loading ? styles.skeletonWrapper : ''
+      )}
+    >
       {showCreate && (
         <div className={className}>
           <Card create onCreate={onCreate} />
@@ -50,15 +71,15 @@ const NFTsGrid = ({
           <Card item={item} onLike={onLike} />
         </div>
       ))}
-      {loading &&
+      {/* {loading &&
         new Array(n * 2).fill(0).map((_, idx) => (
           <div className={className} key={idx}>
             <Card loading />
           </div>
-        ))}
-      {!items.length && category !== null && category !== undefined && (
+        ))} */}
+      {/* {!items.length && category !== null && category !== undefined && (
         <>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', paddingLeft: '10px' }}>
             No results found for the {Categories[category].label} category.
           </div>
           <div
@@ -68,7 +89,7 @@ const NFTsGrid = ({
             Select all categories
           </div>
         </>
-      )}
+      )} */}
     </div>
   );
 };

@@ -6,7 +6,7 @@
   bottom: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.4);
-  z-index: 999;
+  z-index: 99999;
   align-items: center;
   justify-content: center;
 
@@ -20,7 +20,7 @@
   width: 600px;
   box-sizing: border-box;
   border-radius: 10px;
-  background-color: #FFF;
+  background-color: #fff;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
   position: relative;
 }
@@ -31,7 +31,7 @@
 
 .header {
   height: 70px;
-  border-bottom: 1px solid #EAEAF1;
+  border-bottom: 1px solid #eaeaf1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -87,8 +87,8 @@
 }
 
 .submitButton {
-  background-color: #007BFF;
-  color: #FFF;
+  background-color: #007bff;
+  color: #fff;
 }
 
 .disabled {

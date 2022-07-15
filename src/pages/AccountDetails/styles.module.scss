@@ -63,8 +63,8 @@
   height: 36px;
   border-radius: 10px;
   background-color: transparent;
-  border: 1px solid white;
-  color: white;
+  border: 1px solid black;
+  color: black;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,7 +83,7 @@
 
 .buttonsWrapper {
   position: absolute;
-  z-index: 99999;
+  z-index: 999;
   bottom: 32px;
   right: 32px;
   display: flex;
@@ -94,7 +94,7 @@
   width: 48px;
   height: 48px;
   border-radius: 10px;
-  border: 1px solid white;
+  border: 1px solid black;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -335,8 +335,8 @@
 
 .bio {
   // width: calc(100% - 60px);
-  background: #ededed;
-  min-height: 100px;
+  background: white;
+  min-height: 200px;
   // max-width: 700px;
   // margin-top: 6px;
   font-size: 16px;
@@ -350,6 +350,7 @@
   box-sizing: border-box;
   border: 1px solid #eaeaf1;
   display: flex;
+  padding-bottom: 7px;
 }
 
 .bioHeader {
@@ -662,7 +663,7 @@
 
   .contentWrapper {
     width: calc(100% - 20px);
-    padding: 0 10px 40px 10px;
+    padding: 0 0 40px 0;
     display: flex;
     flex-direction: column;
   }
@@ -730,7 +731,7 @@
   }
 
   .contentBody {
-    padding: 12px 18px 18px;
+    // padding: 12px 18px 18px;
     min-height: 100%;
   }
 

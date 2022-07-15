@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 
 const WFTM_ADDRESS = {
   [ChainId.FANTOM]: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
-  [ChainId.FANTOM_TESTNET]: '0xc778417E063141139Fce010982780140Aa0cD5Ab',
+  [ChainId.FANTOM_TESTNET]: '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15',
 };
 
 // eslint-disable-next-line no-undef

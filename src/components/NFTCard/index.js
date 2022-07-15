@@ -17,6 +17,7 @@ import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import axios from 'axios';
 import ReactPlayer from 'react-player';
+import { useHistory } from 'react-router-dom';
 
 import Clock from 'components/Clock';
 import Button from '@material-ui/core/Button';
@@ -62,6 +63,8 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
   const { authToken } = useSelector(state => state.ConnectWallet);
   const { account } = useWeb3React();
 
+  const history = useHistory();
+
   const collection = collections.find(
     col => col.address === item?.contractAddress
   );
@@ -106,6 +109,7 @@ const BaseCard = ({ item, loading, style, create, onCreate, onLike }) => {
   };
 
   const getDefaultTime = async () => {
+    if (!window.ethereum) history.push('/404');
     await window.ethereum.enable();
     const provider = new ethers.providers.Web3Provider(window.ethereum);
 

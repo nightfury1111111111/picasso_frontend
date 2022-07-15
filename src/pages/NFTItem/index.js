@@ -124,7 +124,6 @@ const CHAIN = ENV === 'MAINNET' ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
 
 const NFTItem = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const {
     explorerUrl,
@@ -306,6 +305,7 @@ const NFTItem = () => {
 
   const { authToken } = useSelector(state => state.ConnectWallet);
   const prevAuthToken = usePrevious(authToken);
+  const history = useHistory();
 
   const { getCreator } = useSalesContract();
 
@@ -319,6 +319,7 @@ const NFTItem = () => {
   };
 
   const getDefaultTime = async () => {
+    if (!window.ethereum) history.push('/404');
     await window.ethereum.enable();
     const provider = new ethers.providers.Web3Provider(window.ethereum);
 
@@ -1850,6 +1851,14 @@ const NFTItem = () => {
           _price.toString(),
           listing.token.decimals
         );
+        console.log(
+          'balance check ',
+          listing.token.address,
+          ethers.utils.formatEther(balance),
+          ethers.utils.formatEther(price),
+          0.000001 > ethers.utils.formatEther(price),
+          0.000001 < price
+        );
         if (balance.lt(price)) {
           const toastId = showToast(
             'error',
@@ -2277,6 +2286,7 @@ const NFTItem = () => {
 
   const handleSelectCollection = addr => {
     dispatch(FilterActions.updateCollectionsFilter([addr]));
+    // dispatch(FilterActions.updateCategoryFilter(7));
   };
 
   const hasMyOffer = (() =>
@@ -2554,7 +2564,7 @@ const NFTItem = () => {
           handleSelectCollection(collection?.erc721Address);
         }}
       >
-        <span>Collection : </span>
+        <span>Collection: </span>
         <div className={styles.bundleItemInfo}>
           <div className={styles.bundleItemCategory}>
             {collection?.collectionName || collection?.name}
@@ -3521,7 +3531,7 @@ const NFTItem = () => {
                 </Panel>
               </div> */}
               <div className={styles.panelWrapper}>
-                <Panel title="Direct Offers" icon={TocIcon} expanded>
+                <Panel title="Direct Offers" icon={TocIcon} expanded={false}>
                   <div className={styles.offers}>
                     {offers.current.length ? (
                       <>

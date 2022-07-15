@@ -73,6 +73,8 @@ const Header = () => {
     setBoostCollectionModalVisible,
   ] = useState(false);
 
+  const [isSearchShow, setIsSearchShow] = useState(false);
+
   const [keyword, setKeyword] = useState('');
   const [cancelSource, setCancelSource] = useState(null);
   const [accounts, setAccounts] = useState([]);
@@ -222,6 +224,7 @@ const Header = () => {
   };
 
   const handleProfileMenuOpen = e => {
+    setIsSearchShow(false);
     setAnchorEl(e.currentTarget);
   };
 
@@ -231,95 +234,113 @@ const Header = () => {
 
   const goToCreateNft = () => {
     history.push(`/create`);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const goToHome = () => {
     history.push(`/`);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const goToExplore = () => {
     history.push(`/explore`);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const goToActivity = () => {
     history.push(`/activity`);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const goToMyProfile = () => {
     history.push(`/account/${account}`);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const goToNotificationSettings = () => {
     history.push(`/settings/notification`);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const handleCreateCollection = () => {
     history.push('/collection/create');
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const handleRegisterCollection = () => {
     history.push('/collection/register');
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const openWrapStation = () => {
     dispatch(ModalActions.showWFTMModal());
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const addMod = () => {
     setIsAdding(true);
     setModModalVisible(true);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const removeMod = () => {
     setIsAdding(false);
     setModModalVisible(true);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const reviewCollections = () => {
     history.push('/collection/review');
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const banCollection = () => {
     setIsBan(true);
     setBanCollectionModalVisible(true);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const unbanCollection = () => {
     setIsBan(false);
     setBanCollectionModalVisible(true);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const banItems = () => {
     setBanItemModalVisible(true);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const banUser = () => {
     setBanUserModalVisible(true);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const unbanUser = () => {
     setUnbanUserModalVisible(true);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
   const boostCollection = () => {
     setBoostCollectionModalVisible(true);
+    setIsSearchShow(false);
     handleMenuClose();
   };
 
@@ -329,6 +350,12 @@ const Header = () => {
     } else {
       setStikyHeaderStatus(false);
     }
+  };
+
+  const toggleMobileSearch = () => {
+    if (isSearchShow) setIsSearchShow(false);
+    else setIsSearchShow(true);
+    setAnchorEl(null);
   };
 
   const renderMenu = (
@@ -479,9 +506,11 @@ const Header = () => {
                       key={idx}
                       to={`/explore`}
                       className={styles.result}
-                      onClick={() =>
-                        handleSelectCollection(collection.erc721Address)
-                      }
+                      onClick={() => {
+                        handleSelectCollection(collection.erc721Address);
+                        setIsSearchShow(false);
+                        resetResults();
+                      }}
                     >
                       <img
                         className={styles.resultimg}
@@ -506,6 +535,10 @@ const Header = () => {
                     <Link
                       to={`/account/${account.address}`}
                       key={idx}
+                      onClick={() => {
+                        setIsSearchShow(false);
+                        resetResults();
+                      }}
                       className={styles.result}
                     >
                       {account.imageHash ? (
@@ -535,6 +568,10 @@ const Header = () => {
                     <Link
                       to={`/explore/${tk.contractAddress}/${tk.tokenID}`}
                       key={idx}
+                      onClick={() => {
+                        setIsSearchShow(false);
+                        resetResults();
+                      }}
                       className={styles.result}
                     >
                       <div className={styles.resultimg}>
@@ -600,7 +637,7 @@ const Header = () => {
           {/* <img src="/assets/images/logo/logo-2.png" alt="logo" /> */}
           Pi<span style={{ color: 'black' }}>ca</span>sso
         </Link>
-        {isSearchbarShown && renderSearchBox()}
+        {window.innerWidth >= 600 ? renderSearchBox() : ''}
         <div className={styles.secondmenu}>
           <NavLink
             to="/index"
@@ -633,7 +670,18 @@ const Header = () => {
         </div>
       </div>
       <div className={styles.menu}>
-        {isSearchbarShown && renderSearchBox()}
+        {window.innerWidth >= 600 ? (
+          renderSearchBox()
+        ) : (
+          <SearchIcon
+            onClick={toggleMobileSearch}
+            className={cx(
+              styles.searchicon,
+              isSearchShow && styles.activeSearchIcon
+            )}
+            style={{ fontSize: '25px' }}
+          />
+        )}
         <NavLink
           to="/index"
           className={cx(styles.menuLink, styles.link)}
@@ -722,6 +770,9 @@ const Header = () => {
         )}
       </div>
       {renderMenu}
+      {isSearchShow && (
+        <div className={styles.mobileSearch}>{renderSearchBox()}</div>
+      )}
       <WFTMModal
         visible={wftmModalVisible}
         onClose={() => dispatch(ModalActions.hideWFTMModal())}

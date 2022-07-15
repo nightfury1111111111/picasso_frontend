@@ -2,7 +2,7 @@
   width: 100%;
   height: 48px;
   padding: 0 16px;
-  border: 1px solid #EAEAF1;
+  border: 1px solid #eaeaf1;
   margin-bottom: 16px;
   border-radius: 6px;
   box-sizing: border-box;
@@ -16,11 +16,11 @@
   }
 
   &:hover {
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, .2);
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
   }
 
   &.active {
-    border-color: #1969FF;
+    border-color: #1969ff;
   }
 }
 
@@ -43,8 +43,9 @@
   margin-top: 16px;
   width: 100%;
   height: 48px;
+  font-size: 15px;
   padding: 0 16px;
-  border: 1px solid #EAEAF1;
+  border: 1px solid #eaeaf1;
   border-radius: 6px;
   box-sizing: border-box;
   display: flex;
@@ -53,6 +54,6 @@
   cursor: pointer;
 
   &:hover {
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, .2);
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
   }
 }

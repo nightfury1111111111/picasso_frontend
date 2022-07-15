@@ -177,7 +177,7 @@ const LandingPage = () => {
         // style={{ backgroundImage: "url('/assets/images/banner/01.gif')" }}
       >
         <img
-          src="/assets/images/banner/02.jpg"
+          src="/assets/images/banner/01.gif"
           className={styles.backgroundImg}
         />
         <div className={styles.body}>

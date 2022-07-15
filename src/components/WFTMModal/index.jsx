@@ -8,6 +8,7 @@ import Skeleton from 'react-loading-skeleton';
 import SwapVertIcon from '@material-ui/icons/SwapVert';
 import toast from 'react-hot-toast';
 import InputError from '../InputError';
+import { useHistory } from 'react-router-dom';
 
 import { useWFTMContract } from 'contracts';
 import PriceInput from 'components/PriceInput';
@@ -32,12 +33,14 @@ const WFTMModal = ({ visible, onClose }) => {
   const [inputError, setInputError] = useState(null);
 
   const { price } = useSelector(state => state.Price);
+  const history = useHistory();
 
   const getBalances = async (overrideLoading = false) => {
     if (!overrideLoading) {
       setLoading(true);
     }
 
+    if (!window.ethereum) history.push('/404');
     await window.ethereum.enable();
     const provider = new ethers.providers.Web3Provider(window.ethereum);
 

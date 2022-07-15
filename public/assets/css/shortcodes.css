@@ -1457,7 +1457,7 @@
 
 .sc-card-collection.style-2 .media-images-collection img {
   border-radius: 10px;
-  object-fit: cover;
+  /* object-fit: cover; */
 }
 
 .sc-card-collection.style-2 .media-images-collection .box-left {

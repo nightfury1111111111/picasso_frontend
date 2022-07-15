@@ -83,6 +83,11 @@ const App = () => {
   };
 
   useEffect(() => {
+    if (!window.ethereum) alert('You must install Metamask wallet first');
+    return;
+  }, []);
+
+  useEffect(() => {
     if (priceInterval) {
       clearInterval(priceInterval);
     }
@@ -126,7 +131,7 @@ const App = () => {
         </Switch>
         <AccountModal />
         <WFTMModal />
-        <Toaster position="bottom-right" reverseOrder={false} />
+        <Toaster position="bottom-center" reverseOrder={false} />
       </Router>
     </div>
   );

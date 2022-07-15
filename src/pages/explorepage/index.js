@@ -4,6 +4,7 @@ import axios from 'axios';
 import cx from 'classnames';
 import { useWeb3React } from '@web3-react/core';
 import { useResizeDetector } from 'react-resize-detector';
+import { LinearProgress } from '@material-ui/core';
 
 import StatusFilter from 'components/StatusFilter';
 import CollectionsFilter from 'components/CollectionsFilter';
@@ -50,6 +51,8 @@ const ExploreAllPage = () => {
   const [cancelSource, setCancelSource] = useState(null);
   const [likeCancelSource, setLikeCancelSource] = useState(null);
   const [prevNumPerRow, setPrevNumPerRow] = useState(null);
+  const [numPerRow, setNumPerRow] = useState(0);
+  const [showLoadMore, setShowLoadMore] = useState(true);
 
   const { authToken } = useSelector(state => state.ConnectWallet);
   const { upFetching, downFetching, tokens, count, from, to } = useSelector(
@@ -67,9 +70,7 @@ const ExploreAllPage = () => {
   } = useSelector(state => state.Filter);
 
   const prevAuthToken = usePrevious(authToken);
-
-  const numPerRow = Math.floor(gridWidth / 240);
-  const fetchCount = 24;
+  // const [fetchCount, setFetchCount] = useState(0);
   // const fetchCount = numPerRow <= 3 ? 18 : numPerRow === 4 ? 16 : numPerRow * 3;
 
   // const handleScroll = e => {
@@ -82,6 +83,17 @@ const ExploreAllPage = () => {
   //   }
   // };
   useEffect(() => {
+    if (window.innerWidth >= 2348) {
+      setNumPerRow(5);
+    } else if (window.innerWidth >= 1900) {
+      setNumPerRow(4);
+    } else if (window.innerWidth >= 1400) {
+      setNumPerRow(3);
+    } else if (window.innerWidth >= 935) {
+      setNumPerRow(2);
+    } else {
+      setNumPerRow(1);
+    }
     dispatch(HeaderActions.toggleSearchbar(true));
 
     if (fetchInterval) {
@@ -92,6 +104,13 @@ const ExploreAllPage = () => {
     // window.addEventListener('scroll', handleScroll);
     // return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    console.log(tokens.length, count);
+    if (tokens.length >= count) {
+      setShowLoadMore(false);
+    } else setShowLoadMore(true);
+  }, [tokens, count]);
 
   const updateCollections = async () => {
     try {
@@ -122,6 +141,7 @@ const ExploreAllPage = () => {
     if (cancelSource) {
       cancelSource.cancel();
     }
+    let fetchCount = 6 * numPerRow;
     if (isNaN(fetchCount)) return;
 
     try {
@@ -148,8 +168,6 @@ const ExploreAllPage = () => {
       }
 
       dispatch(TokensActions.startFetching(dir));
-
-      // alert(category);
 
       const { data } = await fetchTokens(
         start,
@@ -187,10 +205,7 @@ const ExploreAllPage = () => {
       } else {
         _to = _from + newTokens.length;
       }
-      newTokens =
-        dir > 0
-          ? newTokens.slice(-fetchCount * 2)
-          : newTokens.slice(0, fetchCount * 2);
+      newTokens = dir > 0 ? newTokens : newTokens.slice(0, fetchCount * 2);
       if (dir > 0) {
         _from = _to - newTokens.length;
       } else if (dir < 0) {
@@ -299,6 +314,15 @@ const ExploreAllPage = () => {
     <>
       <Header border />
       {/* <PageHeader text={PageHeaderText} /> */}
+      <section
+        className={styles.bannerSection}
+        // style={{ backgroundImage: "url('/assets/images/banner/01.gif')" }}
+      >
+        <img
+          src="/assets/images/banner/02.gif"
+          className={styles.backgroundImg}
+        />
+      </section>
       <div className={styles.nftContainer}>
         <div
           // ref={conRef}
@@ -339,24 +363,31 @@ const ExploreAllPage = () => {
                 numPerRow={numPerRow}
                 category={category}
               />
-              <div className={styles.pagenationWrapper}>
-                <div
+              {downFetching && (
+                <div className={styles.loadingWrapper}>
+                  <LinearProgress />
+                </div>
+              )}
+              {!downFetching && showLoadMore && (
+                <div className={styles.pagenationWrapper}>
+                  {/* <div
                   className={styles.pageBtn}
                   onClick={() => {
                     fetchNFTs(-1);
                   }}
                 >
                   Prev
+                </div> */}
+                  <div
+                    className={styles.pageBtn}
+                    onClick={() => {
+                      fetchNFTs(1);
+                    }}
+                  >
+                    Load More
+                  </div>
                 </div>
-                <div
-                  className={styles.pageBtn}
-                  onClick={() => {
-                    fetchNFTs(1);
-                  }}
-                >
-                  Next
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

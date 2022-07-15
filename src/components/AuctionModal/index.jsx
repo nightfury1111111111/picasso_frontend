@@ -18,6 +18,7 @@ import PriceInput from 'components/PriceInput';
 import { formatNumber } from 'utils';
 import useTokens from 'hooks/useTokens';
 import { useSalesContract } from 'contracts';
+import { useHistory } from 'react-router-dom';
 
 import Modal from '../Modal';
 import styles from '../Modal/common.module.scss';
@@ -49,7 +50,10 @@ const AuctionModal = ({
   const [tokenPriceInterval, setTokenPriceInterval] = useState();
   const [inputError, setInputError] = useState(null);
 
+  const history = useHistory();
+
   const getDefaultTime = async () => {
+    if (!window.ethereum) history.push('/404');
     await window.ethereum.enable();
     const provider = new ethers.providers.Web3Provider(window.ethereum);
 

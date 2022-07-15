@@ -6,3 +6,7 @@
 .MuiSelect-select.MuiSelect-select {
     font-weight: bold !important;
 }
+
+.MuiTypography-body1 {
+    font-size: 15px !important;
+}

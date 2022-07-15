@@ -20,7 +20,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 100px;
+  margin-top: 10px;
 }
 
 .pageBtn {
@@ -130,6 +130,25 @@
   padding-bottom: 20px;
   display: flex;
   flex-wrap: wrap;
+}
+
+.bannerSection {
+  margin-top: 70px;
+  position: relative;
+}
+
+.backgroundImg {
+  width: 100%;
+  height: auto;
+}
+
+.loadingWrapper {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 10px;
 }
 
 .filterHeader {

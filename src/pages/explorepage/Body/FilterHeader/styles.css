@@ -45,6 +45,7 @@
     color: white;
     white-space: nowrap;
     margin: 0 6px;
+    font-size: 15px;
 }
 
 .filterCollectionRemoveItem {
