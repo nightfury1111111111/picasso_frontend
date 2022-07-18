@@ -539,8 +539,6 @@ const CollectionCreate = ({ isRegister }) => {
                   return;
                 }
 
-                console.log(name, address, logodata);
-
                 const formData = new FormData();
                 formData.append('collectionName', name);
                 formData.append('erc721Address', address);
