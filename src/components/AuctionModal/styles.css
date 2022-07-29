@@ -7,6 +7,11 @@
 	table-layout: auto !important;
 }
 
+.rdtDays table {
+	table-layout: auto !important;
+	border: none !important;
+}
+
 .common_formInputCont__2_3-X th,
 td {
 	padding: 0 !important;
@@ -20,4 +25,8 @@ td {
 
 .rdtDays {
 	font-size: 14px !important;
+}
+
+.rdtPicker tfoot {
+	display: none !important;
 }

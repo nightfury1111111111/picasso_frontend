@@ -56,14 +56,14 @@ const Tokens = {
     //   icon: iconFTM,
     // },
     {
-      address: '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15',
+      address: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
       name: 'Wrapped Fantom',
       symbol: 'WFTM',
       decimals: 18,
       icon: iconWFTM,
     },
     {
-      address: '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15',
+      address: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
       name: 'PUMPKIN Fantom',
       symbol: 'PUMPKIN',
       decimals: 18,

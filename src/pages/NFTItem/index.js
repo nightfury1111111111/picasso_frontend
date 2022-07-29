@@ -2783,7 +2783,7 @@ const NFTItem = () => {
               </div>
               <div style={{ marginLeft: '4px', fontSize: '18px' }}>
                 {bestListing?.paymentToken?.toLowerCase() ==
-                  '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
+                  '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'.toLowerCase() &&
                   'FTM'}
               </div>
               {/* <div className={styles.currentPriceUSD}>
@@ -3161,7 +3161,7 @@ const NFTItem = () => {
                         {formatNumber(bid.bid)}
                         <div style={{ marginLeft: '6px' }}>
                           {auction.current?.payToken?.toLowerCase() ==
-                            '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
+                            '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'.toLowerCase() &&
                             'FTM'}
                         </div>
                         {/* {bid.bid < auction.current.reservePrice
@@ -3240,7 +3240,7 @@ const NFTItem = () => {
                                 {formatNumber(winningBid)}
                                 <div style={{ marginLeft: '6px' }}>
                                   {auction.current?.payToken?.toLowerCase() ==
-                                    '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
+                                    '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'.toLowerCase() &&
                                     'FTM'}
                                 </div>
                               </div>
@@ -3264,7 +3264,7 @@ const NFTItem = () => {
                             {formatNumber(auction.current.reservePrice)}
                             <div style={{ marginLeft: '6px' }}>
                               {auction.current?.payToken?.toLowerCase() ==
-                                '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
+                                '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'.toLowerCase() &&
                                 'FTM'}
                             </div>
                           </div>
@@ -3580,7 +3580,7 @@ const NFTItem = () => {
                                 )}
                                 <div style={{ marginLeft: '6px' }}>
                                   {offer?.paymentToken?.toLowerCase() ==
-                                    '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
+                                    '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'.toLowerCase() &&
                                     'FTM'}
                                 </div>
                                 {/* &nbsp;(
@@ -4138,7 +4138,7 @@ const NFTItem = () => {
                                     /> */}
                                     <div style={{ marginLeft: '6px' }}>
                                       {history?.paymentToken?.toLowerCase() ==
-                                        '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15'.toLowerCase() &&
+                                        '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'.toLowerCase() &&
                                         'FTM'}
                                     </div>
                                     {formatNumber(history.price)}
