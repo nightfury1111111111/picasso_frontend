@@ -335,7 +335,7 @@ const CollectionCreate = ({ isRegister }) => {
         collectionName: name,
         description: 'This collection is not registered by owner',
         categories: '3',
-        logoImageHash: 'QmbfueDGhnTP9PW2Asirx5xe711D2rZd4b5AT3sdSzfmeU',
+        logoImageHash: 'QmStDJXFAx3Ko1VcG8444yidc3JZxxBTWyDLRfxxsSSRRA',
         siteUrl,
         discord,
         twitterHandle,
