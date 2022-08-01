@@ -22,14 +22,18 @@ const Footer = () => {
           <div className={styles.socialLinks}>
             <div className={styles.socialIcons}>
               <div>
-                <img
-                  src="/assets/images/footer/twitter.png"
-                  className={styles.socialIcon}
-                />
-                <img
-                  src="/assets/images/footer/discord.png"
-                  className={styles.socialIcon}
-                />
+                <a href="https://twitter.com/picassoftm">
+                  <img
+                    src="/assets/images/footer/twitter.png"
+                    className={styles.socialIcon}
+                  />
+                </a>
+                <a href="https://discord.com/invite/pumpkins">
+                  <img
+                    src="/assets/images/footer/discord.png"
+                    className={styles.socialIcon}
+                  />
+                </a>
               </div>
               <div> Join our discord for support </div>{' '}
             </div>
@@ -41,7 +45,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 style={{ color: 'darkblue' }}
               >
-                jb.mouny@gmail.com
+                Jb.mouny@yahoo.com
               </a>
             </div>
           </div>
