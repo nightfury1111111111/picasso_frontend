@@ -420,19 +420,19 @@ const Header = () => {
       <div className={styles.menuSeparator} />
       {account?.toLowerCase() === ADMIN_ADDRESS.toLowerCase()
         ? [
-            <div key={0} className={styles.menuItem} onClick={addMod}>
-              Add Mod
-            </div>,
-            <div key={1} className={styles.menuItem} onClick={removeMod}>
-              Remove Mod
-            </div>,
-            <div
-              key={2}
-              className={styles.menuItem}
-              onClick={reviewCollections}
-            >
-              Review Collections
-            </div>,
+            // <div key={0} className={styles.menuItem} onClick={addMod}>
+            //   Add Mod
+            // </div>,
+            // <div key={1} className={styles.menuItem} onClick={removeMod}>
+            //   Remove Mod
+            // </div>,
+            // <div
+            //   key={2}
+            //   className={styles.menuItem}
+            //   onClick={reviewCollections}
+            // >
+            //   Review Collections
+            // </div>,
             <div key={3} className={styles.menuItem} onClick={banCollection}>
               Ban Collection
             </div>,
@@ -448,9 +448,9 @@ const Header = () => {
             <div key={9} className={styles.menuItem} onClick={unbanUser}>
               Unban a user
             </div>,
-            <div key={7} className={styles.menuItem} onClick={boostCollection}>
-              Boost Collection
-            </div>,
+            // <div key={7} className={styles.menuItem} onClick={boostCollection}>
+            //   Boost Collection
+            // </div>,
             <div key={8} className={styles.menuSeparator} />,
           ]
         : isModerator
